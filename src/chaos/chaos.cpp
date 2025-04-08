@@ -1,11 +1,12 @@
 #include "chaos.h"
 #include <array>
 #include <cstddef>
-#include <cstdint>
 #include <iostream>
 #include <string_view>
+#include <pieces-color.h>
+#include <player.h>
 
-enum class Color : std::uint8_t { WHITE, BLACK, COUNT };
+
 static std::ostream& operator<<(std::ostream& out, Color color);
 
 class PlayerBehaviour {
