@@ -1,0 +1,52 @@
+---
+# General settings to align with C++ Core Guidelines
+BasedOnStyle: Google  # Google style guide is often close to modern C++ practices
+IndentWidth: 4        # C++ guidelines often recommend 4 spaces for indentation
+TabWidth: 4           # Use 4 spaces per tab stop
+UseTab: Never         # Prefer spaces over tabs (as per Core Guidelines)
+Language:        Cpp
+
+# Line Length (typically 80 or 100)
+ColumnLimit: 80
+
+# Formatting control for braces
+BraceWrapping:
+  AfterClass: true
+  AfterFunction: true
+  AfterStruct: true
+  AfterNamespace: true
+  BeforeElse: true
+  BeforeCatch: true
+
+# Aligning parameters and arguments
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+
+# Pointer and reference style (modern C++ tends to use spaces for clarity)
+PointerAlignment: Left  # Align pointers to the left (e.g., int* p; instead of int *p;)
+ReferenceAlignment: Left # Align references to the left (e.g., int& r; instead of int &r;)
+
+# Indentation for blocks (i.e., inside classes or functions)
+IndentCaseLabels: false
+
+# Formatting for comments
+CommentPragmas: '^pragma'
+SortIncludes: true       # Sort includes in alphabetical order
+IncludeBlocks: Preserve  # Preserve the order of includes within blocks
+
+# Spacing
+SpaceBeforeParens: ControlStatements  # No space before parentheses in control statements (if, for, while)
+SpaceAfterCStyleCast: true           # Space after casting (int *x = (int *)ptr;)
+SpaceAfterTemplateKeyword: true      # Space after template keyword (e.g., template <typename T>)
+
+# Function call parameters
+SpacesInParentheses: false   # No spaces in function call parentheses (e.g., foo(bar);)
+
+# Bracing style for functions and classes
+Cpp11BracedListStyle: true   # Use braced initialization style in C++11 and beyond
+
+SortUsingDeclarations: true  # Sort `using` declarations
+AllowShortFunctionsOnASingleLine: false  # Enforce multiline for functions (C++ Core Guidelines generally suggest longer functions on multiple lines)
+
+...
+

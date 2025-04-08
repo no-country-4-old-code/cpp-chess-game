@@ -1,0 +1,19 @@
+#include <string_view>
+
+namespace build::info {
+    // For possible options see https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html
+    constexpr std::string_view projectname{"@CMAKE_PROJECT_NAME@"};
+    constexpr std::string_view version{"@CMAKE_PROJECT_VERSION@"};
+    constexpr std::string_view hash{"@GIT_HASH@"};
+    constexpr std::string_view hashDate{"@GIT_COMMIT_DATE@"};
+    constexpr std::string_view hasUncommittedChanges{"@GIT_HAS_UNCOMMITTED_CHANGES@"};
+}
+
+namespace build::system {
+    // Infos about the system on which the software was build on
+    constexpr std::string_view name{"@CMAKE_SYSTEM_NAME@"};
+    constexpr std::string_view processor{"@CMAKE_SYSTEM_PROCESSOR@"};
+    constexpr std::string_view version{"@CMAKE_SYSTEM_VERSION@"};
+    constexpr std::string_view system{"@CMAKE_SYSTEM@"};
+}
+
