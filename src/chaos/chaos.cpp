@@ -8,8 +8,6 @@
 enum class Color : std::uint8_t { WHITE, BLACK, COUNT };
 static std::ostream& operator<<(std::ostream& out, Color color);
 
-static void print_turn_info(unsigned int iteration,
-                            unsigned int number_of_players);
 
 class Player {
     const Color _color;  // NOLINT // copy assignment not needed
@@ -29,9 +27,6 @@ void Player::make_move() const {
     std::cout << "> " << _color << " makes a move\n";
 }
 
-static bool is_game_ongoing(unsigned int iteration) {
-    return iteration < 10;  // NOLINT
-};
 
 static const std::array<std::string_view, static_cast<size_t>(Color::COUNT)>
     lookup_color_name{"White", "Black"};
@@ -69,6 +64,22 @@ class IteratorCirulating {
     };
 };
 
+class IteratorTurn {
+    unsigned int _iteration{0};
+    const std::uint8_t _group_size;
+    public:
+    IteratorTurn(const std::uint8_t group_size): _group_size{group_size} {}
+
+    IteratorTurn& operator ++() {
+        ++_iteration;
+        return *this;
+    }
+
+    [[nodiscard]] unsigned int turn() {
+        return (_iteration / _group_size) + 1;
+    }
+};
+
 /**
  * Everything begins in Chaos
  */
@@ -76,22 +87,18 @@ void run_game() {
     using Players = std::array<Player, 2>;
     Players players{Player{Color::WHITE}, Player{Color::BLACK}};
     IteratorCirulating<Players> player(players.begin(), players.end());
+    IteratorTurn turn_counter{players.size()};
 
-    std::cout << "Start game";
-    unsigned int iteration = 0;
+    std::cout << "Start game\n";
+    bool is_more_then_one_player_alive{true};
 
-    while (is_game_ongoing(iteration)) {
-        print_turn_info(iteration, players.size());
+    while (is_more_then_one_player_alive) {
+        std::cout << "Turn " << turn_counter.turn();;
 
         player->make_move();
+        is_more_then_one_player_alive = turn_counter.turn() < 5; // NOLINT
 
-        ++iteration;
+        ++turn_counter;
         ++player;
     };
-}
-
-static void print_turn_info(unsigned int iteration,
-                            unsigned int number_of_players) {
-    auto turn = (iteration / number_of_players) + 1;
-    std::cout << "Turn " << turn;
 }
