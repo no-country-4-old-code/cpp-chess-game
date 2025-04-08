@@ -22,15 +22,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Options
 # cmake-format: off
 # cmake-lint: disable=C0301
-option(ENABLE_TESTS               "Builds tests with every build"                                           OFF)
+option(ENABLE_TESTS               "Builds tests with every build"                                           ON)
 option(ENABLE_IPO                 "Enables interprocedural optimization for application"                    OFF)
-option(ENABLE_CLANG_FORMAT        "Adds build-target 'clang-format' to format source code"                  OFF)
-option(ENABLE_CLANG_TIDY          "Adds build-target 'clang-tidy' to run static code analysis "             OFF)
-option(ENABLE_CPP_CHECK           "Adds build-target 'cppcheck' to run static code analysis"                OFF)
+option(ENABLE_CLANG_FORMAT        "Adds build-target 'clang-format' to format source code"                  ON)
+option(ENABLE_CLANG_TIDY          "Adds build-target 'clang-tidy' to run static code analysis "             ON)
+option(ENABLE_CPP_CHECK           "Adds build-target 'cppcheck' to run static code analysis"                ON)
 option(ENABLE_SANITIZERS          "Builds application with 'sanitizers for run runtime-analysis"            OFF)
 option(ENABLE_UNITTEST_COVERAGE   "Adds build-target 'unittest-coverage' to create test coverage reports"   OFF)
 option(ENABLE_CMAKE_FORMAT        "Adds build-target 'cmake-format' to format CMake files"                  OFF)
-option(ENABLE_PYTHON_SCRIPTS      "Adds build-targets 'script-<name-of-script>' to run python scripts"      OFF)
+option(ENABLE_PYTHON_SCRIPTS      "Adds build-targets 'script-<name-of-script>' to run python scripts"      ON)
 option(ENABLE_CMAKE_LINT          "Adds build-target 'cmake-lint' to lint CMake files"                      OFF)
 option(ENABLE_DOXYGEN             "Adds build-target 'code-doc' to create documentation via doxygen"        OFF)
 # cmake-format: on
