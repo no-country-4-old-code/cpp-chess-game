@@ -6,13 +6,28 @@
 #include <string_view>
 
 enum class Color : std::uint8_t { WHITE, BLACK, COUNT };
+static std::ostream& operator<<(std::ostream& out, Color color);
+
+static void print_turn_info(unsigned int iteration,
+                            unsigned int number_of_players);
 
 class Player {
+    const Color _color;  // NOLINT // copy assignment not needed
    public:
-    const Color color;  // NOLINT
-    explicit Player(const Color _color) : color{_color} {
+    explicit Player(const Color color) : _color{color} {
     }
+
+    [[nodiscard]] Color color() const;
+    void  make_move() const;
 };
+
+Color Player::color() const {
+    return _color;
+}
+
+void Player::make_move() const {
+    std::cout << "> " << _color << " makes a move\n";
+}
 
 static bool is_game_ongoing(unsigned int iteration) {
     return iteration < 10;  // NOLINT
@@ -60,17 +75,23 @@ class IteratorCirulating {
 void run_game() {
     using Players = std::array<Player, 2>;
     Players players{Player{Color::WHITE}, Player{Color::BLACK}};
-    IteratorCirulating<Players> current_player(players.begin(), players.end());
+    IteratorCirulating<Players> player(players.begin(), players.end());
 
+    std::cout << "Start game";
     unsigned int iteration = 0;
 
-    std::cout << "Run game";
     while (is_game_ongoing(iteration)) {
-        auto turn = iteration / players.size() + 1;
-        std::cout << "Turn " << turn << " - Player " << current_player->color
-                  << "\n";
+        print_turn_info(iteration, players.size());
+
+        player->make_move();
 
         ++iteration;
-        ++current_player;
+        ++player;
     };
+}
+
+static void print_turn_info(unsigned int iteration,
+                            unsigned int number_of_players) {
+    auto turn = (iteration / number_of_players) + 1;
+    std::cout << "Turn " << turn;
 }
