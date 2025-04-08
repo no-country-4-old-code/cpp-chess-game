@@ -1,4 +1,5 @@
 ---
+# See https://releases.llvm.org/14.0.0/tools/clang/docs/ClangFormatStyleOptions.html
 # General settings to align with C++ Core Guidelines
 BasedOnStyle: Google  # Google style guide is often close to modern C++ practices
 IndentWidth: 4        # C++ guidelines often recommend 4 spaces for indentation
@@ -18,16 +19,28 @@ BraceWrapping:
   BeforeElse: true
   BeforeCatch: true
 
+# Allow {} in one line if {} is empty
+AllowShortBlocksOnASingleLine: Empty
+
+# 
+BreakConstructorInitializers : BeforeColon 
+
+# Empty line before acces modifier like private, public
+EmptyLineBeforeAccessModifier: LogicalBlock
+IndentAccessModifiers: true
+
 # Aligning parameters and arguments
 AlignConsecutiveAssignments: true
-AlignConsecutiveDeclarations: true
+AlignConsecutiveDeclarations: false
 
 # Pointer and reference style (modern C++ tends to use spaces for clarity)
 PointerAlignment: Left  # Align pointers to the left (e.g., int* p; instead of int *p;)
 ReferenceAlignment: Left # Align references to the left (e.g., int& r; instead of int &r;)
 
 # Indentation for blocks (i.e., inside classes or functions)
-IndentCaseLabels: false
+IndentCaseBlocks: true
+AllowAllArgumentsOnNextLine: true
+AllowAllParametersOfDeclarationOnNextLine: true
 
 # Formatting for comments
 CommentPragmas: '^pragma'
@@ -46,7 +59,9 @@ SpacesInParentheses: false   # No spaces in function call parentheses (e.g., foo
 Cpp11BracedListStyle: true   # Use braced initialization style in C++11 and beyond
 
 SortUsingDeclarations: true  # Sort `using` declarations
-AllowShortFunctionsOnASingleLine: false  # Enforce multiline for functions (C++ Core Guidelines generally suggest longer functions on multiple lines)
+
+# Allow short blocks to be on one line (for constructors and functions)
+AllowShortFunctionsOnASingleLine: Inline
 
 ...
 
