@@ -5,6 +5,8 @@
 #include <string_view>
 #include <pieces-color.h>
 #include <player.h>
+#include <vector>
+#include <algorithm>
 
 
 static std::ostream& operator<<(std::ostream& out, Color color);
@@ -37,14 +39,15 @@ void PlayerBehaviourAI::make_move() const {
 
 class Player {
     private:
-        const Color _color;  // NOLINT // copy assignment not needed
-        const PlayerBehaviour& _behaviour;  // NOLINT
+        Color _color;  // NOLINT // copy assignment not needed
+        PlayerBehaviour* _behaviour;  // NOLINT
 
     public:
         explicit Player(const Color color, PlayerBehaviour& behaviour)
-            : _color{color}, _behaviour{behaviour} {}
+            : _color{color}, _behaviour{&behaviour} {}
         [[nodiscard]] Color color() const;
         void make_move() const;
+        bool has_valid_moves() const;
 };
 
 Color Player::color() const {
@@ -52,12 +55,24 @@ Color Player::color() const {
 };
 
 void Player::make_move() const {
-    _behaviour.make_move();
+    _behaviour->make_move();
     std::cout << " > " << this->color() << " makes a move\n";
 };
 
+bool Player::has_valid_moves() const {
+    // get_available_moves
+    static unsigned int i = 20 + static_cast<int>(this->color());
+    --i;
+    if (i == 0) {
+        i = 20;
+        return false;
+    } else {
+        return true;
+    }
+}
+
 static const std::array<std::string_view, static_cast<size_t>(Color::COUNT)>
-    lookup_color_name{"White", "Black"};
+    lookup_color_name{"White", "Black", "Orange", "Blue"};
 
 static std::ostream& operator<<(std::ostream& out, const Color color) {
     auto index = static_cast<size_t>(color);
@@ -70,65 +85,53 @@ static std::ostream& operator<<(std::ostream& out, const Color color) {
     return out;
 };
 
-template <typename CONTAINER>
-class IteratorCirulating {
-        using Iterator = CONTAINER::iterator;
-        Iterator _begin, _end, _current;
 
-    public:
-        IteratorCirulating(Iterator begin, Iterator end)
-            : _begin(begin), _end(end), _current(begin) {};
+void remove_player( Player& player, std::vector<Player>& group) {
+    auto color = player.color();  
+    std::cout << "Remove Player " << color << "\n";
+    auto begin_of_deleted = std::remove_if(
+        group.begin(), 
+        group.end(), 
+        [&color] (const Player& p) {return p.color() == color; }
+    );
+    group.erase(begin_of_deleted, group.end());
+};
 
-        IteratorCirulating& operator++() {
-            ++_current;
-            if (_current == _end) {
-                _current = _begin;
+
+
+void run(std::vector<Player>& group) {
+    unsigned int turn = 1;
+
+    while (group.size() > 1) {
+        std::cout << "Turn " << turn << "\n";
+        
+        for(auto player : group) {
+            if (player.has_valid_moves()) {
+                player.make_move();
+            } else {
+                remove_player(player, group);
+                if (group.size() <= 1) {
+                    break;
+                }
             }
-            return *this;
         };
 
-        auto operator->() { return _current; };
-};
-
-class IteratorTurn {
-        unsigned int _iteration{0};
-        const std::uint8_t _group_size;  // NOLINT // copy assignment not needed
-
-    public:
-        explicit IteratorTurn(const std::uint8_t group_size)
-            : _group_size{group_size} {}
-
-        IteratorTurn& operator++() {
-            ++_iteration;
-            return *this;
-        }
-
-        [[nodiscard]] unsigned int turn() const {
-            return (_iteration / _group_size) + 1;
-        }
-};
+        ++turn;
+    };
+    std::cout << "Player " << group[0].color() << " wins !\n";
+}
 
 /**
  * Everything begins in Chaos
  */
 void run_game() {
-    using Players = std::array<Player, 2>;
     PlayerBehaviourAI a{};
     PlayerBehaviourHuman b{};
-    Players players{Player{Color::WHITE, a}, Player{Color::BLACK, b}};
-    IteratorCirulating<Players> player(players.begin(), players.end());
-    IteratorTurn turn_counter{players.size()};
-
-    std::cout << "Start game\n";
-    bool is_more_then_one_player_alive{true};
-
-    while (is_more_then_one_player_alive) {
-        std::cout << "Turn " << turn_counter.turn();
-
-        player->make_move();
-        is_more_then_one_player_alive = turn_counter.turn() < 5;  // NOLINT
-
-        ++turn_counter;
-        ++player;
-    };
+    std::vector<Player> group{
+        Player{Color::WHITE, a},
+        Player{Color::BLACK, b},
+        Player{Color::ORANGE, b},
+        Player{Color::BLUE, b},
+        };
+    run(group);
 }
