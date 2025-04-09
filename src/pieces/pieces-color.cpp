@@ -1,7 +1,7 @@
-#include <array>
-#include <string_view>
-#include <ostream>
 #include "pieces-color.h"
+#include <array>
+#include <ostream>
+#include <string_view>
 
 static const std::array<std::string_view, static_cast<size_t>(Color::COUNT)>
     lookup_color_name{"White", "Black", "Orange", "Blue"};
