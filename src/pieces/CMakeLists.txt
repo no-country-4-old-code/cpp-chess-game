@@ -1,2 +1,8 @@
-add_library(Pieces INTERFACE)
-target_include_directories(Pieces INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}")
+set(LIBRARY_NAME Pieces)
+set(SOURCES pieces-color.cpp)
+
+# Add sources to lib
+add_library(${LIBRARY_NAME} STATIC ${SOURCES})
+
+# Include "public" header files to lib
+target_include_directories(${LIBRARY_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")

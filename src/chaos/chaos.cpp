@@ -9,7 +9,6 @@
 #include <algorithm>
 
 
-static std::ostream& operator<<(std::ostream& out, Color color);
 
 class PlayerBehaviour {
     public:
@@ -71,19 +70,6 @@ bool Player::has_valid_moves() const {
     }
 }
 
-static const std::array<std::string_view, static_cast<size_t>(Color::COUNT)>
-    lookup_color_name{"White", "Black", "Orange", "Blue"};
-
-static std::ostream& operator<<(std::ostream& out, const Color color) {
-    auto index = static_cast<size_t>(color);
-    if (index < lookup_color_name.size()) {
-        out << lookup_color_name[index];  // NOLINT (*-pro-bounds-*) // bounds
-                                          // are checked
-    } else {
-        out << "Unknown";
-    }
-    return out;
-};
 
 
 void remove_player( Player& player, std::vector<Player>& group) {
