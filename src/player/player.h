@@ -14,15 +14,3 @@ class Player {
         void make_move() const;
         bool has_valid_moves() const;
 };
-
-class PlayerBehaviourHuman : public IPlayerBehaviour {
-    public:
-        void make_move() const override;
-        bool has_valid_moves() const override;
-};
-
-class PlayerBehaviourAI : public IPlayerBehaviour {
-    public:
-        void make_move() const override;
-        bool has_valid_moves() const override;
-};

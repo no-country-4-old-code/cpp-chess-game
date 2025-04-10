@@ -1,11 +1,13 @@
 #include "chaos.h"
-#include <player.h>
 #include <algorithm>
 #include <array>
 #include <cstddef>
 #include <iostream>
 #include <set>
 #include <string_view>
+#include "behaviour-ai.h"
+#include "behaviour-human.h"
+#include "player.h"
 
 using PlayerGroup =
     std::set<Player, decltype([](const Player& a, const Player& b) {
