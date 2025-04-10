@@ -1,16 +1,17 @@
 #include "chaos.h"
-#include <behaviour.h>
-#include <pieces-color.h>
 #include <player.h>
 #include <algorithm>
 #include <array>
 #include <cstddef>
 #include <iostream>
 #include <string_view>
-#include <vector>
+#include <set>
 
-static void run(std::vector<Player>& group);
-static void remove_player(Player& player, std::vector<Player>& group);
+
+using PlayerGroup = std::set<Player, decltype([](const Player& a, const Player& b) {
+    return a.color() < b.color();
+})>;
+static void run(PlayerGroup& group);
 
 /**
  * Everything begins in Chaos
@@ -18,26 +19,28 @@ static void remove_player(Player& player, std::vector<Player>& group);
 void run_game() {
     PlayerBehaviourAI a{};
     PlayerBehaviourHuman b{};
-    std::vector<Player> group{
-        Player{Color::WHITE, a},
-        Player{Color::BLACK, b},
-        Player{Color::ORANGE, b},
-        Player{Color::BLUE, b},
+    PlayerGroup group{
+        Player{Color::WHITE, &a},
+        Player{Color::BLACK, &b},
+        Player{Color::ORANGE, &b},
+        Player{Color::BLUE, &b},
     };
     run(group);
 }
 
-static void run(std::vector<Player>& group) {
+static void run(PlayerGroup& group) {
     unsigned int turn = 1;
 
     while (group.size() > 1) {
         std::cout << "Turn " << turn << "\n";
 
-        for (auto player : group) {
-            if (player.has_valid_moves()) {
-                player.make_move();
+        for (auto player = group.begin(); player != group.end();) {
+            if (player->has_valid_moves()) {
+                player->make_move();
+                ++player;
             } else {
-                remove_player(player, group);
+                std::cout << ">> Remove Player " << player->color() << "\n";
+                player = group.erase(player);
                 if (group.size() <= 1) {
                     break; // game over
                 }
@@ -46,14 +49,5 @@ static void run(std::vector<Player>& group) {
 
         ++turn;
     };
-    std::cout << "Player " << group[0].color() << " wins !\n";
+    std::cout << "Player " << group.begin()->color() << " wins !\n";
 }
-
-static void remove_player(Player& player, std::vector<Player>& group) {
-    auto color = player.color();
-    std::cout << "Remove Player " << color << "\n";
-    auto begin_of_deleted = std::remove_if(
-        group.begin(), group.end(),
-        [&color](const Player& p) { return p.color() == color; });
-    group.erase(begin_of_deleted, group.end());
-};
