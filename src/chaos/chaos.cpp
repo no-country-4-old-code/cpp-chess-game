@@ -4,13 +4,13 @@
 #include <array>
 #include <cstddef>
 #include <iostream>
-#include <string_view>
 #include <set>
+#include <string_view>
 
-
-using PlayerGroup = std::set<Player, decltype([](const Player& a, const Player& b) {
-    return a.color() < b.color();
-})>;
+using PlayerGroup =
+    std::set<Player, decltype([](const Player& a, const Player& b) {
+                 return a.color() < b.color();
+             })>;
 static void run(PlayerGroup& group);
 
 /**
@@ -42,7 +42,7 @@ static void run(PlayerGroup& group) {
                 std::cout << ">> Remove Player " << player->color() << "\n";
                 player = group.erase(player);
                 if (group.size() <= 1) {
-                    break; // game over
+                    break;  // game over
                 }
             }
         };
