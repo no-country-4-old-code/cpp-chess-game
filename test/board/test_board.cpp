@@ -29,12 +29,13 @@ std::string renameTestCasesBitIndex(const ::testing::TestParamInfo<std::tuple<in
     return "_" + std::to_string(bit_index) + "_should_result_in_" + expected;
 }
 
+
 TEST_P(RangeOfBitIndex, BitIndex) {
     board::Board board{8, 8};
     auto [bit_index, expected] = GetParam();
     board::bitmap::Squares sqr = 1 << bit_index;
     board::notation::ChessNotation obj{sqr, board};
-    expect_osstream(obj, "a1");
+    expect_osstream(obj, expected);
 }
 
 INSTANTIATE_TEST_SUITE_P(ChessNotation,
