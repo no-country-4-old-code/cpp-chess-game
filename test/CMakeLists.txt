@@ -1,1 +1,1 @@
-add_subdirectory(chaos)
+add_subdirectory(board)
