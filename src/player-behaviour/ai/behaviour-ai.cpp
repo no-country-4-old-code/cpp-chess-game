@@ -3,7 +3,7 @@
 #include <ctime>
 #include <vector>
 
-typedef int Bitmap;  // Define bitmap type
+using Bitmap = int;  // Define bitmap type
 
 // ==== Pieces
 
@@ -32,13 +32,13 @@ bool Piece::operator!=(const Piece& other) const {
 
 PlayerBehaviourAI::PlayerBehaviourAI(bool color) : myColor(color) {}
 
-std::vector<Piece> PlayerBehaviourAI::get_all_pieces() const {
+std::vector<Piece> PlayerBehaviourAI::get_all_pieces() {
     // Mock function to return all pieces
     return std::vector<Piece>{};
 }
 
 std::vector<Piece> PlayerBehaviourAI::filter(const std::vector<Piece>& pieces,
-                                             bool color) const {
+                                             bool color) {
     std::vector<Piece> result;
     for (const auto& piece : pieces) {
         if (piece.color == color) {
@@ -48,22 +48,22 @@ std::vector<Piece> PlayerBehaviourAI::filter(const std::vector<Piece>& pieces,
     return result;
 }
 
-Bitmap PlayerBehaviourAI::create_attack_map(const std::vector<Piece>& pieces,
-                                            bool color) const {
+Bitmap PlayerBehaviourAI::create_attack_map(const std::vector<Piece>&  /*pieces*/,
+                                            bool  /*color*/) {
     return 0;
 }
 
-bool PlayerBehaviourAI::is_under_attack(const Piece& piece,
-                                        Bitmap attackMap) const {
+bool PlayerBehaviourAI::is_under_attack(const Piece&  /*piece*/,
+                                        Bitmap  /*attackMap*/) {
     return false;
 }
 
 void PlayerBehaviourAI::make_move() const {
-    std::vector<Piece> pieces = get_all_pieces();
+    std::vector<Piece> const pieces = get_all_pieces();
     auto my_pieces            = filter(pieces, myColor);
     update_movable_fields(myColor);
 
-    Piece selectedPiece;
+    Piece selected_piece;
     Bitmap dest = 0;
     for (auto& piece : pieces) {
         if (piece.movable_fields > 0) {
@@ -75,34 +75,34 @@ void PlayerBehaviourAI::make_move() const {
                 }
                 tmp_mv_fieldst -= dest;
             }
-            selectedPiece = piece;
+            selected_piece = piece;
         }
     }
 
     Piece piece_on_dest = get_piece_on_dest(dest);
-    selectedPiece.set_position(dest);
+    selected_piece.set_position(dest);
     if (&piece_on_dest != nullptr) {
         piece_on_dest.die();
     }
 }
 
-bool PlayerBehaviourAI::flip_a_coin() const {
+bool PlayerBehaviourAI::flip_a_coin() {
     return rand() % 2 == 0;
 }
 
-Piece PlayerBehaviourAI::get_piece_on_dest(Bitmap dest) const {
-    return Piece();
+Piece PlayerBehaviourAI::get_piece_on_dest(Bitmap  /*dest*/) {
+    return {};
 }
 
 bool PlayerBehaviourAI::has_valid_moves() const {
     update_movable_fields(myColor);
-    Bitmap bitmap = get_movable_fields_as_bitmap(myColor);
+    Bitmap const bitmap = get_movable_fields_as_bitmap(myColor);
     return bitmap > 0;
 }
 
 Bitmap PlayerBehaviourAI::get_movable_fields_as_bitmap(bool color) const {
     Bitmap movable_fields     = 0;
-    std::vector<Piece> pieces = get_all_pieces();
+    std::vector<Piece> const pieces = get_all_pieces();
     auto my_pieces            = filter(pieces, color);
     for (const auto& piece : my_pieces) {
         movable_fields |= piece.movable_fields;
@@ -114,22 +114,22 @@ void PlayerBehaviourAI::evaluate_and_update_all_movable_fields(
     Piece& piece, const Piece& king, const std::vector<Piece>& pieces) const {
     Bitmap tmp_bitmap_dest_fields = piece.attackable_fields;
     while (tmp_bitmap_dest_fields != 0) {
-        Bitmap target       = tmp_bitmap_dest_fields & -tmp_bitmap_dest_fields;
-        bool is_field_empty = true;  // Mock check
+        Bitmap const target       = tmp_bitmap_dest_fields & -tmp_bitmap_dest_fields;
+        bool const is_field_empty = true;  // Mock check
         Piece piece_on_target;       // Mock piece from field
-        Piece save_status_src_piece  = piece;
-        Piece save_statuc_dest_piece = piece_on_target;
+        Piece const save_status_src_piece  = piece;
+        Piece const save_statuc_dest_piece = piece_on_target;
 
         piece.set_position(target);
         if (&piece_on_target != nullptr) {
             piece_on_target.die();
         }
 
-        Bitmap tmp_attack_map = create_attack_map(pieces, !piece.color);
+        Bitmap const tmp_attack_map = create_attack_map(pieces, !piece.color);
         if (!is_under_attack(king, tmp_attack_map)) {
-            const_cast<Piece&>(piece).movable_fields |= target;
+            piece.movable_fields |= target;
         }
-        const_cast<Piece&>(piece) = save_status_src_piece;
+        piece = save_status_src_piece;
         if (&piece_on_target != nullptr) {
             piece_on_target = save_statuc_dest_piece;
         }
@@ -139,22 +139,22 @@ void PlayerBehaviourAI::evaluate_and_update_all_movable_fields(
 }
 
 void PlayerBehaviourAI::update_movable_fields(bool color) const {
-    std::vector<Piece> pieces = get_all_pieces();
+    std::vector<Piece> const pieces = get_all_pieces();
     auto my_pieces            = filter(pieces, color);
     auto other_pieces         = filter(pieces, !color);
 
-    Bitmap my_positions    = create_attack_map(my_pieces, color);
-    Bitmap other_positions = create_attack_map(other_pieces, !color);
+    Bitmap const my_positions    = create_attack_map(my_pieces, color);
+    Bitmap const other_positions = create_attack_map(other_pieces, !color);
 
-    Bitmap attack_map = create_attack_map(pieces, !color);
+    Bitmap const attack_map = create_attack_map(pieces, !color);
 
     Piece king                  = get_king(my_pieces);
-    bool is_king_under_attack   = is_under_attack(king, attack_map);
+    bool const is_king_under_attack   = is_under_attack(king, attack_map);
     bool is_king_forced_to_move = false;
 
     if (is_king_under_attack) {
         auto attackers          = get_attacking_pieces(king, other_pieces);
-        int number_of_attackers = count_bits(attackers);
+        int const number_of_attackers = count_bits(attackers);
 
         if (number_of_attackers > 1) {
             is_king_forced_to_move = true;
@@ -173,7 +173,7 @@ void PlayerBehaviourAI::update_movable_fields(bool color) const {
                 evaluate_and_update_all_movable_fields(king, king, pieces);
             } else {
                 if (is_under_attack(piece, attack_map) && piece != king) {
-                    Bitmap tmp_attack_vector =
+                    Bitmap const tmp_attack_vector =
                         create_attack_map(pieces, !color);
 
                     if (is_under_attack(king, tmp_attack_vector)) {
@@ -193,21 +193,21 @@ void PlayerBehaviourAI::update_movable_fields(bool color) const {
     }
 }
 
-Piece PlayerBehaviourAI::get_king(const std::vector<Piece>& pieces) const {
-    return Piece();
+Piece PlayerBehaviourAI::get_king(const std::vector<Piece>&  /*pieces*/) {
+    return {};
 }
 
 Bitmap PlayerBehaviourAI::get_attacking_pieces(
-    const Piece& king, const std::vector<Piece>& other_pieces) const {
+    const Piece&  /*king*/, const std::vector<Piece>&  /*other_pieces*/) {
     return 0;
 }
 
-void PlayerBehaviourAI::reset_movable_fields(std::vector<Piece>& pieces) const {
+void PlayerBehaviourAI::reset_movable_fields(std::vector<Piece>& pieces) {
     for (auto& piece : pieces) {
         piece.movable_fields = 0;
     }
 }
 
-int PlayerBehaviourAI::count_bits(Bitmap bitmap) const {
+int PlayerBehaviourAI::count_bits(Bitmap  /*bitmap*/) {
     return 0;
 }

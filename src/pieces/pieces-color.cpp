@@ -1,5 +1,6 @@
 #include "pieces-color.h"
 #include <array>
+#include <cstddef>
 #include <ostream>
 #include <string_view>
 

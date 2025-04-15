@@ -1,12 +1,9 @@
 #include "chaos.h"
-#include <algorithm>
-#include <array>
-#include <cstddef>
 #include <iostream>
 #include <set>
-#include <string_view>
 #include "behaviour-ai.h"
 #include "behaviour-human.h"
+#include "pieces-color.h"
 #include "player.h"
 
 using PlayerGroup =

@@ -1,6 +1,9 @@
 #include "notation.h"
+#include "squares.h"
 #include <bit>
 #include <cassert>
+#include <sys/types.h>
+#include <ostream>
 
 namespace {
     inline u_int8_t map_file_2_uint(char chr);

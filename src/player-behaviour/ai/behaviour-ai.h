@@ -29,22 +29,22 @@ class PlayerBehaviourAI : public IPlayerBehaviour {
     private:
         // Generated from pseudo-code brainstorming. Corrected via AI
         bool myColor;
-        std::vector<Piece> get_all_pieces() const;
-        std::vector<Piece> filter(const std::vector<Piece>& pieces,
-                                  bool color) const;
-        Bitmap create_attack_map(const std::vector<Piece>& pieces,
-                                 bool color) const;
-        bool is_under_attack(const Piece& piece, Bitmap attackMap) const;
-        bool flip_a_coin() const;
-        Piece get_piece_on_dest(Bitmap dest) const;
+        static std::vector<Piece> get_all_pieces() ;
+        static std::vector<Piece> filter(const std::vector<Piece>& pieces,
+                                  bool color) ;
+        static Bitmap create_attack_map(const std::vector<Piece>& pieces,
+                                 bool color) ;
+        static bool is_under_attack(const Piece& piece, Bitmap attackMap) ;
+        static bool flip_a_coin() ;
+        static Piece get_piece_on_dest(Bitmap dest) ;
         Bitmap get_movable_fields_as_bitmap(bool color) const;
         void evaluate_and_update_all_movable_fields(
             Piece& piece, const Piece& king,
             const std::vector<Piece>& pieces) const;
         void update_movable_fields(bool color) const;
-        Piece get_king(const std::vector<Piece>& pieces) const;
-        Bitmap get_attacking_pieces(
-            const Piece& king, const std::vector<Piece>& other_pieces) const;
-        void reset_movable_fields(std::vector<Piece>& pieces) const;
-        int count_bits(Bitmap bitmap) const;
+        static Piece get_king(const std::vector<Piece>& pieces) ;
+        static Bitmap get_attacking_pieces(
+            const Piece& king, const std::vector<Piece>& other_pieces) ;
+        static void reset_movable_fields(std::vector<Piece>& pieces) ;
+        static int count_bits(Bitmap bitmap) ;
 };

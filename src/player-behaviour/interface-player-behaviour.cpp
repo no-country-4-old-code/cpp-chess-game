@@ -1,3 +1,3 @@
 #include "interface-player-behaviour.h"
 
-IPlayerBehaviour::~IPlayerBehaviour() {};
+IPlayerBehaviour::~IPlayerBehaviour() = default;

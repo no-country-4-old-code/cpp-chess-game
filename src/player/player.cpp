@@ -1,4 +1,5 @@
 #include "player.h"
+#include "pieces-color.h"
 #include <iostream>
 
 Color Player::color() const {
@@ -17,7 +18,6 @@ bool Player::has_valid_moves() const {
     if (i == 0) {
         i = 20;
         return false;
-    } else {
-        return true;
-    }
+    }         return true;
+   
 }
