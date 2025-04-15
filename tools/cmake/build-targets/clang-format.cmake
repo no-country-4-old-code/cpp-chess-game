@@ -14,7 +14,11 @@ function(create_target_clang_format)
             find ${SRC_FOLDER_PATH}/ -iname '*.h' -o -iname '*.hpp' -o -iname '*.c' -o -iname
             '*.cpp' -o -iname '*.cc' | xargs -I {} ${_TOOL_EXECUTABLE} {} -i
             --style='file:${TOOLS_FOLDER_PATH}/.clang-format'
-        COMMENT "Runs ${_TOOL_NAME} on source files (*.h, *.hpp, *.c, *.cpp, *.cc)")
+        COMMAND
+            find ${TEST_FOLDER_PATH}/ -iname '*.h' -o -iname '*.hpp' -o -iname '*.c' -o -iname
+            '*.cpp' -o -iname '*.cc' | xargs -I {} ${_TOOL_EXECUTABLE} {} -i
+            --style='file:${TOOLS_FOLDER_PATH}/.clang-format'
+        COMMENT "Runs ${_TOOL_NAME} on source and test files (*.h, *.hpp, *.c, *.cpp, *.cc)")
 endfunction()
 
 create_target_clang_format()

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <notation.h>
 #include <squares.h>
-#include <sstream> 
+#include <sstream>
 #include <tuple>
 
 namespace {
@@ -10,37 +10,33 @@ namespace {
         std::ostringstream oss;
         oss << obj;
         auto result = oss.str();
-        EXPECT_EQ(result, expected) << "Expected output of '" << expected << "' but got '" << result << "'" ;
+        EXPECT_EQ(result, expected) << "Expected output of '" << expected
+                                    << "' but got '" << result << "'";
     };
 
 }
 
 using TestDataCSqr = std::tuple<int, const char*>;
-class TestSuiteConstructorSqrt : public ::testing::TestWithParam<TestDataCSqr> {};
+class TestSuiteConstructorSqrt : public ::testing::TestWithParam<TestDataCSqr> {
+};
 class TestSuiteAsSquares : public ::testing::TestWithParam<int> {};
-std::string generate_name_csqr_test(const ::testing::TestParamInfo<TestDataCSqr>& info);
+std::string generate_name_csqr_test(
+    const ::testing::TestParamInfo<TestDataCSqr>& info);
 constexpr int number_of_bits_in_sqrs = sizeof(board::bitmap::Squares) * 8;
-
 
 TEST(ChessNotation, ConstructorChar) {
     board::notation::ChessNotation obj{"a1"};
     expect_osstream(obj, "a1");
 }
 
-INSTANTIATE_TEST_SUITE_P(ChessNotation,
-    TestSuiteConstructorSqrt,
-    ::testing::Values(
-        std::make_tuple(0, "a1"),
-        std::make_tuple(1, "b1"),
-        std::make_tuple(7, "h1"),
-        std::make_tuple(8, "a2"),
-        std::make_tuple(28, "e4"),
-        std::make_tuple(55, "h7"),
-        std::make_tuple(56, "a8"),
-        std::make_tuple(62, "g8"),
-        std::make_tuple(63, "h8")),
-    generate_name_csqr_test
-    );
+INSTANTIATE_TEST_SUITE_P(
+    ChessNotation, TestSuiteConstructorSqrt,
+    ::testing::Values(std::make_tuple(0, "a1"), std::make_tuple(1, "b1"),
+                      std::make_tuple(7, "h1"), std::make_tuple(8, "a2"),
+                      std::make_tuple(28, "e4"), std::make_tuple(55, "h7"),
+                      std::make_tuple(56, "a8"), std::make_tuple(62, "g8"),
+                      std::make_tuple(63, "h8")),
+    generate_name_csqr_test);
 
 TEST_P(TestSuiteConstructorSqrt, ConstructorSqr) {
     auto [bit_index, expected] = GetParam();
@@ -53,11 +49,8 @@ TEST_P(TestSuiteConstructorSqrt, ConstructorSqr) {
     expect_osstream(obj, expected);
 }
 
-
-INSTANTIATE_TEST_SUITE_P(ChessNotation,
-    TestSuiteAsSquares,
-    ::testing::Range(0, number_of_bits_in_sqrs, 7)
-);
+INSTANTIATE_TEST_SUITE_P(ChessNotation, TestSuiteAsSquares,
+                         ::testing::Range(0, number_of_bits_in_sqrs, 7));
 
 TEST_P(TestSuiteAsSquares, AsSquares) {
     auto bit_index = GetParam();
@@ -102,8 +95,9 @@ TEST(ChessNotation, ConstructorSqrShortBoard2) {
 
 // helper
 
-std::string generate_name_csqr_test(const ::testing::TestParamInfo<TestDataCSqr>& info) {
-    int bit_index = std::get<0>(info.param);
+std::string generate_name_csqr_test(
+    const ::testing::TestParamInfo<TestDataCSqr>& info) {
+    int bit_index        = std::get<0>(info.param);
     const char* expected = std::get<1>(info.param);
     return "_" + std::to_string(bit_index) + "_should_result_in_" + expected;
 }
