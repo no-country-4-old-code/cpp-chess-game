@@ -33,7 +33,7 @@ std::string renameTestCasesBitIndex(const ::testing::TestParamInfo<std::tuple<in
 TEST_P(RangeOfBitIndex, BitIndex) {
     board::Board board{8, 8};
     auto [bit_index, expected] = GetParam();
-    board::bitmap::Squares sqr = 1 << bit_index;
+    board::bitmap::Squares sqr = 1ULL << bit_index;
     board::notation::ChessNotation obj{sqr, board};
     expect_osstream(obj, expected);
 }
@@ -45,9 +45,9 @@ INSTANTIATE_TEST_SUITE_P(ChessNotation,
         std::make_tuple(1, "b1"),
         std::make_tuple(7, "h1"),
         std::make_tuple(8, "a2"),
-        std::make_tuple(32, "e4"),
+        std::make_tuple(28, "e4"),
         std::make_tuple(55, "h7"),
-        std::make_tuple(57, "a8"),
+        std::make_tuple(56, "a8"),
         std::make_tuple(62, "g8"),
         std::make_tuple(63, "h8")),
     renameTestCasesBitIndex
