@@ -28,6 +28,8 @@ BreakConstructorInitializers : BeforeColon
 # Empty line before acces modifier like private, public
 EmptyLineBeforeAccessModifier: LogicalBlock
 IndentAccessModifiers: true
+ShortNamespaceLines: 15
+NamespaceIndentation: All 
 
 # Aligning parameters and arguments
 AlignConsecutiveAssignments: true
