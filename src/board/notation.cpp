@@ -48,7 +48,7 @@ namespace board::notation
 
         const u_int8_t bit_index =
             horizontal + (vertical * board.num_of_squares_horizontal);
-        return 1 << bit_index;
+        return 1ULL << bit_index;
     }
 
     std::ostream &operator<<(std::ostream &out,
