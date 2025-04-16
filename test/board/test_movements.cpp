@@ -84,5 +84,35 @@ TEST(BoardMovementsHorizontal, Right_Invalid_h8) {
     EXPECT_EQ(end_square, 0);
 }
 
-
 // End -- Test right board movement
+// Start -- Test up board movement
+
+TEST(BoardMovementsVertical, Up_Valid_a2) {
+    auto start        = "a2"_n;
+    auto end_square = move::up(start.as_squares(default_board), default_board);
+    expect_notation(end_square, "a1"_n);
+}
+
+TEST(BoardMovementsVertical, Up_Valid_h2) {
+    auto start        = "h2"_n;
+    auto end_square = move::up(start.as_squares(default_board), default_board);
+    expect_notation(end_square, "h1"_n);
+}
+
+TEST(BoardMovementsVertical, Up_Valid_h8) {
+    auto start        = "h8"_n;
+    auto end_square = move::up(start.as_squares(default_board), default_board);
+    expect_notation(end_square, "h7"_n);
+}
+
+TEST(BoardMovementsVertical, Up_Invalid_a1) {
+    auto start        = "a1"_n;
+    auto end_square = move::up(start.as_squares(default_board), default_board);
+    EXPECT_EQ(end_square, 0);
+}
+
+TEST(BoardMovementsVertical, Up_Invalid_h1) {
+    auto start        = "h1"_n;
+    auto end_square = move::up(start.as_squares(default_board), default_board);
+    EXPECT_EQ(end_square, 0);
+}

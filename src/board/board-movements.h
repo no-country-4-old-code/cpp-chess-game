@@ -6,5 +6,6 @@ namespace board::movements {
 
     bitmap::Squares left(bitmap::Squares position, const Board& board);
     bitmap::Squares right(bitmap::Squares position, const Board& board);
+    bitmap::Squares up(bitmap::Squares position, const Board& board);
 
 }
