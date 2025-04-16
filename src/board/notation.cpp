@@ -2,6 +2,7 @@
 #include "squares.h"
 #include <bit>
 #include <cassert>
+#include <string_view>
 #include <sys/types.h>
 #include <ostream>
 
@@ -15,13 +16,13 @@ namespace {
 
 namespace board::notation {
 
-    ChessNotation::ChessNotation(const char square_as_literal[3]) {
+    ChessNotation::ChessNotation(std::string_view square_as_literal) {
         this->_file = square_as_literal[0];  // e.g. "a4" (file is "a") //NOLINT
         this->_rank = square_as_literal[1];  // e.g. "a4" (rank is "4") //NOLINT
 
         assert('a' <= this->_file && this->_file <= 'z');
         assert('1' <= this->_rank && this->_rank <= '9');
-        assert(square_as_literal[2] == '\0');
+        assert(square_as_literal.size() == 2); // e.g. "a4"
     };
 
     ChessNotation::ChessNotation(const board::bitmap::Squares &squares,
@@ -66,14 +67,14 @@ namespace {
     };
 
     inline char map_uint_2_file(const u_int8_t offset) {
-        const char chr = 'a' + offset;
-        assert('a' <= chr && chr <= 'z');
+        const char chr = 'a' + offset; // NOLINT
+        assert('a' <= chr && chr <= 'z'); // catches narrowing conversion
         return chr;
     };
 
     inline char map_uint_2_rank(const u_int8_t offset) {
-        const char chr = '1' + offset;
-        assert('1' <= chr && chr <= '9');
+        const char chr = '1' + offset; // NOLINT 
+        assert('1' <= chr && chr <= '9'); // catches narrowing conversion
         return chr;
     };
 

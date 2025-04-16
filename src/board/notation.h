@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ostream>
 #include "squares.h"
+#include <string_view>
 
 namespace board::notation {
 
@@ -12,7 +13,7 @@ namespace board::notation {
             char _rank;  // 1, 2, 3, 4, 5 ... (horizontal line)
 
         public:
-            ChessNotation(const char square_as_literal[3]);  // e.g. "a1"
+            ChessNotation(std::string_view square_as_literal);  // e.g. "a1"
             ChessNotation(const board::bitmap::Squares& squares,
                           const board::Board& board);
             board::bitmap::Squares as_squares(const board::Board& board) const;
