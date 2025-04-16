@@ -1,11 +1,12 @@
 #include "notation.h"
-#include "squares.h"
-#include "board.h"
+#include <sys/types.h>
 #include <bit>
 #include <cassert>
-#include <string_view>
-#include <sys/types.h>
+#include <cstddef>
 #include <ostream>
+#include <string_view>
+#include "board.h"
+#include "squares.h"
 
 namespace {
     inline u_int8_t map_file_2_uint(char chr);
@@ -23,7 +24,7 @@ namespace board::notation {
 
         assert('a' <= this->_file && this->_file <= 'z');
         assert('1' <= this->_rank && this->_rank <= '9');
-        assert(square_as_literal.size() == 2); // e.g. "a4"
+        assert(square_as_literal.size() == 2);  // e.g. "a4"
     };
 
     ChessNotation::ChessNotation(const board::bitmap::Squares &squares,
@@ -56,7 +57,16 @@ namespace board::notation {
         out << notation._file << notation._rank;
         return out;
     };
+
 }  // namespace board::notation
+
+namespace board::notation::literal {
+    ChessNotation operator"" _n(const char *str, std::size_t len) {
+        assert(len >= 2);
+        std::string_view const view{str};
+        return ChessNotation{view.substr(0, 2)};
+    }
+}
 
 namespace {
     inline u_int8_t map_file_2_uint(const char chr) {
@@ -68,14 +78,14 @@ namespace {
     };
 
     inline char map_uint_2_file(const u_int8_t offset) {
-        const char chr = 'a' + offset; // NOLINT
-        assert('a' <= chr && chr <= 'z'); // catches narrowing conversion
+        const char chr = 'a' + offset;     // NOLINT
+        assert('a' <= chr && chr <= 'z');  // catches narrowing conversion
         return chr;
     };
 
     inline char map_uint_2_rank(const u_int8_t offset) {
-        const char chr = '1' + offset; // NOLINT 
-        assert('1' <= chr && chr <= '9'); // catches narrowing conversion
+        const char chr = '1' + offset;     // NOLINT
+        assert('1' <= chr && chr <= '9');  // catches narrowing conversion
         return chr;
     };
 

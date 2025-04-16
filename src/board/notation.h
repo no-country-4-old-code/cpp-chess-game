@@ -2,9 +2,9 @@
 #include <array>
 #include <cstdlib>
 #include <ostream>
-#include "squares.h"
-#include "board.h"
 #include <string_view>
+#include "board.h"
+#include "squares.h"
 
 namespace board::notation {
 
@@ -26,5 +26,9 @@ namespace board::notation {
 
     std::ostream& operator<<(std::ostream& out,
                              const board::notation::ChessNotation& notation);
-
 }  // namespace board::notation
+
+namespace board::notation::literal {
+    // own namespace for non-bloating "using namespace board::notation::literal"
+    ChessNotation operator"" _n(const char* str, std::size_t len);
+}

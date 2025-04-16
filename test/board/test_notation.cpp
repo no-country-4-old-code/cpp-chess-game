@@ -93,6 +93,15 @@ TEST(ChessNotation, ConstructorSqrShortBoard2) {
     expect_osstream(obj, "d4");
 }
 
+TEST(ChessNotation, Literal) {
+    using namespace board::notation::literal;
+    board::Board board{8, 8};
+    auto obj    = "d2"_n;
+    auto result = obj.as_squares(board);
+    EXPECT_EQ(result, 2048);
+    expect_osstream(obj, "d2");
+}
+
 // helper
 
 std::string generate_name_csqr_test(
