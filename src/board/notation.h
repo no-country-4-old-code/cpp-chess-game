@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <ostream>
 #include "squares.h"
+#include "board.h"
 #include <string_view>
 
 namespace board::notation {

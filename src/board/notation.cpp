@@ -1,5 +1,6 @@
 #include "notation.h"
 #include "squares.h"
+#include "board.h"
 #include <bit>
 #include <cassert>
 #include <string_view>
