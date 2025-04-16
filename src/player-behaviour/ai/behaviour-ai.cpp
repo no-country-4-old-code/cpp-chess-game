@@ -65,7 +65,7 @@ void PlayerBehaviourAI::make_move() const {
 
     Piece selected_piece;
     Bitmap dest = 0;
-    for (auto& piece : pieces) {
+    for (const auto& piece : pieces) {
         if (piece.movable_fields > 0) {
             auto tmp_mv_fieldst = piece.movable_fields;
             while (tmp_mv_fieldst != 0) {
@@ -100,7 +100,7 @@ bool PlayerBehaviourAI::has_valid_moves() const {
     return bitmap > 0;
 }
 
-Bitmap PlayerBehaviourAI::get_movable_fields_as_bitmap(bool color) const {
+Bitmap PlayerBehaviourAI::get_movable_fields_as_bitmap(bool color) {
     Bitmap movable_fields     = 0;
     std::vector<Piece> const pieces = get_all_pieces();
     auto my_pieces            = filter(pieces, color);
@@ -111,7 +111,7 @@ Bitmap PlayerBehaviourAI::get_movable_fields_as_bitmap(bool color) const {
 }
 
 void PlayerBehaviourAI::evaluate_and_update_all_movable_fields(
-    Piece& piece, const Piece& king, const std::vector<Piece>& pieces) const {
+    Piece& piece, const Piece& king, const std::vector<Piece>& pieces) {
     Bitmap tmp_bitmap_dest_fields = piece.attackable_fields;
     while (tmp_bitmap_dest_fields != 0) {
         Bitmap const target       = tmp_bitmap_dest_fields & -tmp_bitmap_dest_fields;
@@ -138,7 +138,7 @@ void PlayerBehaviourAI::evaluate_and_update_all_movable_fields(
     }
 }
 
-void PlayerBehaviourAI::update_movable_fields(bool color) const {
+void PlayerBehaviourAI::update_movable_fields(bool color) {
     std::vector<Piece> const pieces = get_all_pieces();
     auto my_pieces            = filter(pieces, color);
     auto other_pieces         = filter(pieces, !color);

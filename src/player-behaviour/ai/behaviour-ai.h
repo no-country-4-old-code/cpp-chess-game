@@ -37,11 +37,11 @@ class PlayerBehaviourAI : public IPlayerBehaviour {
         static bool is_under_attack(const Piece& piece, Bitmap attackMap) ;
         static bool flip_a_coin() ;
         static Piece get_piece_on_dest(Bitmap dest) ;
-        Bitmap get_movable_fields_as_bitmap(bool color) const;
-        void evaluate_and_update_all_movable_fields(
+        static Bitmap get_movable_fields_as_bitmap(bool color) ;
+        static void evaluate_and_update_all_movable_fields(
             Piece& piece, const Piece& king,
-            const std::vector<Piece>& pieces) const;
-        void update_movable_fields(bool color) const;
+            const std::vector<Piece>& pieces) ;
+        static void update_movable_fields(bool color) ;
         static Piece get_king(const std::vector<Piece>& pieces) ;
         static Bitmap get_attacking_pieces(
             const Piece& king, const std::vector<Piece>& other_pieces) ;
