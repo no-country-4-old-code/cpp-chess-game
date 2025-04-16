@@ -17,6 +17,8 @@ namespace board::notation {
             ChessNotation(std::string_view square_as_literal);  // e.g. "a1"
             ChessNotation(const board::bitmap::Squares& squares,
                           const board::Board& board);
+            auto operator<=>(const ChessNotation&) const = default;
+
             board::bitmap::Squares as_squares(const board::Board& board) const;
 
             friend std::ostream& operator<<(
