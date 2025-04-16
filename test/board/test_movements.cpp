@@ -27,10 +27,10 @@ TEST(BoardMovementsHorizontal, Left_Valid_b1) {
     expect_notation(end_square, "a1"_n);
 }
 
-TEST(BoardMovementsHorizontal, Left_Valid_g8) {
-    auto start        = "g8"_n;
+TEST(BoardMovementsHorizontal, Left_Valid_h8) {
+    auto start        = "h8"_n;
     auto end_square = move::left(start.as_squares(default_board), default_board);
-    expect_notation(end_square, "f8"_n);
+    expect_notation(end_square, "g8"_n);
 }
 
 TEST(BoardMovementsHorizontal, Left_Invalid_a1) {
@@ -53,3 +53,36 @@ TEST(BoardMovementsHorizontal, Left_Invalid_a8) {
 
 // End -- Test left board movement
 // Start -- Test right board movement
+
+TEST(BoardMovementsHorizontal, Right_Valid_a1) {
+    auto start        = "a1"_n;
+    auto end_square = move::right(start.as_squares(default_board), default_board);
+    expect_notation(end_square, "b1"_n);
+}
+
+TEST(BoardMovementsHorizontal, Right_Valid_h1) {
+    auto start        = "g1"_n;
+    auto end_square = move::right(start.as_squares(default_board), default_board);
+    expect_notation(end_square, "h1"_n);
+}
+
+TEST(BoardMovementsHorizontal, Right_Valid_b8) {
+    auto start        = "b8"_n;
+    auto end_square = move::right(start.as_squares(default_board), default_board);
+    expect_notation(end_square, "c8"_n);
+}
+
+TEST(BoardMovementsHorizontal, Right_Invalid_h1) {
+    auto start        = "h1"_n;
+    auto end_square = move::right(start.as_squares(default_board), default_board);
+    EXPECT_EQ(end_square, 0);
+}
+
+TEST(BoardMovementsHorizontal, Right_Invalid_h8) {
+    auto start        = "h8"_n;
+    auto end_square = move::right(start.as_squares(default_board), default_board);
+    EXPECT_EQ(end_square, 0);
+}
+
+
+// End -- Test right board movement
