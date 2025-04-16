@@ -61,7 +61,7 @@ namespace board::notation {
 }  // namespace board::notation
 
 namespace board::notation::literal {
-    ChessNotation operator"" _n(const char *str, std::size_t len) {
+    ChessNotation operator""_n(const char *str, std::size_t len) {
         assert(len >= 2);
         std::string_view const view{str};
         return ChessNotation{view.substr(0, 2)};

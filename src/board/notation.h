@@ -32,5 +32,5 @@ namespace board::notation {
 
 namespace board::notation::literal {
     // own namespace for non-bloating "using namespace board::notation::literal"
-    ChessNotation operator"" _n(const char* str, std::size_t len);
+    ChessNotation operator""_n(const char* str, std::size_t len);
 }
