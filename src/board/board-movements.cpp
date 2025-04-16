@@ -5,6 +5,6 @@
 namespace board::movements {
 
     bitmap::Squares left(bitmap::Squares position, const Board& /*board*/) {
-        return position;
+        return position >> 1;
     }
 }
