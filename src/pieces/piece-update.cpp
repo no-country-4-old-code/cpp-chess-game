@@ -53,13 +53,21 @@ namespace piece::update {
     void update_piece() {
         board::Board board{8, 8};
         auto position = "d4"_n.as_squares(board) ;
+        auto positions_all_pieces_same_color = "d3"_n.as_squares(board) | "e4"_n.as_squares(board) | "b6"_n.as_squares(board);
+        auto positions_all_pieces_diff_color = "d1"_n.as_squares(board) | "f8"_n.as_squares(board) | "b2"_n.as_squares(board);
+        auto positions_all = positions_all_pieces_same_color | positions_all_pieces_diff_color;
         
         namespace move = board::movements;
 
-        std::array<move::move_func, 4> directions{
+
+        std::array<move::move_func, 8> directions{
             move::left,
             move::right,
+            move::up,
+            move::down,
             move::left_down,
+            move::left_up,
+            move::right_up,
             move::right_down
         };
 
@@ -69,11 +77,17 @@ namespace piece::update {
             auto current = position;
             while (current != 0) {
                 current = go(current, board);
-                mask |= current;
+                if (current & positions_all) {
+                    break;
+                } else {
+                    mask |= current;
+                }
             }
         }
 
-
+        std::cout << "Other pieces\n";
+        display_board(board, positions_all);
+        std::cout << "Movements \n";
         display_board(board, mask);
 
     }
