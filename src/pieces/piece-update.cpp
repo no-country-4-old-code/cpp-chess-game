@@ -2,6 +2,8 @@
 #include "board.h"
 #include "squares.h"
 #include "notation.h"
+#include "board-movements.h"
+#include <array>
 #include <iostream>
 
 using namespace board::notation::literal;
@@ -50,9 +52,29 @@ namespace piece::update {
 
     void update_piece() {
         board::Board board{8, 8};
-        board::bitmap::Squares position = "d4"_n.as_squares(board) ;
+        auto position = "d4"_n.as_squares(board) ;
+        
+        namespace move = board::movements;
 
-        display_board(board, position);
+        std::array<move::move_func, 4> directions{
+            move::left,
+            move::right,
+            move::left_down,
+            move::right_down
+        };
+
+        board::bitmap::Squares mask{0};
+
+        for (auto go: directions) {
+            auto current = position;
+            while (current != 0) {
+                current = go(current, board);
+                mask |= current;
+            }
+        }
+
+
+        display_board(board, mask);
 
     }
 
