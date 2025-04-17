@@ -1,7 +1,10 @@
 #include "piece-update.h"
 #include "board.h"
 #include "squares.h"
+#include "notation.h"
 #include <iostream>
+
+using namespace board::notation::literal;
 
 namespace {
 
@@ -12,8 +15,8 @@ namespace {
         // Iterate through every(!) bit starting with LSB
         u_int num_of_bits = bits_per_byte * sizeof(value);
         for(u_int i = 0; i < num_of_bits; ++i) {
-            value = value >> 1;
             func(value & 1);
+            value = value >> 1;
         }
     }
 
@@ -47,9 +50,9 @@ namespace piece::update {
 
     void update_piece() {
         board::Board board{8, 8};
-        board::bitmap::Squares sqrs = 0x022;
+        board::bitmap::Squares position = "d4"_n.as_squares(board) ;
 
-        display_board(board, sqrs);
+        display_board(board, position);
 
     }
 
