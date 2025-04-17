@@ -73,6 +73,15 @@ namespace board::movements {
         }
     }
 
+    bitmap::Squares right_down(bitmap::Squares position, const Board& board) {
+        auto mask = build_right_squares_mask(board);
+        mask |= build_bottom_squares_mask(board);
+        if (position & mask) {
+            return 0;
+        } else {
+            return position << (board.num_of_squares_horizontal + 1);
+        }
+    }
     
 }
 
