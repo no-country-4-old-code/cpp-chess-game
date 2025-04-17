@@ -149,3 +149,42 @@ TEST(BoardMovementsVertical, Down_Invalid_h8) {
     auto end_square = move::down(start.as_squares(default_board), default_board);
     EXPECT_EQ(end_square, 0);
 }
+
+// End -- Test down board movement
+
+// === Diagonal Movement
+
+// Start -- Test left-up board movement
+
+TEST(BoardMovementsDiagonal, Left_Up_Valid_b2) {
+    auto start        = "b2"_n;
+    auto end_square = move::left_up(start.as_squares(default_board), default_board);
+    expect_notation(end_square, "a1"_n);
+}
+
+TEST(BoardMovementsDiagonal, Left_Up_Valid_h8) {
+    auto start        = "h8"_n;
+    auto end_square = move::left_up(start.as_squares(default_board), default_board);
+    expect_notation(end_square, "g7"_n);
+}
+
+TEST(BoardMovementsDiagonal, Left_Up_Invalid_a1) {
+    auto start        = "a1"_n;
+    auto end_square = move::left_up(start.as_squares(default_board), default_board);
+    EXPECT_EQ(end_square, 0);
+}
+
+TEST(BoardMovementsDiagonal, Left_Up_Invalid_a8) {
+    auto start        = "a8"_n;
+    auto end_square = move::left_up(start.as_squares(default_board), default_board);
+    EXPECT_EQ(end_square, 0);
+}
+
+TEST(BoardMovementsDiagonal, Left_Up_Invalid_h1) {
+    auto start        = "h1"_n;
+    auto end_square = move::left_up(start.as_squares(default_board), default_board);
+    EXPECT_EQ(end_square, 0);
+}
+
+// End -- Test left-up board movement
+// Start -- Test right-up board movement

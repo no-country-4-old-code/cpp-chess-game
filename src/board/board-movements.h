@@ -7,4 +7,8 @@ namespace board::movements {
     bitmap::Squares right(bitmap::Squares position, const Board& board);
     bitmap::Squares up(bitmap::Squares position, const Board& board);
     bitmap::Squares down(bitmap::Squares position, const Board& board);
+
+    // diagonal movements
+    bitmap::Squares left_up(bitmap::Squares position, const Board& board);
+    
 }

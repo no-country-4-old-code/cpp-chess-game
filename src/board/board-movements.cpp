@@ -5,7 +5,7 @@
 namespace {
     board::bitmap::Squares build_left_squares_mask(const board::Board& board);
     board::bitmap::Squares build_right_squares_mask(const board::Board& board);
-    board::bitmap::Squares build_upper_squares_mask(const board::Board& board);
+    board::bitmap::Squares build_top_squares_mask(const board::Board& board);
     board::bitmap::Squares build_bottom_squares_mask(const board::Board& board);
 }
 
@@ -32,7 +32,7 @@ namespace board::movements {
     }
 
     bitmap::Squares up(bitmap::Squares position, const Board& board) {
-        auto mask = build_upper_squares_mask(board); // OPTIMIZE: pull in board later on for speed up
+        auto mask = build_top_squares_mask(board); // OPTIMIZE: pull in board later on for speed up
         if (position & mask) {
             // We are already as 'up' as we can be.
             return 0;
@@ -50,6 +50,30 @@ namespace board::movements {
             return position << board.num_of_squares_horizontal;
         }
     }
+
+    // diagnoal movements
+
+    bitmap::Squares left_up(bitmap::Squares position, const Board& board) {
+        auto mask = build_left_squares_mask(board);
+        mask |= build_top_squares_mask(board);
+        if (position & mask) {
+            return 0;
+        } else {
+            return position >> (board.num_of_squares_horizontal + 1);
+        }
+    }
+    
+    bitmap::Squares right_up(bitmap::Squares position, const Board& board) {
+        auto mask = build_left_squares_mask(board);
+        mask |= build_top_squares_mask(board);
+        if (position & mask) {
+            return 0;
+        } else {
+            return position >> (board.num_of_squares_horizontal - 1);
+        }
+    }
+
+    
 }
 
 namespace {
@@ -72,7 +96,7 @@ namespace {
         return mask;
     }
 
-    board::bitmap::Squares build_upper_squares_mask(const board::Board& board) {
+    board::bitmap::Squares build_top_squares_mask(const board::Board& board) {
         // Create a bitmap representing all square on the upper edge (a1, b1, c1, ...)
         return (1ULL << board.num_of_squares_vertical) - 1;
     }
@@ -81,4 +105,5 @@ namespace {
         // Create a bitmap representing all square on the bottom edge (e.g. a8, b8, c8, ...)
         return ~(~0ULL >> board.num_of_squares_vertical);
     }
+
 }
