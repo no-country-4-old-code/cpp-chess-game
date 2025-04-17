@@ -187,6 +187,39 @@ TEST(BoardMovementsDiagonal, Left_Up_Invalid_h1) {
 }
 
 // End -- Test left-up board movement
+// Start -- Test left-down board movement
+
+TEST(BoardMovementsDiagonal, Left_Down_Valid_b2) {
+    auto start        = "b2"_n;
+    auto end_square = move::left_down(start.as_squares(default_board), default_board);
+    expect_notation(end_square, "a3"_n);
+}
+
+TEST(BoardMovementsDiagonal, Left_Down_Valid_h1) {
+    auto start        = "h1"_n;
+    auto end_square = move::left_down(start.as_squares(default_board), default_board);
+    expect_notation(end_square, "g2"_n);
+}
+
+TEST(BoardMovementsDiagonal, Left_Down_Invalid_a1) {
+    auto start        = "a1"_n;
+    auto end_square = move::left_down(start.as_squares(default_board), default_board);
+    EXPECT_EQ(end_square, 0);
+}
+
+TEST(BoardMovementsDiagonal, Left_Down_Invalid_a8) {
+    auto start        = "a8"_n;
+    auto end_square = move::left_down(start.as_squares(default_board), default_board);
+    EXPECT_EQ(end_square, 0);
+}
+
+TEST(BoardMovementsDiagonal, Left_Down_Invalid_h8) {
+    auto start        = "h8"_n;
+    auto end_square = move::left_down(start.as_squares(default_board), default_board);
+    EXPECT_EQ(end_square, 0);
+}
+
+// End -- Test left-down board movement
 // Start -- Test right-up board movement
 
 TEST(BoardMovementsDiagonal, Right_Up_Valid_b2) {
@@ -251,3 +284,5 @@ TEST(BoardMovementsDiagonal, Right_Down_Invalid_a8) {
     auto end_square = move::right_down(start.as_squares(default_board), default_board);
     EXPECT_EQ(end_square, 0);
 }
+
+// End -- Test right-down board movement
