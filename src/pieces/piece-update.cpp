@@ -1,8 +1,10 @@
 #include "piece-update.h"
+#include "piece.h"
 #include "board.h"
 #include "squares.h"
 #include "notation.h"
 #include "board-movements.h"
+#include "pieces-color.h"
 #include <array>
 #include <iostream>
 
@@ -57,6 +59,8 @@ namespace piece::update {
         auto positions_all_pieces_diff_color = "d1"_n.as_squares(board) | "f8"_n.as_squares(board) | "b2"_n.as_squares(board);
         auto positions_all = positions_all_pieces_same_color | positions_all_pieces_diff_color;
         
+        piece::Piece piece{Color::WHITE, 0, position};
+
         namespace move = board::movements;
 
 
@@ -72,23 +76,32 @@ namespace piece::update {
         };
 
         board::bitmap::Squares mask{0};
+        piece.observed = 0;
+        piece.attackable = 0;
 
         for (auto go: directions) {
             auto current = position;
             while (current != 0) {
                 current = go(current, board);
+                piece.observed |= current;
+
                 if (current & positions_all) {
+                    if (current & positions_all_pieces_diff_color) {
+                        // only pieces of other color can be attacked
+                        piece.attackable |= current;
+                    }
                     break;
                 } else {
-                    mask |= current;
+                    // squares in sight without a piece can be attacked
+                    piece.attackable |= current;
                 }
             }
         }
 
         std::cout << "Other pieces\n";
-        display_board(board, positions_all);
+        display_board(board, piece.attackable);
         std::cout << "Movements \n";
-        display_board(board, mask);
+        display_board(board, piece.observed);
 
     }
 

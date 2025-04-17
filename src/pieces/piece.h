@@ -10,13 +10,13 @@ namespace piece {
             PieceType type;
             board::bitmap::Squares position;
 
-            board::bitmap::Squares
-                observed;  // All "seen" squares including ones blocked by other
-                           // pieces (including own)
-            board::bitmap::Squares
-                attackable;  // All squares the piece might move to (not
-                             // considering checkmate)
-            board::bitmap::Squares movable;  // All squares the piece can move
-                                             // to (considering checkmate)
+            // All "seen" squares and pieces
+            board::bitmap::Squares observed;
+            // All squares the piece might move to (not considering checkmate)
+            board::bitmap::Squares attackable;  
+            // All squares the piece can move to (considering checkmate)
+            board::bitmap::Squares movable; 
+            
+            Piece(Color color_, PieceType type_, board::bitmap::Squares pos_): color{color_}, type{type_}, position{pos_} {};
     };
 }
