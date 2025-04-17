@@ -5,7 +5,7 @@
 
 namespace {
 
-    const bits_per_byte = 8;
+    const int bits_per_byte = 8;
 
     template <typename T, typename FUNCTION>
     void for_each_bit(T value, FUNCTION func) {
@@ -44,7 +44,7 @@ namespace {
 namespace piece::update {
 
     
-    
+
     void update_piece() {
         board::Board board{8, 8};
         board::bitmap::Squares sqrs = 0x022;
