@@ -50,17 +50,7 @@ namespace {
 
 namespace piece::update {
 
-    
-
-    void update_piece() {
-        board::Board board{8, 8};
-        auto position = "d4"_n.as_squares(board) ;
-        auto positions_all_pieces_same_color = "d3"_n.as_squares(board) | "e4"_n.as_squares(board) | "b6"_n.as_squares(board);
-        auto positions_all_pieces_diff_color = "d1"_n.as_squares(board) | "f8"_n.as_squares(board) | "b2"_n.as_squares(board);
-        auto positions_all = positions_all_pieces_same_color | positions_all_pieces_diff_color;
-        
-        piece::Piece piece{Color::WHITE, 0, position};
-
+    void update_prototype(piece::Piece& piece, const board::Board& board, board::bitmap::Squares positions_all, board::bitmap::Squares positions_all_pieces_diff_color  ) {
         namespace move = board::movements;
 
 
@@ -75,12 +65,11 @@ namespace piece::update {
             move::right_down
         };
 
-        board::bitmap::Squares mask{0};
         piece.observed = 0;
         piece.attackable = 0;
 
         for (auto go: directions) {
-            auto current = position;
+            auto current = piece.position;
             while (current != 0) {
                 current = go(current, board);
                 piece.observed |= current;
@@ -97,6 +86,19 @@ namespace piece::update {
                 }
             }
         }
+    }
+
+    void update_piece() {
+        board::Board board{8, 8};
+        auto position = "d4"_n.as_squares(board) ;
+
+        auto positions_all_pieces_same_color = "d3"_n.as_squares(board) | "e4"_n.as_squares(board) | "b6"_n.as_squares(board);
+        auto positions_all_pieces_diff_color = "d1"_n.as_squares(board) | "f8"_n.as_squares(board) | "b2"_n.as_squares(board);
+        auto positions_all = positions_all_pieces_same_color | positions_all_pieces_diff_color;
+        
+        piece::Piece piece{Color::WHITE, 0, position};
+
+        update_prototype(piece, board, positions_all, positions_all_pieces_diff_color);
 
         std::cout << "Other pieces\n";
         display_board(board, piece.attackable);
