@@ -64,7 +64,7 @@ namespace board::movements {
     }
     
     bitmap::Squares right_up(bitmap::Squares position, const Board& board) {
-        auto mask = build_left_squares_mask(board);
+        auto mask = build_right_squares_mask(board);
         mask |= build_top_squares_mask(board);
         if (position & mask) {
             return 0;
