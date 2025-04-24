@@ -15,7 +15,7 @@ namespace piece {
             // All squares the piece can move to (considering checkmate)
             board::bitmap::Squares movable; 
             
-            Piece(): Piece(PieceType::INVALID, 0) {};
+            Piece(): Piece(PieceType::_INVALID, 0) {};
             Piece(PieceType ptype, board::bitmap::Squares pos): type{ptype}, position{pos} {};
     };
 }

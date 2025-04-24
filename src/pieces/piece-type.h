@@ -1,17 +1,19 @@
 #pragma once
 #include <cstdlib>
 
-namespace piece {
+namespace piece
+{
 
-    enum class PieceType: u_int8_t {
-        INVALID,
+    enum class PieceType : u_int8_t
+    {
         KING,
         QUEEN,
         KNIGHT,
         BISHOP,
         ROCK,
-        PEASANT
+        PEASANT,
+        _COUNT,
+        _INVALID
     };
-    
-}
 
+}
