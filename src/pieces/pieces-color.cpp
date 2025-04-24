@@ -4,7 +4,7 @@
 #include <ostream>
 #include <string_view>
 
-static const std::array<std::string_view, static_cast<size_t>(Color::COUNT)>
+static const std::array<std::string_view, static_cast<size_t>(Color::_COUNT)>
     lookup_color_name{"White", "Black", "Orange", "Blue"};
 
 std::ostream& operator<<(std::ostream& out, const Color color) {

@@ -6,6 +6,7 @@
 #include "board-movements.h"
 #include "pieces-color.h"
 #include "aggregator-positions.h"
+#include "update-piece-attackable.h"
 #include <array>
 #include <iostream>
 
@@ -121,7 +122,9 @@ namespace piece::update {
         auto positions_all = aggr.positions();
         auto positions_hostile_pieces = positions_all & ~aggr.positions(0);
 
-        update_prototype(my_piece, board, positions_all, positions_hostile_pieces);
+        piece::update::attackable::update_piece(my_piece, board, positions_all, positions_hostile_pieces);
+
+        //update_prototype(my_piece, board, positions_all, positions_hostile_pieces);
 
         std::cout << "Other pieces\n";
         display_board(board, my_piece.attackable);
