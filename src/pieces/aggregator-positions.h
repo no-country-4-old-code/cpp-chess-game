@@ -6,7 +6,7 @@
 #include <vector>
 #include <array>
 
-namespace piece::positions
+namespace piece::aggregator
 {
 
     namespace sqr = board::bitmap;
@@ -21,7 +21,7 @@ namespace piece::positions
         army_positions_lookup positions_of_army;
 
     public:
-        PositionAggregator(const army_list &pieces);
+        PositionAggregator(const army_list &list);
         sqr::Squares positions() const;
         sqr::Squares positions(u_int8_t idx_army) const;
     };

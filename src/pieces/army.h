@@ -18,6 +18,7 @@ namespace piece::army {
             u_int8_t _idx_king;
         public:
             std::array<piece::Piece, max_pieces_per_army> pieces;
+            Army(): Army{Color::INVALID, std::vector<piece::Piece>{}} {};
             Army(Color color, const std::vector<piece::Piece>& pieces);
             Color color() const;
             u_int8_t size() const;

@@ -21,7 +21,7 @@ namespace piece::army {
                 ++count_kings;
             }
         }
-        assert(count_kings == 1);
+        assert((count_kings == 1 || given_pieces.size() == 0)); // Every army should have ONE king only
     }
     
 
@@ -32,12 +32,18 @@ namespace piece::army {
 
     u_int8_t Army::size() const {
         #ifndef NDEBUG
-        // size is not updated due performance reasons
+        // size is not updated after creation due performance reasons
         // adding / removing pieces is not allowed !
-        assert(pieces[_size - 1].type != piece::PieceType::INVALID);
+        if (_size == 0) {
+            // empty army should stay empty
+            assert(pieces[0].type == piece::PieceType::INVALID);
+        } else {
+            // non-empty army should stay at same size
+            assert(pieces[_size - 1].type != piece::PieceType::INVALID);
             if (_size != max_pieces_per_army) {
                 assert(pieces[_size].type == piece::PieceType::INVALID);
             }
+        }
         #endif
 
         return this->_size;

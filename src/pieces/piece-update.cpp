@@ -5,6 +5,7 @@
 #include "notation.h"
 #include "board-movements.h"
 #include "pieces-color.h"
+#include "aggregator-positions.h"
 #include <array>
 #include <iostream>
 
@@ -50,7 +51,7 @@ namespace {
 
 namespace piece::update {
 
-    void update_prototype(piece::Piece& piece, const board::Board& board, board::bitmap::Squares positions_all, board::bitmap::Squares positions_all_pieces_diff_color  ) {
+    void update_prototype(piece::Piece& piece, const board::Board& board, board::bitmap::Squares positions_all, board::bitmap::Squares positions_hostile_armies  ) {
         namespace move = board::movements;
 
 
@@ -75,8 +76,8 @@ namespace piece::update {
                 piece.observed |= current;
 
                 if (current & positions_all) {
-                    if (current & positions_all_pieces_diff_color) {
-                        // only pieces of other color can be attacked
+                    if (current & positions_hostile_armies) {
+                        // only pieces of enemies can be attacked
                         piece.attackable |= current;
                     }
                     break;
@@ -90,20 +91,42 @@ namespace piece::update {
 
     void update_piece() {
         board::Board board{8, 8};
-        auto position = "d4"_n.as_squares(board) ;
 
-        auto positions_all_pieces_same_color = "d3"_n.as_squares(board) | "e4"_n.as_squares(board) | "b6"_n.as_squares(board);
-        auto positions_all_pieces_diff_color = "d1"_n.as_squares(board) | "f8"_n.as_squares(board) | "b2"_n.as_squares(board);
-        auto positions_all = positions_all_pieces_same_color | positions_all_pieces_diff_color;
+        const piece::aggregator::army_list army_list = {
+            piece::army::Army{Color::BLUE, {
+                piece::Piece{PieceType::KING, "d3"_n.as_squares(board)},
+                piece::Piece{PieceType::PEASANT, "e4"_n.as_squares(board)},
+                piece::Piece{PieceType::PEASANT, "b4"_n.as_squares(board)},
+                piece::Piece{PieceType::PEASANT, "b6"_n.as_squares(board)},                        
+            }},
+            piece::army::Army{Color::WHITE, {
+                piece::Piece{PieceType::KING, "d1"_n.as_squares(board)},
+                piece::Piece{PieceType::PEASANT, "f8"_n.as_squares(board)},
+                piece::Piece{PieceType::PEASANT, "g7"_n.as_squares(board)},
+                piece::Piece{PieceType::PEASANT, "h6"_n.as_squares(board)},                        
+            }},
+            piece::army::Army{},
+            piece::army::Army{}
+        };
+
+        piece::aggregator::PositionAggregator aggr{army_list};
         
-        piece::Piece piece{PieceType::KING, position};
+        auto my_piece = army_list[0].king();
 
-        update_prototype(piece, board, positions_all, positions_all_pieces_diff_color);
+        // piece, board, aggr, hostile piece positions
+        // update-piece-attackable.h + Lookup type -> function
+        // function also there 
+        // Call here
+        
+        auto positions_all = aggr.positions();
+        auto positions_hostile_pieces = positions_all & ~aggr.positions(0);
+
+        update_prototype(my_piece, board, positions_all, positions_hostile_pieces);
 
         std::cout << "Other pieces\n";
-        display_board(board, piece.attackable);
+        display_board(board, my_piece.attackable);
         std::cout << "Movements \n";
-        display_board(board, piece.observed);
+        display_board(board, my_piece.observed);
 
     }
 

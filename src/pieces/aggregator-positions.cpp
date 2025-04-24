@@ -2,17 +2,17 @@
 
 namespace
 {
-    using namespace piece::positions;
+    using namespace piece::aggregator;
 
-    army_positions_lookup calc_lookup(const army_list &pieces);
+    army_positions_lookup calc_positions_of_army(const army_list &pieces);
     board::bitmap::Squares calc_all(const army_positions_lookup &lookup);
 }
 
-namespace piece::positions
+namespace piece::aggregator
 {
-    PositionAggregator::PositionAggregator(const army_list &pieces)
+    PositionAggregator::PositionAggregator(const army_list &list)
     {
-        this->positions_of_army = calc_lookup(pieces);
+        this->positions_of_army = calc_positions_of_army(list);
         this->all = calc_all(this->positions_of_army);
     }
 
@@ -30,9 +30,9 @@ namespace piece::positions
 
 namespace
 {
-    using namespace piece::positions;
+    using namespace piece::aggregator;
 
-    piece::positions::army_positions_lookup calc_lookup(const piece::positions::army_list &army_list)
+    piece::aggregator::army_positions_lookup calc_positions_of_army(const piece::aggregator::army_list &army_list)
     {
         army_positions_lookup lookup;
 
@@ -48,13 +48,13 @@ namespace
         return lookup;
     }
 
-    board::bitmap::Squares calc_all(const piece::positions::army_positions_lookup &lookup)
+    board::bitmap::Squares calc_all(const piece::aggregator::army_positions_lookup &lookup)
     {
         sqr::Squares all = 0;
 
         for (int i = 0; i < lookup.size(); ++i)
         {
-            // collect positions of pieces of all color
+            // collect positions of pieces of all armies
             all |= lookup[i];
         }
 
