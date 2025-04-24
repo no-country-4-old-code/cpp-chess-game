@@ -96,7 +96,7 @@ namespace piece::update {
         auto positions_all_pieces_diff_color = "d1"_n.as_squares(board) | "f8"_n.as_squares(board) | "b2"_n.as_squares(board);
         auto positions_all = positions_all_pieces_same_color | positions_all_pieces_diff_color;
         
-        piece::Piece piece{Color::WHITE, 0, position};
+        piece::Piece piece{PieceType::KING, position};
 
         update_prototype(piece, board, positions_all, positions_all_pieces_diff_color);
 
