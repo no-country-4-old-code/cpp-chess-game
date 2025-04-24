@@ -1,5 +1,5 @@
 set(LIBRARY_NAME Pieces)
-set(SOURCES pieces-color.cpp piece-update.cpp aggregator-positions.cpp)
+set(SOURCES pieces-color.cpp piece-update.cpp aggregator-positions.cpp army.cpp)
 
 # Add sources to lib
 add_library(${LIBRARY_NAME} STATIC ${SOURCES})
