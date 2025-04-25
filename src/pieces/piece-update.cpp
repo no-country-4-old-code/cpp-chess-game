@@ -7,6 +7,8 @@
 #include "pieces-color.h"
 #include "aggregator-positions.h"
 #include "update-piece-attackable.h"
+#include "piece-king.h"
+#include "piece-rock.h"
 #include <array>
 #include <iostream>
 
@@ -93,18 +95,20 @@ namespace piece::update {
     void update_piece() {
         board::Board board{8, 8};
 
+        using namespace piece;
+
         const piece::aggregator::army_list army_list = {
             piece::army::Army{Color::BLUE, {
-                piece::Piece{PieceType::KING, "d3"_n.as_squares(board)},
-                piece::Piece{PieceType::PEASANT, "e4"_n.as_squares(board)},
-                piece::Piece{PieceType::PEASANT, "b4"_n.as_squares(board)},
-                piece::Piece{PieceType::PEASANT, "b6"_n.as_squares(board)},                        
+                pieces::King{"d3"_n.as_squares(board)},
+                pieces::Rock{"e4"_n.as_squares(board)},
+                pieces::Rock{"b4"_n.as_squares(board)},
+                pieces::Rock{"b6"_n.as_squares(board)},                        
             }},
             piece::army::Army{Color::WHITE, {
-                piece::Piece{PieceType::KING, "d1"_n.as_squares(board)},
-                piece::Piece{PieceType::PEASANT, "f8"_n.as_squares(board)},
-                piece::Piece{PieceType::PEASANT, "g7"_n.as_squares(board)},
-                piece::Piece{PieceType::PEASANT, "h6"_n.as_squares(board)},                        
+                pieces::King{"d1"_n.as_squares(board)},
+                pieces::Rock{"f8"_n.as_squares(board)},
+                pieces::Rock{"g7"_n.as_squares(board)},
+                pieces::Rock{"h6"_n.as_squares(board)},                        
             }},
             piece::army::Army{},
             piece::army::Army{}
@@ -127,7 +131,8 @@ namespace piece::update {
         auto positions_all = aggr.positions();
         auto positions_hostile_pieces = positions_all & ~aggr.positions(0);
 
-        piece::update::attackable::update_piece(my_piece, board, positions_all, positions_hostile_pieces);
+        my_piece.update_observed_and_attackable(board, positions_all, positions_hostile_pieces);
+        //piece::update::attackable::update_piece(my_piece, board, positions_all, positions_hostile_pieces);
 
         //update_prototype(my_piece, board, positions_all, positions_hostile_pieces);
 

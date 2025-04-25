@@ -1,10 +1,16 @@
 #pragma once
 #include "squares.h"
 #include "piece-type.h"
+#include "board.h"
 
 namespace piece {
 
-    struct Piece {
+    using sqrs =  board::bitmap::Squares;
+
+    class Piece {
+        protected:
+            Piece(PieceType ptype, board::bitmap::Squares pos): type{ptype}, position{pos} {};
+        public:
             PieceType type;
             board::bitmap::Squares position;
 
@@ -16,8 +22,9 @@ namespace piece {
             board::bitmap::Squares movable; 
             
             Piece(): Piece(PieceType::_INVALID, 0) {};
-            Piece(PieceType ptype, board::bitmap::Squares pos): type{ptype}, position{pos} {};
-
-            // decide to use a virtual function here because CRTP does not work with polymorphis
+            virtual ~Piece()=default;
+            virtual void update_observed_and_attackable(const board::Board& board, sqrs pos_all, sqrs pos_hostile_armies) {
+                // not pure virtual 
+            };
     };
 }
