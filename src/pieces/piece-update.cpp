@@ -118,6 +118,11 @@ namespace piece::update {
         // update-piece-attackable.h + Lookup type -> function
         // function also there 
         // Call here
+        // move_piece()
+        // piece-update-position
+        // piece-update-observed-attackable
+        // piece-update-movable
+        // piece-update-by-special-rules
         
         auto positions_all = aggr.positions();
         auto positions_hostile_pieces = positions_all & ~aggr.positions(0);

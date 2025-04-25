@@ -17,5 +17,7 @@ namespace piece {
             
             Piece(): Piece(PieceType::_INVALID, 0) {};
             Piece(PieceType ptype, board::bitmap::Squares pos): type{ptype}, position{pos} {};
+
+            // decide to use a virtual function here because CRTP does not work with polymorphis
     };
 }
