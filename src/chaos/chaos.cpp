@@ -2,7 +2,6 @@
 #include <iostream>
 #include <set>
 #include "behaviour-ai.h"
-#include "behaviour-human.h"
 #include "pieces-color.h"
 #include "player.h"
 #include <board.h>
