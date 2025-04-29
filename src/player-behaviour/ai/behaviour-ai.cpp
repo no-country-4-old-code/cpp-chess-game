@@ -30,7 +30,7 @@ bool Piece::operator!=(const Piece& other) const {
 
 // ==== Behaviour
 
-PlayerBehaviourAI::PlayerBehaviourAI(bool color) : myColor(color) {}
+
 
 std::vector<Piece> PlayerBehaviourAI::get_all_pieces() {
     // Mock function to return all pieces
@@ -59,6 +59,15 @@ bool PlayerBehaviourAI::is_under_attack(const Piece&  /*piece*/,
 }
 
 void PlayerBehaviourAI::make_move() const {
+    /*
+        -> select random piece and random movable position
+        -> Then
+        piece::api::move_piece(my_piece, dest, board, army_list);
+        -> std::cout << "Move piece {type} from {src} to {dest}";
+    */
+
+
+
     std::vector<Piece> const pieces = get_all_pieces();
     auto my_pieces            = filter(pieces, myColor);
     update_movable_fields(myColor);

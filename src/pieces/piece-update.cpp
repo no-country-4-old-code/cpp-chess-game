@@ -102,8 +102,6 @@ namespace piece::update {
             piece::army::Army{}
         };
 
-        army_list[0].pieces[0].observed = 1;
-        
         
         auto my_piece = army_list[0].king();
         auto dest = "d4"_n.as_squares(board);

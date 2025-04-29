@@ -46,7 +46,7 @@ void run_game() {
         piece::army::Army{}
     };
 
-    PlayerBehaviourAI a{};
+    PlayerBehaviourAI a{army_list};
     PlayerGroup group{
         Player{&a, army_list[0]},
         Player{&a, army_list[1]},

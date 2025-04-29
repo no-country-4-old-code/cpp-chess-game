@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "interface-player-behaviour.h"
+#include <aggregator-positions.h>
 
 typedef int Bitmap;
 
@@ -21,13 +22,14 @@ class Piece {
 
 class PlayerBehaviourAI : public IPlayerBehaviour {
     public:
-        PlayerBehaviourAI() : myColor{true} {};
-        PlayerBehaviourAI(bool color);
+        PlayerBehaviourAI(piece::aggregator::army_list& list): _army_list{list} {};
         void make_move() const override;
         bool has_valid_moves() const override;
 
     private:
         // Generated from pseudo-code brainstorming. Corrected via AI
+        piece::aggregator::army_list& _army_list;
+
         bool myColor;
         static std::vector<Piece> get_all_pieces() ;
         static std::vector<Piece> filter(const std::vector<Piece>& pieces,
