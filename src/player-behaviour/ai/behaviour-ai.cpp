@@ -174,7 +174,7 @@ void PlayerBehaviourAI::update_movable_fields(bool color) {
             } else {
                 if (is_under_attack(piece, attack_map) && piece != king) {
                     Bitmap const tmp_attack_vector =
-                        create_attack_map(pieces, !color);
+                        create_attack_map(pieces, !color); // remove piece and let re-run
 
                     if (is_under_attack(king, tmp_attack_vector)) {
                         piece.movable_fields = 0;

@@ -6,9 +6,9 @@
 #include "board-movements.h"
 #include "pieces-color.h"
 #include "aggregator-positions.h"
-#include "update-piece-attackable.h"
 #include "piece-king.h"
 #include "piece-rock.h"
+#include "piece-api.h"
 #include <array>
 #include <iostream>
 
@@ -26,6 +26,29 @@ namespace {
             func(value & 1);
             value = value >> 1;
         }
+    }
+
+    void display_bits_on_board(const board::Board& board, board::bitmap::Squares sqrs) {
+        std::cout << "\nPrint Board\n\n";
+        std::cout << " \t a  b  c  d  e  f  g  h  \n";
+
+        u_int bit_count = 1;
+        std::cout << bit_count << "\t";
+
+        for_each_bit(sqrs, [&bit_count, &board](bool is_bit_set) {
+            if (is_bit_set) {
+                std::cout << " X "; 
+            } else {
+                std::cout << " - "; 
+            }
+
+            if (bit_count % board.num_of_squares_horizontal == 0) {
+                std::cout << "\n" << (bit_count / bits_per_byte) + 1 << "\t"; 
+            }
+            std::cout << std::flush;
+            ++bit_count;
+        });
+        std::cout << "\n";
     }
 
     void display_board(const board::Board& board, board::bitmap::Squares sqrs) {
@@ -50,25 +73,19 @@ namespace {
         });
         std::cout << "\n";
     }
+
 }
 
 namespace piece::update {
 
-    void move_piece(piece::Piece& piece, const board::Board& board, const piece::aggregator::army_list& army_list) {
-
-        piece::aggregator::PositionAggregator aggr{army_list};
-        auto positions_all = aggr.positions();
-        auto positions_hostile_pieces = positions_all & ~aggr.positions(0);
-
-        piece.update_observed_and_attackable(board, positions_all, positions_hostile_pieces);
-    }
+   
 
     void update_piece() {
         board::Board board{8, 8};
 
         using namespace piece;
 
-        const piece::aggregator::army_list army_list = {
+        piece::aggregator::army_list army_list = {
             piece::army::Army{Color::BLUE, {
                 pieces::King{"d3"_n.as_squares(board)},
                 pieces::Rock{"e4"_n.as_squares(board)},
@@ -85,13 +102,14 @@ namespace piece::update {
             piece::army::Army{}
         };
 
+        army_list[0].pieces[0].observed = 1;
         
         
         auto my_piece = army_list[0].king();
-        move_piece(my_piece, board, army_list);
+        auto dest = "d4"_n.as_squares(board);
+        piece::api::move_piece(my_piece, dest, board, army_list);
 
         // piece, board, aggr, hostile piece positions
-        // update-piece-attackable.h + Lookup type -> function
         // function also there 
         // Call here
         // move_piece()
@@ -105,9 +123,9 @@ namespace piece::update {
 
 
         std::cout << "Other pieces\n";
-        display_board(board, my_piece.attackable);
+        display_bits_on_board(board, my_piece.attackable);
         std::cout << "Movements \n";
-        display_board(board, my_piece.observed);
+        display_bits_on_board(board, my_piece.observed);
 
     }
 

@@ -34,6 +34,13 @@ namespace piece {
                 assert(this->type != PieceType::_INVALID);
                 update(*this, board, pos_all, pos_hostile_armies);
             };
+
+            void mark_as_dead() {
+                position = 0;
+                observed = 0;
+                attackable = 0;
+                movable = 0;
+            }
     };
 
 }

@@ -5,6 +5,11 @@
 #include "behaviour-human.h"
 #include "pieces-color.h"
 #include "player.h"
+#include <board.h>
+#include <aggregator-positions.h>
+#include "piece-king.h"
+#include "piece-rock.h"
+#include "notation.h"
 
 using PlayerGroup =
     std::set<Player, decltype([](const Player& a, const Player& b) {
@@ -16,13 +21,37 @@ static void run(PlayerGroup& group);
  * Everything begins in Chaos
  */
 void run_game() {
+    board::Board board{8, 8};
+
+    using namespace piece;
+    using namespace board::notation::literal;
+
+    piece::aggregator::army_list army_list = {
+        piece::army::Army{Color::BLUE, {
+            pieces::King{"d3"_n.as_squares(board)},
+            pieces::Rock{"e4"_n.as_squares(board)},
+            pieces::Rock{"b4"_n.as_squares(board)},
+            pieces::Rock{"b6"_n.as_squares(board)},                        
+        }},
+        piece::army::Army{Color::WHITE, {
+            pieces::King{"d1"_n.as_squares(board)},
+            pieces::Rock{"f8"_n.as_squares(board)},
+            pieces::Rock{"g7"_n.as_squares(board)},
+            pieces::Rock{"h6"_n.as_squares(board)},                        
+        }},
+        piece::army::Army{Color::ORANGE, {
+            pieces::King{"d5"_n.as_squares(board)},
+            pieces::Rock{"d4"_n.as_squares(board)}
+        }
+        },
+        piece::army::Army{}
+    };
+
     PlayerBehaviourAI a{};
-    PlayerBehaviourHuman b{};
     PlayerGroup group{
-        Player{Color::WHITE, &a},
-        Player{Color::BLACK, &b},
-        Player{Color::ORANGE, &b},
-        Player{Color::BLUE, &b},
+        Player{&a, army_list[0]},
+        Player{&a, army_list[1]},
+        Player{&a, army_list[2]},
     };
     run(group);
 }
