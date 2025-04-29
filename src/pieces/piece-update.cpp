@@ -54,42 +54,13 @@ namespace {
 
 namespace piece::update {
 
-    void update_prototype(piece::Piece& piece, const board::Board& board, board::bitmap::Squares positions_all, board::bitmap::Squares positions_hostile_armies  ) {
-        namespace move = board::movements;
+    void move_piece(piece::Piece& piece, const board::Board& board, const piece::aggregator::army_list& army_list) {
 
+        piece::aggregator::PositionAggregator aggr{army_list};
+        auto positions_all = aggr.positions();
+        auto positions_hostile_pieces = positions_all & ~aggr.positions(0);
 
-        std::array<move::move_func, 8> directions{
-            move::left,
-            move::right,
-            move::up,
-            move::down,
-            move::left_down,
-            move::left_up,
-            move::right_up,
-            move::right_down
-        };
-
-        piece.observed = 0;
-        piece.attackable = 0;
-
-        for (auto go: directions) {
-            auto current = piece.position;
-            while (current != 0) {
-                current = go(current, board);
-                piece.observed |= current;
-
-                if (current & positions_all) {
-                    if (current & positions_hostile_armies) {
-                        // only pieces of enemies can be attacked
-                        piece.attackable |= current;
-                    }
-                    break;
-                } else {
-                    // squares in sight without a piece can be attacked
-                    piece.attackable |= current;
-                }
-            }
-        }
+        piece.update_observed_and_attackable(board, positions_all, positions_hostile_pieces);
     }
 
     void update_piece() {
@@ -114,9 +85,10 @@ namespace piece::update {
             piece::army::Army{}
         };
 
-        piece::aggregator::PositionAggregator aggr{army_list};
+        
         
         auto my_piece = army_list[0].king();
+        move_piece(my_piece, board, army_list);
 
         // piece, board, aggr, hostile piece positions
         // update-piece-attackable.h + Lookup type -> function
@@ -128,13 +100,9 @@ namespace piece::update {
         // piece-update-movable
         // piece-update-by-special-rules
         
-        auto positions_all = aggr.positions();
-        auto positions_hostile_pieces = positions_all & ~aggr.positions(0);
-
-        my_piece.update_observed_and_attackable(board, positions_all, positions_hostile_pieces);
+        
         //piece::update::attackable::update_piece(my_piece, board, positions_all, positions_hostile_pieces);
 
-        //update_prototype(my_piece, board, positions_all, positions_hostile_pieces);
 
         std::cout << "Other pieces\n";
         display_board(board, my_piece.attackable);
