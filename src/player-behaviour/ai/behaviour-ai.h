@@ -22,13 +22,14 @@ class Piece {
 
 class PlayerBehaviourAI : public IPlayerBehaviour {
     public:
-        PlayerBehaviourAI(piece::aggregator::army_list& list): _army_list{list} {};
-        void make_move() const override;
+        PlayerBehaviourAI(piece::aggregator::army_list& list, const board::Board& board): _army_list{list}, _board{board} {};
+        void make_move(piece::army::Army& my_army) override;
         bool has_valid_moves() const override;
 
     private:
         // Generated from pseudo-code brainstorming. Corrected via AI
         piece::aggregator::army_list& _army_list;
+        const board::Board& _board;
 
         bool myColor;
         static std::vector<Piece> get_all_pieces() ;

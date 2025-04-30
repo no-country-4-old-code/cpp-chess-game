@@ -7,7 +7,7 @@ Color Player::color() const {
 };
 
 void Player::make_move() const {
-    _behaviour->make_move();
+    _behaviour->make_move(_army);
     std::cout << " > " << this->color() << " makes a move\n";
 };
 

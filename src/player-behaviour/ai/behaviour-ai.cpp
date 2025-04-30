@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <vector>
+#include <format>
+#include "piece-api.h"
 
 using Bitmap = int;  // Define bitmap type
 
@@ -58,40 +60,41 @@ bool PlayerBehaviourAI::is_under_attack(const Piece&  /*piece*/,
     return false;
 }
 
-void PlayerBehaviourAI::make_move() const {
-    /*
-        -> select random piece and random movable position
-        -> Then
-        piece::api::move_piece(my_piece, dest, board, army_list);
-        -> std::cout << "Move piece {type} from {src} to {dest}";
-    */
+void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
 
+    struct Move{
+        piece::Piece piece;
+        board::bitmap::Squares dest;
+    };
 
+    std::vector<Move> moves;
 
-    std::vector<Piece> const pieces = get_all_pieces();
-    auto my_pieces            = filter(pieces, myColor);
-    update_movable_fields(myColor);
+    for (auto i=0; i < my_army.size(); ++i) {
+        auto& piece = my_army.pieces[i];
 
-    Piece selected_piece;
-    Bitmap dest = 0;
-    for (const auto& piece : pieces) {
-        if (piece.movable_fields > 0) {
-            auto tmp_mv_fieldst = piece.movable_fields;
-            while (tmp_mv_fieldst != 0) {
-                dest = tmp_mv_fieldst & -tmp_mv_fieldst;
-                if (flip_a_coin()) {
-                    break;
-                }
-                tmp_mv_fieldst -= dest;
+        if (piece.movable) {
+            //for each bit
+            auto tmp = piece.movable;
+            while(tmp) {
+                auto dest = tmp & -tmp;
+                moves.emplace_back(piece, dest);
+                tmp -= dest;
             }
-            selected_piece = piece;
         }
     }
 
-    Piece piece_on_dest = get_piece_on_dest(dest);
-    selected_piece.set_position(dest);
-    if (&piece_on_dest != nullptr) {
-        piece_on_dest.die();
+    std::cout << "- Found " << moves.size() << " possible moves for Player " << my_army.color() << std::endl;
+
+    if (moves.size() > 0) {
+        auto idx = static_cast<int>(rand() * moves.size()) % moves.size();
+        auto [piece, dest] = moves[idx];
+        auto src = piece.position;
+
+        piece::api::move_piece(piece, dest, this->_board, this->_army_list);
+        std::cout << "-> Move piece from square " << src << " to " << dest << std::endl;
+    }
+    else {
+        std::cout << "-> No moves left" << std::endl;
     }
 }
 
