@@ -9,6 +9,7 @@
 #include "piece-king.h"
 #include "piece-rock.h"
 #include "notation.h"
+#include "piece-api.h"
 
 using PlayerGroup =
     std::set<Player, decltype([](const Player& a, const Player& b) {
@@ -45,6 +46,8 @@ void run_game() {
         },
         piece::army::Army{}
     };
+
+    piece::api::init_army_list(army_list, board);
 
     PlayerBehaviourAI a{army_list, board};
     PlayerGroup group{

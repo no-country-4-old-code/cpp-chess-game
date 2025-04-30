@@ -4,6 +4,8 @@
 #include <vector>
 #include <format>
 #include "piece-api.h"
+#include "notation.h"
+#include "piece-type.h"
 
 using Bitmap = int;  // Define bitmap type
 
@@ -67,6 +69,8 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
         board::bitmap::Squares dest;
     };
 
+
+    // === SELECTION 
     std::vector<Move> moves;
 
     for (auto i=0; i < my_army.size(); ++i) {
@@ -85,13 +89,14 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
 
     std::cout << "- Found " << moves.size() << " possible moves for Player " << my_army.color() << std::endl;
 
+    // MOVEMENT
     if (moves.size() > 0) {
         auto idx = static_cast<int>(rand() * moves.size()) % moves.size();
         auto [piece, dest] = moves[idx];
         auto src = piece.position;
 
         piece::api::move_piece(piece, dest, this->_board, this->_army_list);
-        std::cout << "-> Move piece from square " << src << " to " << dest << std::endl;
+        std::cout << "-> Move " << piece.type << " from square " << board::notation::ChessNotation{src, this->_board} << " to " << board::notation::ChessNotation{dest, this->_board} << std::endl;
     }
     else {
         std::cout << "-> No moves left" << std::endl;
@@ -154,7 +159,6 @@ void PlayerBehaviourAI::update_movable_fields(bool color) {
     std::vector<Piece> const pieces = get_all_pieces();
     auto my_pieces            = filter(pieces, color);
     auto other_pieces         = filter(pieces, !color);
-
     Bitmap const my_positions    = create_attack_map(my_pieces, color);
     Bitmap const other_positions = create_attack_map(other_pieces, !color);
 
