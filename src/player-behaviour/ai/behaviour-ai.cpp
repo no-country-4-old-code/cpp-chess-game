@@ -73,6 +73,9 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
 
     // === SELECTION 
     std::vector<Move> moves;
+    std::vector<Move> attack;
+    piece::aggregator::PositionAggregator aggr{_army_list};
+    auto positions = aggr.positions();
 
     for (auto i=0; i < my_army.size(); ++i) {
         auto& piece = my_army.pieces[i];
@@ -82,7 +85,11 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
             auto tmp = piece.movable;
             while(tmp) {
                 auto dest = tmp & -tmp;
-                moves.emplace_back(piece, dest);
+                if (piece.attackable & positions) {
+                    attack.emplace_back(piece, dest);
+                } else {
+                    moves.emplace_back(piece, dest);
+                }
                 tmp -= dest;
             }
         }
@@ -91,7 +98,16 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
     std::cout << "- Found " << moves.size() << " possible moves for Player " << my_army.color() << std::endl;
 
     // MOVEMENT
-    if (moves.size() > 0) {
+    if (attack.size() > 0) {
+        //auto idx = static_cast<int>(rand() * attack.size()) % attack.size();
+        auto [piece, dest] = attack[0];
+        auto src = piece.position;
+
+        piece::api::move_piece(piece, dest, this->_board, this->_army_list);
+        std::cout << "-> Attack with " << piece.type << " from square " << board::notation::ChessNotation{src, this->_board} << " to " << board::notation::ChessNotation{dest, this->_board} << std::endl;
+    }
+
+    else if (moves.size() > 0) {
         auto idx = static_cast<int>(rand() * moves.size()) % moves.size();
         auto [piece, dest] = moves[idx];
         auto src = piece.position;
