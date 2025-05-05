@@ -6,6 +6,7 @@
 #include "piece-api.h"
 #include "notation.h"
 #include "piece-type.h"
+#include "piece-update.h"
 
 using Bitmap = int;  // Define bitmap type
 
@@ -65,7 +66,7 @@ bool PlayerBehaviourAI::is_under_attack(const Piece&  /*piece*/,
 void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
 
     struct Move{
-        piece::Piece piece;
+        piece::Piece& piece;
         board::bitmap::Squares dest;
     };
 
@@ -101,6 +102,8 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
     else {
         std::cout << "-> No moves left" << std::endl;
     }
+
+    piece::update::display_all_pieces(_board, _army_list);
 }
 
 bool PlayerBehaviourAI::flip_a_coin() {

@@ -41,6 +41,10 @@ namespace piece {
                 attackable = 0;
                 movable = 0;
             }
+
+            bool is_alive() const {
+                return position > 0;
+            }
     };
 
 }
