@@ -25,6 +25,6 @@ namespace piece::army
         Army(Color color, const std::vector<piece::Piece> &pieces);
         Color color() const;
         u_int8_t size() const;
-        const piece::Piece& king() const;
+        piece::Piece& king() const;
     };
 }

@@ -55,7 +55,7 @@ namespace piece::army
         return this->_size;
     }
 
-    const piece::Piece& Army::king() const
+    piece::Piece& Army::king() const
     {
         assert(this->pieces[this->_idx_king].type == piece::PieceType::KING);
         return (this->pieces[this->_idx_king]);
