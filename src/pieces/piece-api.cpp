@@ -44,13 +44,7 @@ namespace
         return false;
     }
 
-    void reset_movable(piece::army::Army &army)
-    {
-        for (auto i = 0; i < army.size(); ++i)
-        {
-            //army.pieces[i].movable = 0;
-        }
-    }
+    /*
 
     void update_movable_pieces_of_army(piece::army::Army my_army, const board::Board &board, piece::aggregator::army_list &army_list)
     {
@@ -59,7 +53,6 @@ namespace
         board::bitmap::Squares positions_of_my_army = 0x123222; // TODO
 
         auto &king = my_army.king();
-        reset_movable(my_army);
 
         if (king.position & enemy_attack_map)
         {
@@ -81,7 +74,7 @@ namespace
                         continue;
                     }
 
-                    piece.movable = piece.attackable & interceptable;
+                    //piece.movable = piece.attackable & interceptable;
 
                     if (piece.movable)
                     {
@@ -110,22 +103,22 @@ namespace
                     if (result)
                     {
                         // movement would lead to checkmate
-                        piece.movable = 0;
+                        //piece.movable = 0;
                     }
                     else
                     {
                         // free to move
-                        piece.movable = piece.observed;
+                        //piece.movable = piece.observed;
                     }
                 }
                 else
                 {
-                    piece.movable = piece.observed;
+                    //piece.movable = piece.observed;
                 }
             }
         }
     }
-
+*/
 }
 
 namespace piece::api
@@ -180,16 +173,6 @@ namespace piece::api
                 }
             }
         }
-
-        // update movable for all pieces
-        for (auto &army : army_list)
-        {
-            for (auto& current: army.pieces)
-            {
-                // TODO: will be implemented later on
-                current.movable = current.attackable;
-            }
-        }
     }
 
     void init_army_list(piece::aggregator::army_list &army_list, const board::Board &board)
@@ -207,15 +190,6 @@ namespace piece::api
             for (auto& current: army.pieces)
             {
                 current.update_observed_and_attackable(board, positions_all, positions_hostile_pieces);
-            }
-        }
-
-        // update movable for all pieces
-        for (auto &army : army_list)
-        {
-            for (auto& current: army.pieces)
-            {
-                current.movable = current.attackable;
             }
         }
     }

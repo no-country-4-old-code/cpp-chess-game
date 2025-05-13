@@ -25,8 +25,6 @@ namespace piece {
 
             board::bitmap::Squares observed; // All "seen" squares and pieces
             board::bitmap::Squares attackable; // All squares the piece might move to (not considering checkmate)
-            board::bitmap::Squares movable; // All squares the piece can move to (considering checkmate)
-
             
             Piece(): Piece(PieceType::_INVALID, 0, [](piece::Piece&, const board::Board&, sqrs, sqrs){}) {};
 
@@ -39,7 +37,6 @@ namespace piece {
                 position = 0;
                 observed = 0;
                 attackable = 0;
-                movable = 0;
             }
 
             bool is_alive() const {
