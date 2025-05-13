@@ -139,7 +139,7 @@ namespace piece::api
         for (size_t i=0; i < my_army.size(); ++i) {
             memory.push({&my_army.pieces[i], my_army.pieces[i].observed});
         }
-
+        return memory;
     }
 
     void move_piece(piece::Piece &piece, board::bitmap::Squares dest, const board::Board &board, piece::aggregator::army_list &army_list)

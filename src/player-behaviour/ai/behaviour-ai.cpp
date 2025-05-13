@@ -72,7 +72,7 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
 
 
     // === SELECTION 
-    //piece::api::calc_possible_moves(my_army, this->_board, this->_army_list);
+    auto moves2 = piece::api::calc_possible_moves(my_army, this->_board, this->_army_list);
 
     std::vector<Move> moves;
     std::vector<Move> attack;
