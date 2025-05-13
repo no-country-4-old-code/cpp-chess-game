@@ -11,17 +11,19 @@ namespace piece::army
         assert(given_pieces.size() <= max_pieces_per_army);
 
         u_int8_t count_kings = 0;
+        u_int8_t idx = 0;
         _size = static_cast<u_int8_t>(given_pieces.size());
 
-        for (u_int8_t i = 0; i < _size; ++i)
+        for (auto& given: given_pieces)
         {
-            pieces[i] = given_pieces[i];
+            pieces.push(given);
 
-            if (pieces[i].type == piece::PieceType::KING)
+            if (given.type == piece::PieceType::KING)
             {
-                _idx_king = i;
+                _idx_king = idx;
                 ++count_kings;
             }
+            ++idx;
         }
         assert((count_kings == 1 || given_pieces.size() == 0)); // Every army should have ONE king only
     }

@@ -85,9 +85,9 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
 
         // just a temp. solution - iteration everytime is rather ugly
         piece::Piece* ptr = nullptr;
-        for (auto i=0; i < my_army.size(); ++i) {
-            if (my_army.pieces[i].position == src) {
-                ptr = &my_army.pieces[i];
+        for (auto& piece: my_army.pieces) {
+            if (piece.position == src) {
+                ptr = &piece;
                 break;
             }
         }

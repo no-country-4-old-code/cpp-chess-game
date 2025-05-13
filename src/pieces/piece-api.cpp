@@ -48,7 +48,7 @@ namespace
     {
         for (auto i = 0; i < army.size(); ++i)
         {
-            army.pieces[i].movable = 0;
+            //army.pieces[i].movable = 0;
         }
     }
 
@@ -70,12 +70,11 @@ namespace
             if (number_of_attackers == 1)
             {
                 // only pieces which can intercept the threat to the king !
-                piece::Piece *attacker = &my_army.pieces[1]; //  TODO: find attacker
+                piece::Piece *attacker = nullptr; //&my_army.pieces[1]; //  TODO: find attacker
                 // get fields between attacker and king
                 board::bitmap::Squares interceptable = 1234;
-                for (auto i = 0; i < my_army.size(); ++i)
+                for (auto& piece: my_army.pieces)
                 {
-                    auto &piece = my_army.pieces[i];
 
                     if (piece.position == king.position)
                     {
@@ -98,10 +97,8 @@ namespace
         }
         else
         {
-            for (auto i = 0; i < my_army.size(); ++i)
+            for (auto& piece:  my_army.pieces)
             {
-                auto &piece = my_army.pieces[i];
-
                 if (piece.position == king.position)
                 {
                     // TODO: king.movable = king.attackable & ~enemy_observation_map;
@@ -149,9 +146,8 @@ namespace piece::api
         // remove old piece // TODO: there is one to remvoe
         for (auto &army : army_list)
         {
-            for (auto i = 0; i < army.size(); ++i)
+            for (auto& current: army.pieces)
             {
-                piece::Piece &current = army.pieces[i];
 
                 if (current.position == src) {
                     current.position = dest;
@@ -176,10 +172,8 @@ namespace piece::api
         {
             auto positions_hostile_pieces = positions_all & ~aggr.positions(idx_army);
             ++idx_army;
-            for (u_int8_t i = 0; i < army.size(); ++i)
+            for (auto& current: army.pieces)
             { // TODO: Overwrite iterator of army to use it like piece: army
-                auto &current = army.pieces[i];
-
                 if ((current.observed | current.position) & affected_squares)
                 {
                     current.update_observed_and_attackable(board, positions_all, positions_hostile_pieces);
@@ -190,9 +184,8 @@ namespace piece::api
         // update movable for all pieces
         for (auto &army : army_list)
         {
-            for (auto i = 0; i < army.size(); ++i)
+            for (auto& current: army.pieces)
             {
-                auto &current = army.pieces[i];
                 // TODO: will be implemented later on
                 current.movable = current.attackable;
             }
@@ -211,19 +204,17 @@ namespace piece::api
             auto positions_hostile_pieces = positions_all & ~aggr.positions(idx_army);
             ++idx_army;
 
-            for (u_int8_t i = 0; i < army.size(); ++i)
+            for (auto& current: army.pieces)
             {
-                army.pieces[i].update_observed_and_attackable(board, positions_all, positions_hostile_pieces);
+                current.update_observed_and_attackable(board, positions_all, positions_hostile_pieces);
             }
         }
 
         // update movable for all pieces
         for (auto &army : army_list)
         {
-            for (auto i = 0; i < army.size(); ++i)
+            for (auto& current: army.pieces)
             {
-                auto &current = army.pieces[i];
-                // TODO: will be implemented later on
                 current.movable = current.attackable;
             }
         }
