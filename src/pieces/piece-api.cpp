@@ -65,7 +65,7 @@ namespace
         {
             int number_of_attackers = 1; // TODO
 
-            king.movable = king.attackable & ~enemy_observation_map;
+            //TODO: king.movable = king.attackable & ~enemy_observation_map;
 
             if (number_of_attackers == 1)
             {
@@ -104,7 +104,7 @@ namespace
 
                 if (piece.position == king.position)
                 {
-                    king.movable = king.attackable & ~enemy_observation_map;
+                    // TODO: king.movable = king.attackable & ~enemy_observation_map;
                 }
                 else if (piece.position & enemy_attack_map)
                 {
