@@ -134,6 +134,14 @@ namespace
 namespace piece::api
 {
 
+    ArmyDestinations calc_possible_moves(const piece::army::Army& my_army, const board::Board&, const piece::aggregator::army_list&) {
+        ArmyDestinations memory;
+        for (size_t i=0; i < my_army.size(); ++i) {
+            memory.push({&my_army.pieces[i], my_army.pieces[i].observed});
+        }
+
+    }
+
     void move_piece(piece::Piece &piece, board::bitmap::Squares dest, const board::Board &board, piece::aggregator::army_list &army_list)
     {
 
