@@ -137,16 +137,14 @@ namespace piece::api
     ArmyDestinations calc_possible_moves(const piece::army::Army& my_army, const board::Board&, const piece::aggregator::army_list&) {
         ArmyDestinations memory;
         for (size_t i=0; i < my_army.size(); ++i) {
-            memory.push({&my_army.pieces[i], my_army.pieces[i].observed});
+            memory.push({my_army.pieces[i].position, my_army.pieces[i].observed});
         }
         return memory;
     }
 
-    void move_piece(piece::Piece &piece, board::bitmap::Squares dest, const board::Board &board, piece::aggregator::army_list &army_list)
+    void move_piece(const board::bitmap::Squares src, const board::bitmap::Squares dest, const board::Board &board, piece::aggregator::army_list &army_list)
     {
 
-        // set position of current piece
-        auto old_position = piece.position;
 
         // remove old piece // TODO: there is one to remvoe
         for (auto &army : army_list)
@@ -155,21 +153,23 @@ namespace piece::api
             {
                 piece::Piece &current = army.pieces[i];
 
-                if (current.position == dest)
+                if (current.position == src) {
+                    current.position = dest;
+                }
+
+                else if (current.position == dest)
                 {
                     current.mark_as_dead();
                 }
             }
         }
 
-        piece.position = dest;
-
         // aggregate positions // TODO: Optimize : Can be done together with the above
         piece::aggregator::PositionAggregator aggr{army_list};
         auto positions_all = aggr.positions();
 
         // update observed and attackable of all affected pieces
-        auto affected_squares = old_position | dest;
+        auto affected_squares = src | dest;
 
         auto idx_army = 0;
         for (auto &army : army_list)

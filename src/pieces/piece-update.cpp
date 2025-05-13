@@ -104,7 +104,7 @@ namespace piece::update {
         
         auto my_piece = army_list[0].king();
         auto dest = "d4"_n.as_squares(board);
-        piece::api::move_piece(my_piece, dest, board, army_list);
+        piece::api::move_piece(my_piece.position, dest, board, army_list);
 
         // piece, board, aggr, hostile piece positions
         // function also there 

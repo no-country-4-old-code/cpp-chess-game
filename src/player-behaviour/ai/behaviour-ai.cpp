@@ -7,6 +7,7 @@
 #include "notation.h"
 #include "piece-type.h"
 #include "piece-update.h"
+#include "iterator-bitfield.h"
 
 using Bitmap = int;  // Define bitmap type
 
@@ -66,35 +67,43 @@ bool PlayerBehaviourAI::is_under_attack(const Piece&  /*piece*/,
 void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
 
     struct Move{
-        piece::Piece& piece;
+        piece::Piece* piece;
         board::bitmap::Squares dest;
     };
 
 
     // === SELECTION 
-    auto moves2 = piece::api::calc_possible_moves(my_army, this->_board, this->_army_list);
+    auto moves_all = piece::api::calc_possible_moves(my_army, this->_board, this->_army_list);
 
     std::vector<Move> moves;
     std::vector<Move> attack;
     piece::aggregator::PositionAggregator aggr{_army_list};
     auto positions = aggr.positions();
 
-    for (auto i=0; i < my_army.size(); ++i) {
-        auto& piece = my_army.pieces[i];
+    for (auto [src, destinations]: moves_all) {
+        IteratorBitmap dest{destinations};
 
-        if (piece.movable) {
-            //for each bit
-            auto tmp = piece.movable;
-            while(tmp) {
-                auto dest = tmp & -tmp;
-                if (piece.attackable & positions) {
-                    attack.emplace_back(piece, dest);
-                } else {
-                    moves.emplace_back(piece, dest);
-                }
-                tmp -= dest;
+        // just a temp. solution - iteration everytime is rather ugly
+        piece::Piece* ptr = nullptr;
+        for (auto i=0; i < my_army.size(); ++i) {
+            if (my_army.pieces[i].position == src) {
+                ptr = &my_army.pieces[i];
+                break;
             }
         }
+
+        if (ptr != nullptr) {
+
+            while (*dest) {
+                if (ptr->attackable & positions) {
+                    attack.emplace_back(ptr, *dest);
+                } else {
+                    moves.emplace_back(ptr, *dest);
+                }
+                ++dest;
+            }
+        }
+
     }
 
     std::cout << "- Found " << moves.size() << " possible moves for Player " << my_army.color() << std::endl;
@@ -103,21 +112,20 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
     if (attack.size() > 0) {
         //auto idx = static_cast<int>(rand() * attack.size()) % attack.size();
         auto [piece, dest] = attack[0];
-        auto src = piece.position;
+        auto src = piece->position;
 
-        // TODO REVERT
-        piece::api::move_piece(piece, dest, this->_board, this->_army_list);
-        std::cout << "-> Attack with " << piece.type << " from square " << board::notation::ChessNotation{src, this->_board} << " to " << board::notation::ChessNotation{dest, this->_board} << std::endl;
+        piece::api::move_piece(src, dest, this->_board, this->_army_list);
+        std::cout << "-> Attack with " << piece->type << " from square " << board::notation::ChessNotation{src, this->_board} << " to " << board::notation::ChessNotation{dest, this->_board} << std::endl;
     }
 
     else if (moves.size() > 0) {
         auto idx = static_cast<int>(rand() * moves.size()) % moves.size();
         auto [piece, dest] = moves[idx];
-        auto src = piece.position;
+        auto src = piece->position;
 
-        // TODO REVERT
-        piece::api::move_piece(piece, dest, this->_board, this->_army_list);
-        std::cout << "-> Move " << piece.type << " from square " << board::notation::ChessNotation{src, this->_board} << " to " << board::notation::ChessNotation{dest, this->_board} << std::endl;
+
+        piece::api::move_piece(src, dest, this->_board, this->_army_list);
+        std::cout << "-> Move " << piece->type << " from square " << board::notation::ChessNotation{src, this->_board} << " to " << board::notation::ChessNotation{dest, this->_board} << std::endl;
     }
     else {
         std::cout << "-> No moves left" << std::endl;
