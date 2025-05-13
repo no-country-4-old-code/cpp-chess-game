@@ -36,8 +36,8 @@ namespace piece::army
     u_int8_t Army::size() const
     {
 #ifndef NDEBUG
-        // size is not updated after creation due performance reasons
-        // adding / removing pieces is not allowed !
+        // "size" is not updated after creation due performance reasons.
+        // Adding / removing pieces is not allowed !
         if (_size == 0)
         {
             // empty army should stay empty

@@ -134,14 +134,11 @@ namespace piece::api
 
     void move_piece(const board::bitmap::Squares src, const board::bitmap::Squares dest, const board::Board &board, piece::aggregator::army_list &army_list)
     {
-
-
         // remove old piece // TODO: there is one to remvoe
         for (auto &army : army_list)
         {
             for (auto& current: army.pieces)
             {
-
                 if (current.position == src) {
                     current.position = dest;
                 }
@@ -166,7 +163,7 @@ namespace piece::api
             auto positions_hostile_pieces = positions_all & ~aggr.positions(idx_army);
             ++idx_army;
             for (auto& current: army.pieces)
-            { // TODO: Overwrite iterator of army to use it like piece: army
+            { 
                 if ((current.observed | current.position) & affected_squares)
                 {
                     current.update_observed_and_attackable(board, positions_all, positions_hostile_pieces);
