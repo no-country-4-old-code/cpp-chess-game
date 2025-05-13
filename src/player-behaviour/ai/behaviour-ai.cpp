@@ -72,6 +72,8 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
 
 
     // === SELECTION 
+    //piece::api::calc_possible_moves(my_army, this->_board, this->_army_list);
+
     std::vector<Move> moves;
     std::vector<Move> attack;
     piece::aggregator::PositionAggregator aggr{_army_list};
@@ -104,7 +106,7 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
         auto src = piece.position;
 
         // TODO REVERT
-        //piece::api::move_piece(piece, dest, this->_board, this->_army_list);
+        piece::api::move_piece(piece, dest, this->_board, this->_army_list);
         std::cout << "-> Attack with " << piece.type << " from square " << board::notation::ChessNotation{src, this->_board} << " to " << board::notation::ChessNotation{dest, this->_board} << std::endl;
     }
 
@@ -114,7 +116,7 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
         auto src = piece.position;
 
         // TODO REVERT
-        //piece::api::move_piece(piece, dest, this->_board, this->_army_list);
+        piece::api::move_piece(piece, dest, this->_board, this->_army_list);
         std::cout << "-> Move " << piece.type << " from square " << board::notation::ChessNotation{src, this->_board} << " to " << board::notation::ChessNotation{dest, this->_board} << std::endl;
     }
     else {
