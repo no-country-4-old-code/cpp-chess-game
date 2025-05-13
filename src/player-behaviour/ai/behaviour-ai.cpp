@@ -142,10 +142,12 @@ Piece PlayerBehaviourAI::get_piece_on_dest(Bitmap  /*dest*/) {
     return {};
 }
 
-bool PlayerBehaviourAI::has_valid_moves() const {
-    update_movable_fields(myColor);
-    Bitmap const bitmap = get_movable_fields_as_bitmap(myColor);
-    return bitmap > 0;
+bool PlayerBehaviourAI::is_defeated(piece::army::Army &my_army) const {
+    auto valid_moves = piece::api::calc_possible_moves(my_army, this->_board, this->_army_list);
+    bool are_there_valid_moves = valid_moves.size() > 0;
+    bool is_king_alive = my_army.king().is_alive();
+    bool have_multiple_pieces = my_army.size() > 1;
+    return !(are_there_valid_moves & is_king_alive & have_multiple_pieces);
 }
 
 Bitmap PlayerBehaviourAI::get_movable_fields_as_bitmap(bool color) {

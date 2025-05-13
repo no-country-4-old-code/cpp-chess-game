@@ -24,7 +24,7 @@ class PlayerBehaviourAI : public IPlayerBehaviour {
     public:
         PlayerBehaviourAI(piece::aggregator::army_list& list, const board::Board& board): _army_list{list}, _board{board} {};
         void make_move(piece::army::Army& my_army) override;
-        bool has_valid_moves() const override;
+        bool is_defeated(piece::army::Army &my_army) const override;
 
     private:
         // Generated from pseudo-code brainstorming. Corrected via AI
