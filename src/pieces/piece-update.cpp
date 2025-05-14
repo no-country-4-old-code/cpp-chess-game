@@ -48,29 +48,6 @@ namespace {
         {Color::BLUE, '3'},
     };
 
-    void display_bits_on_board(const board::Board& board, board::bitmap::Squares sqrs) {
-        std::cout << "\nPrint Board\n\n";
-        std::cout << " \t a  b  c  d  e  f  g  h  \n";
-
-        u_int bit_count = 1;
-        std::cout << bit_count << "\t";
-
-        for_each_bit(sqrs, [&bit_count, &board](bool is_bit_set) {
-            if (is_bit_set) {
-                std::cout << " X "; 
-            } else {
-                std::cout << " - "; 
-            }
-
-            if (bit_count % board.num_of_squares_horizontal == 0) {
-                std::cout << "\n" << (bit_count / bits_per_byte) + 1 << "\t"; 
-            }
-            std::cout << std::flush;
-            ++bit_count;
-        });
-        std::cout << "\n";
-    }
-
 
 
 }
@@ -165,6 +142,31 @@ namespace piece::update {
 
         std::cout << "\n";
     }
+
+    
+    void display_bits_on_board(const board::Board& board, board::bitmap::Squares sqrs) {
+        std::cout << "\nPrint Board\n\n";
+        std::cout << " \t a  b  c  d  e  f  g  h  \n";
+
+        u_int bit_count = 1;
+        std::cout << bit_count << "\t";
+
+        for_each_bit(sqrs, [&bit_count, &board](bool is_bit_set) {
+            if (is_bit_set) {
+                std::cout << " X "; 
+            } else {
+                std::cout << " - "; 
+            }
+
+            if (bit_count % board.num_of_squares_horizontal == 0) {
+                std::cout << "\n" << (bit_count / bits_per_byte) + 1 << "\t"; 
+            }
+            std::cout << std::flush;
+            ++bit_count;
+        });
+        std::cout << "\n";
+    }
+
 
 }
 

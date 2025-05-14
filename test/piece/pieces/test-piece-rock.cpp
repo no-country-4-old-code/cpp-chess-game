@@ -6,6 +6,7 @@
 #include "piece-rock.h"
 #include "notation.h"
 #include "piece-api.h"
+#include "piece-update.h"
 
 using namespace piece;
 using namespace board::notation::literal;
@@ -21,6 +22,18 @@ namespace {
 
 
 TEST(Piece_Rock, EmptyField) {
+    /*
+         a  b  c  d  e  f  g  h  
+1        -  -  -  -  X  -  -  - 
+2        -  -  -  -  X  -  -  - 
+3        -  -  -  -  X  -  -  - 
+4        X  X  X  X  -  X  X  X 
+5        -  -  -  -  X  -  -  - 
+6        -  -  -  -  X  -  -  - 
+7        -  -  -  -  X  -  -  - 
+8        -  -  -  -  X  -  -  - 
+    
+    */
     pieces::Rock piece{default_board, "e4"_n};
     
     auto expected_observed = combine_squares(default_board, 
@@ -31,9 +44,22 @@ TEST(Piece_Rock, EmptyField) {
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_observed);
+    //piece::update::display_bits_on_board(default_board, expected_observed);
 }
 
 TEST(Piece_Rock, BlockedByFriend) {
+    /*
+        a  b  c  d  e  f  g  h  
+1        -  -  -  -  X  -  -  - 
+2        -  -  -  -  X  -  -  - 
+3        -  -  -  -  X  -  -  - 
+4        X  X  X  X  -  X  O  - 
+5        -  -  -  -  X  -  -  - 
+6        -  -  -  -  X  -  -  - 
+7        -  -  -  -  X  -  -  - 
+8        -  -  -  -  X  -  -  - 
+    
+    */
     pieces::Rock piece{default_board, "e4"_n};
     auto position_friend = "g4"_n.as_squares(default_board);
     
@@ -46,9 +72,22 @@ TEST(Piece_Rock, BlockedByFriend) {
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable );
+    //piece::update::display_bits_on_board(default_board, expected_observed);
 }
 
 TEST(Piece_Rock, BlockedByEnemy) {
+    /*
+         a  b  c  d  e  f  g  h  
+1        -  -  -  -  X  -  -  - 
+2        -  -  -  -  X  -  -  - 
+3        -  -  -  -  X  -  -  - 
+4        X  X  X  X  -  X  A  - 
+5        -  -  -  -  X  -  -  - 
+6        -  -  -  -  X  -  -  - 
+7        -  -  -  -  X  -  -  - 
+8        -  -  -  -  X  -  -  - 
+    
+    */
     pieces::Rock piece{default_board, "e4"_n};
     auto position_enemy = "g4"_n.as_squares(default_board);
 
@@ -60,9 +99,21 @@ TEST(Piece_Rock, BlockedByEnemy) {
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_observed);
+    //piece::update::display_bits_on_board(default_board, expected_observed);
 }
 
 TEST(Piece_Rock, BlockedMixed) {
+    /*
+         a  b  c  d  e  f  g  h  
+1        -  -  -  -  -  -  -  - 
+2        -  -  -  -  O  -  -  - 
+3        -  -  -  -  X  -  -  - 
+4        O  X  X  X  -  X  A  - 
+5        -  -  -  -  X  -  -  - 
+6        -  -  -  -  A  -  -  - 
+7        -  -  -  -  -  -  -  - 
+8        -  -  -  -  O  -  -  - 
+    */
     pieces::Rock piece{default_board, "e4"_n};
     auto positions_friend = combine_squares(default_board, "g4"_n, "e6"_n);
     auto positions_enemy = combine_squares(default_board, "a4"_n, "e2"_n, "e8"_n);
@@ -76,5 +127,6 @@ TEST(Piece_Rock, BlockedMixed) {
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);
+    //piece::update::display_bits_on_board(default_board, expected_observed);
 }
 
