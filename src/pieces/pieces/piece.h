@@ -21,11 +21,11 @@ namespace piece {
             Piece(PieceType ptype, board::bitmap::Squares pos, update_fn _fn): update{_fn}, type{ptype}, position{pos} {};
   
         public:
-            PieceType type;
-            board::bitmap::Squares position;
+            PieceType type{PieceType::_INVALID};
+            board::bitmap::Squares position{0};
 
-            board::bitmap::Squares observed; // All "seen" squares and pieces
-            board::bitmap::Squares attackable; // All squares the piece might move to (not considering checkmate)
+            board::bitmap::Squares observed{0}; // All "seen" squares and pieces
+            board::bitmap::Squares attackable{0}; // All squares the piece might move to (not considering checkmate)
             
             Piece(): Piece(PieceType::_INVALID, 0, [](piece::Piece&, const board::Board&, sqrs, sqrs){}) {};
 
