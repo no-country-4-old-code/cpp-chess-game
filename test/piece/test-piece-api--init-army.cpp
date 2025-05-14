@@ -11,7 +11,6 @@
 
 using namespace piece;
 using namespace board::notation::literal;
-using update_fn_2 = void (*)(piece::Piece& piece, const board::Board& board, sqrs pos_all, sqrs pos_hostile_armies);
 
 namespace {
     const board::Board default_board{8, 8};
@@ -30,9 +29,10 @@ namespace {
 
     class PieceMock: public Piece {
         public:
-            PieceMock(PieceType type ,board::notation::ChessNotation notation, update_fn_2 mock_update): Piece(type, notation.as_squares(default_board), mock_update) {};
+            PieceMock(PieceType type ,board::notation::ChessNotation notation, update_fn mock_update): Piece(type, notation.as_squares(default_board), mock_update) {};
     };
 }
+
 
 TEST(PieceApi_InitArmy, Simple) {
     piece::aggregator::army_list army_list = {
