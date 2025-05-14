@@ -184,9 +184,9 @@ namespace piece::api
             auto positions_hostile_pieces = positions_all & ~aggr.positions(idx_army);
             ++idx_army;
 
-            for (auto& current: army.pieces)
+            for (auto& piece: army.pieces)
             {
-                current.update_observed_and_attackable(board, positions_all, positions_hostile_pieces);
+                piece.update_observed_and_attackable(board, positions_all, positions_hostile_pieces);
             }
         }
     }

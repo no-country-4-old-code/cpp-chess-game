@@ -6,27 +6,51 @@
 #include "piece-rock.h"
 #include "notation.h"
 #include "piece-api.h"
+#include "piece.h"
+#include <map>
 
-TEST(PieceApi_InitArmy, Dummy) {
-    board::Board board{8, 8};
+using namespace piece;
+using namespace board::notation::literal;
+using update_fn_2 = void (*)(piece::Piece& piece, const board::Board& board, sqrs pos_all, sqrs pos_hostile_armies);
 
-    using namespace piece;
-    using namespace board::notation::literal;
+namespace {
+    const board::Board default_board{8, 8};
+    board::bitmap::Squares updated_piece_positions = 0;
+    unsigned int call_count = 0;
 
+    void mock_update (piece::Piece& piece, const board::Board &board, sqrs pos_all, sqrs pos_hostile_armies) {
+        EXPECT_FALSE(updated_piece_positions & piece.position); // function should be called once for each piece
+        EXPECT_TRUE(piece.position & pos_all); // piece position should be in "all positions"
+        EXPECT_FALSE(piece.position & pos_hostile_armies); // piece position should not be a "hostile position"
+        EXPECT_TRUE(pos_hostile_armies > 0); // there should be at least 1 hostile position
+
+        updated_piece_positions |= piece.position;
+        ++call_count;
+    };
+
+    class PieceMock: public Piece {
+        public:
+            PieceMock(PieceType type ,board::notation::ChessNotation notation, update_fn_2 mock_update): Piece(type, notation.as_squares(default_board), mock_update) {};
+    };
+}
+
+TEST(PieceApi_InitArmy, Simple) {
     piece::aggregator::army_list army_list = {
         piece::army::Army{Color::BLUE, {
-                                           pieces::King{"a1"_n.as_squares(board)},
-                                           pieces::Rock{"e4"_n.as_squares(board)},
-                                           pieces::Rock{"b4"_n.as_squares(board)},
-                                           pieces::Rock{"b6"_n.as_squares(board)},
+                                           PieceMock(PieceType::KING, "a1"_n, mock_update),
+                                           PieceMock(PieceType::ROCK, "a2"_n, mock_update)
                                        }},
         piece::army::Army{Color::WHITE, {
-                                            pieces::King{"h1"_n.as_squares(board)},
-                                            pieces::Rock{"f8"_n.as_squares(board)},
-                                            pieces::Rock{"g7"_n.as_squares(board)},
-                                            pieces::Rock{"h6"_n.as_squares(board)},
+                                           PieceMock(PieceType::KING, "e4"_n, mock_update)
                                         }},
-        piece::army::Army{Color::ORANGE, {pieces::King{"d8"_n.as_squares(board)}, pieces::Rock{"d7"_n.as_squares(board)}}}, piece::army::Army{}};
-
-    piece::api::init_army_list(army_list, board);
+        piece::army::Army{Color::ORANGE, {
+                                           PieceMock(PieceType::KING, "g8"_n, mock_update),
+                                           PieceMock(PieceType::ROCK, "g7"_n, mock_update),
+                                           PieceMock(PieceType::ROCK, "g6"_n, mock_update)
+                                        }}
+                                    };
+    // act
+    piece::api::init_army_list(army_list, default_board);
+    // expect
+    EXPECT_EQ(call_count, 6);   
 }
