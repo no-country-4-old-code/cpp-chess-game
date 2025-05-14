@@ -134,7 +134,11 @@ namespace piece::api
 
     void move_piece(const board::bitmap::Squares src, const board::bitmap::Squares dest, const board::Board &board, piece::aggregator::army_list &army_list)
     {
-        // remove old piece // TODO: there is one to remvoe
+        assert(std::has_single_bit(src));
+        assert(std::has_single_bit(dest));
+        assert(dest != src);
+        
+        // remove old piece
         for (auto &army : army_list)
         {
             for (auto& current: army.pieces)

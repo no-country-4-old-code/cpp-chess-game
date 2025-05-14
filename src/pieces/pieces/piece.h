@@ -43,6 +43,10 @@ namespace piece {
             bool is_alive() const {
                 return position > 0;
             }
+
+            bool operator == (const Piece& other) const {
+                return position == other.position && observed == other.observed && attackable == other.attackable && type == other.type;
+            }
     };
 
 }

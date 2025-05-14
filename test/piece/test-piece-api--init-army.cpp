@@ -7,7 +7,6 @@
 #include "notation.h"
 #include "piece-api.h"
 #include "piece.h"
-#include <map>
 
 using namespace piece;
 using namespace board::notation::literal;
