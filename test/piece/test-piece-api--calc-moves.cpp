@@ -78,5 +78,40 @@ TEST(PieceApi_CalcMove, KingNoMovementPossible) {
     piece::api::init_army_list(army_list, board);
     auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
     EXPECT_EQ(moves_all.size(), 0);
+}
+
+TEST(PieceApi_CalcMove, KingCheckmate) {
+    board::Board board{3, 3};
+
+    piece::aggregator::army_list army_list = {
+        piece::army::Army{Color::BLUE, {
+                                        pieces::King{"a1"_n.as_squares(board)},
+                                       }},
+        piece::army::Army{Color::WHITE, {
+                                        pieces::King{"c3"_n.as_squares(board)},
+                                        pieces::Rock{"b3"_n.as_squares(board)},
+                                        pieces::Rock{"a3"_n.as_squares(board)},
+                                        }}
+    };
+    piece::api::init_army_list(army_list, board);
+    auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
+    EXPECT_EQ(moves_all.size(), 0);
     list_squares(moves_all[0].destinations, board);
+}
+
+TEST(PieceApi_CalcMove, KingOnlyMoveIsAttack) {
+    board::Board board{2, 3};
+
+    piece::aggregator::army_list army_list = {
+        piece::army::Army{Color::BLUE, {
+                                        pieces::King{"a1"_n.as_squares(board)},
+                                       }},
+        piece::army::Army{Color::WHITE, {
+                                        pieces::King{"b2"_n.as_squares(board)},
+                                        }}
+    };
+    piece::api::init_army_list(army_list, board);
+    auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
+    EXPECT_EQ(moves_all.size(), 1); // only one piece should move
+    EXPECT_EQ(moves_all[0].destinations, "b2"_n.as_squares(board));
 }

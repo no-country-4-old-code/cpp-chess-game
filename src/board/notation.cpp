@@ -39,8 +39,7 @@ namespace board::notation {
         this->_rank = map_uint_2_rank(vertical);
     };
 
-    board::bitmap::Squares ChessNotation::as_squares(
-        const board::Board &board) const {
+    board::bitmap::Squares ChessNotation::as_squares(const board::Board &board) const {
         const u_int8_t horizontal = map_file_2_uint(this->_file);
         const u_int8_t vertical   = map_rank_2_uint(this->_rank);
 
