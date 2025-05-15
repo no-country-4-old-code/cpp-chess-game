@@ -11,7 +11,7 @@ namespace
     {
         if (piece.position & under_attack_map)
         {
-            auto king = my_army.king();
+            auto king_position = my_army.king().position;
             auto positions_without_piece = positions_of_my_army & ~piece.position;
             // check enemy pieces
             for (auto &enemy_army : army_list)
@@ -33,7 +33,7 @@ namespace
                         auto tmp = enemy;
                         tmp.update_observed_and_attackable(board, positions_without_piece, positions_without_piece);
 
-                        if (king.position & tmp.attackable)
+                        if (king_position & tmp.attackable)
                         {
                             return true;
                         }
@@ -52,61 +52,48 @@ namespace piece::api
 {
 
     ArmyDestinations calc_possible_moves(const piece::army::Army& my_army, const board::Board& board, const piece::aggregator::army_list& army_list) {
-        board::bitmap::Squares enemy_attack_map = 0x12345;      // TODO all attackable from other armies
-        board::bitmap::Squares enemy_observation_map = 0x12345; // TODO all observale from other armies
-        board::bitmap::Squares positions_of_my_army = 0x123222; // TODO
-
+        
+        board::bitmap::Squares enemy_attack_map = 0; 
+        board::bitmap::Squares enemy_observation_map = 0;
+        board::bitmap::Squares my_positions_map = 0;
+        unsigned int number_of_king_attackers = 0;
+        const piece::Piece* king_attacker = nullptr;
+        const auto &king = my_army.king();
         ArmyDestinations memory;
-        for (size_t i=0; i < my_army.size(); ++i) {
-            memory.push({my_army.pieces[i].position, my_army.pieces[i].observed});
-        }
-        return memory;
 
-        auto &king = my_army.king();
+        for (const auto& army: army_list) {
+            if (army.color() == my_army.color()) {
+                for (const auto& piece: army.pieces) {
+                    my_positions_map |= piece.position;
+                } 
+            } else {
+                for (const auto& piece: army.pieces) {
+                    enemy_attack_map |= piece.attackable;
+                    enemy_observation_map |= piece.observed;
 
-        if (king.position & enemy_attack_map)
-        {
-            int number_of_attackers = 1; // TODO
-            
-            memory.push({king.position, king.attackable & ~enemy_observation_map});
-
-            if (number_of_attackers == 1)
-            {
-                // only pieces which can intercept the threat to the king !
-                piece::Piece *attacker = nullptr; //&my_army.pieces[1]; //  TODO: find attacker
-                // get fields between attacker and king
-                board::bitmap::Squares interceptable = 1234;
-                for (const auto& piece: my_army.pieces)
-                {
-
-                    if (piece.position == king.position)
-                    {
-                        continue;
+                    if (piece.attackable & king.position) {
+                        ++number_of_king_attackers;
+                        king_attacker = &piece;
                     }
-
-                    auto movable = piece.attackable & interceptable;
-
-                    if (movable)
-                    {
-                        bool result = does_piece_movement_endanger_own_king(piece, board, army_list, my_army, positions_of_my_army, enemy_attack_map);
-                        if (! result)
-                        {
-                            memory.push({piece.position, movable});
-                        }                    }
                 }
             }
         }
-        else
+
+        // king movement
+        memory.push({king.position, king.attackable & ~enemy_observation_map});
+
+        // other pieces
+        if (number_of_king_attackers == 0)
         {
-            for (const auto& piece:  my_army.pieces)
+            for (const auto& piece: my_army.pieces)
             {
                 if (piece.position == king.position)
                 {
-                    memory.push({king.position, king.attackable & ~enemy_observation_map});
+                    continue;
                 }
                 else if (piece.position & enemy_attack_map)
                 {
-                    bool result = does_piece_movement_endanger_own_king(piece, board, army_list, my_army, positions_of_my_army, enemy_attack_map);
+                    bool result = does_piece_movement_endanger_own_king(piece, board, army_list, my_army, my_positions_map, enemy_attack_map);
 
                     if (! result)
                     {
@@ -118,7 +105,34 @@ namespace piece::api
                     memory.push({piece.position, piece.observed});
                 }
             }
+
         }
+        else if (number_of_king_attackers == 1) {
+            //king_attacker;
+            // get fields between attacker and king
+            board::bitmap::Squares interceptable = 1234; // TODO: Create a smaller square as mask with king.position and attacker at edged and then mask attackable
+            for (const auto& piece: my_army.pieces)
+            {
+
+                if (piece.position == king.position)
+                {
+                    continue;
+                }
+
+                auto movable = piece.attackable & interceptable;
+
+                if (movable)
+                {
+                    bool result = does_piece_movement_endanger_own_king(piece, board, army_list, my_army, my_positions_map, enemy_attack_map);
+                    if (! result)
+                    {
+                        memory.push({piece.position, movable});
+                    }                    
+                }
+            }
+        
+        }
+        return memory;
     }
     
 
