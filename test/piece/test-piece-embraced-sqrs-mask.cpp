@@ -35,4 +35,5 @@ TEST(PieceEmbracedSqrsMask, Simple) {
     board::Board board{3, 3};
     auto result = act("a1"_n, "c3"_n, board);
     EXPECT_EQ(result, "b2"_n.as_squares(board));
+    list_squares(result, board);
 }
