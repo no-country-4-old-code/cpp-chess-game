@@ -36,5 +36,6 @@ public:
 
     Iterator begin() { return Iterator(_array.data()); }
     Iterator end() { return Iterator(_array.data() + _size); }
+    TYPE& operator[](size_t idx) { assert(idx < SIZE); return _array[idx]; }
     const TYPE& operator[](size_t idx) const { assert(idx < SIZE); return _array[idx]; }
 };

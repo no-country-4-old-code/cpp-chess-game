@@ -42,10 +42,10 @@ namespace {
 
     std::map<Color, char> lookup_color_to_notation {
         // bin. search is slower then simply index, BUT std::cout not used in time critical context anyway
-        {Color::WHITE, '0'},
-        {Color::BLACK, '1'},
-        {Color::ORANGE, '2'},
-        {Color::BLUE, '3'},
+        {Color::WHITE, 'w'},
+        {Color::BLACK, 'b'},
+        {Color::ORANGE, 'o'},
+        {Color::BLUE, 'b'},
     };
 
 
