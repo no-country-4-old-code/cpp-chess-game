@@ -7,7 +7,7 @@
 namespace
 {
 
-    bool does_piece_movement_endanger_own_king(const piece::Piece &piece, const board::Board &board, const piece::aggregator::army_list &army_list, const piece::army::Army &my_army, board::bitmap::Squares positions_of_my_army, board::bitmap::Squares under_attack_map)
+    bool does_piece_movement_endanger_own_king(const piece::Piece &piece, const board::Board &board, const piece::aggregator::army_list &army_list, const piece::army::Army &my_army, const board::bitmap::Squares positions_of_my_army, const board::bitmap::Squares under_attack_map)
     {
         if (piece.position & under_attack_map)
         {
@@ -44,21 +44,31 @@ namespace
         return false;
     }
 
-    /*
+    
 
-    void update_movable_pieces_of_army(piece::army::Army my_army, const board::Board &board, piece::aggregator::army_list &army_list)
-    {
+}
+
+namespace piece::api
+{
+
+    ArmyDestinations calc_possible_moves(const piece::army::Army& my_army, const board::Board& board, const piece::aggregator::army_list& army_list) {
         board::bitmap::Squares enemy_attack_map = 0x12345;      // TODO all attackable from other armies
         board::bitmap::Squares enemy_observation_map = 0x12345; // TODO all observale from other armies
         board::bitmap::Squares positions_of_my_army = 0x123222; // TODO
+
+        ArmyDestinations memory;
+        for (size_t i=0; i < my_army.size(); ++i) {
+            memory.push({my_army.pieces[i].position, my_army.pieces[i].observed});
+        }
+        return memory;
 
         auto &king = my_army.king();
 
         if (king.position & enemy_attack_map)
         {
             int number_of_attackers = 1; // TODO
-
-            //TODO: king.movable = king.attackable & ~enemy_observation_map;
+            
+            memory.push({king.position, king.attackable & ~enemy_observation_map});
 
             if (number_of_attackers == 1)
             {
@@ -66,7 +76,7 @@ namespace
                 piece::Piece *attacker = nullptr; //&my_army.pieces[1]; //  TODO: find attacker
                 // get fields between attacker and king
                 board::bitmap::Squares interceptable = 1234;
-                for (auto& piece: my_army.pieces)
+                for (const auto& piece: my_army.pieces)
                 {
 
                     if (piece.position == king.position)
@@ -74,63 +84,43 @@ namespace
                         continue;
                     }
 
-                    //piece.movable = piece.attackable & interceptable;
+                    auto movable = piece.attackable & interceptable;
 
-                    if (piece.movable)
+                    if (movable)
                     {
                         bool result = does_piece_movement_endanger_own_king(piece, board, army_list, my_army, positions_of_my_army, enemy_attack_map);
-                        if (result)
+                        if (! result)
                         {
-                            // movement would lead to checkmate
-                            piece.movable = 0;
-                        }
-                    }
+                            memory.push({piece.position, movable});
+                        }                    }
                 }
             }
         }
         else
         {
-            for (auto& piece:  my_army.pieces)
+            for (const auto& piece:  my_army.pieces)
             {
                 if (piece.position == king.position)
                 {
-                    // TODO: king.movable = king.attackable & ~enemy_observation_map;
+                    memory.push({king.position, king.attackable & ~enemy_observation_map});
                 }
                 else if (piece.position & enemy_attack_map)
                 {
                     bool result = does_piece_movement_endanger_own_king(piece, board, army_list, my_army, positions_of_my_army, enemy_attack_map);
 
-                    if (result)
+                    if (! result)
                     {
-                        // movement would lead to checkmate
-                        //piece.movable = 0;
-                    }
-                    else
-                    {
-                        // free to move
-                        //piece.movable = piece.observed;
+                         memory.push({piece.position, piece.observed});
                     }
                 }
                 else
                 {
-                    //piece.movable = piece.observed;
+                    memory.push({piece.position, piece.observed});
                 }
             }
         }
     }
-*/
-}
-
-namespace piece::api
-{
-
-    ArmyDestinations calc_possible_moves(const piece::army::Army& my_army, const board::Board&, const piece::aggregator::army_list&) {
-        ArmyDestinations memory;
-        for (size_t i=0; i < my_army.size(); ++i) {
-            memory.push({my_army.pieces[i].position, my_army.pieces[i].observed});
-        }
-        return memory;
-    }
+    
 
     void move_piece(const board::bitmap::Squares src, const board::bitmap::Squares dest, const board::Board &board, piece::aggregator::army_list &army_list)
     {
