@@ -80,7 +80,10 @@ namespace piece::api
         }
 
         // king movement
-        memory.push({king.position, king.attackable & ~enemy_observation_map});
+        auto movable_king = king.attackable & ~enemy_observation_map;
+        if (movable_king) {
+            memory.push({king.position, movable_king});
+        }
 
         // other pieces
         if (number_of_king_attackers == 0)

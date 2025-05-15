@@ -61,3 +61,22 @@ TEST(PieceApi_CalcMove, KingMovementUnderAttack) {
     EXPECT_EQ(moves_all[0].destinations, "a1"_n.as_squares(board) | "c1"_n.as_squares(board) | "a2"_n.as_squares(board));
     list_squares(moves_all[0].destinations, board);
 }
+
+TEST(PieceApi_CalcMove, KingNoMovementPossible) {
+    board::Board board{3, 3};
+
+    piece::aggregator::army_list army_list = {
+        piece::army::Army{Color::BLUE, {
+                                        pieces::King{"a1"_n.as_squares(board)},
+                                       }},
+        piece::army::Army{Color::WHITE, {
+                                        pieces::King{"c3"_n.as_squares(board)},
+                                        pieces::Rock{"b3"_n.as_squares(board)},
+                                        pieces::Rock{"c2"_n.as_squares(board)},
+                                        }}
+    };
+    piece::api::init_army_list(army_list, board);
+    auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
+    EXPECT_EQ(moves_all.size(), 0);
+    list_squares(moves_all[0].destinations, board);
+}
