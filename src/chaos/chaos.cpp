@@ -8,6 +8,7 @@
 #include <aggregator-positions.h>
 #include "piece-king.h"
 #include "piece-rock.h"
+#include "piece-bishop.h"
 #include "notation.h"
 #include "piece-api.h"
 
@@ -31,7 +32,7 @@ void run_game()
                                            pieces::King{"a1"_n.as_squares(board)},
                                            pieces::Rock{"e4"_n.as_squares(board)},
                                            pieces::Rock{"b4"_n.as_squares(board)},
-                                           pieces::Rock{"b6"_n.as_squares(board)},
+                                           pieces::Bishop{board,"b6"_n},
                                        }},
         piece::army::Army{Color::WHITE, {
                                             pieces::King{"h1"_n.as_squares(board)},

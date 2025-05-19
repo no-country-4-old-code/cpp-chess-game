@@ -9,7 +9,8 @@ namespace piece
     std::map<PieceType, std::string> lookup_string {
         // bin. search is slower then simply index, BUT std::cout not used in time critical context anyway
         {PieceType::KING, "King"},
-        {PieceType::ROCK, "Rock"}
+        {PieceType::ROCK, "Rock"},
+        {PieceType::BISHOP, "Bishop"}
     };
 
     std::ostream &operator<<(std::ostream &out, const piece::PieceType& type) {
