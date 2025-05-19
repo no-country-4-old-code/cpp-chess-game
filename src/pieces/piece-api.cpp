@@ -3,6 +3,7 @@
 #include "board.h"
 #include "squares.h"
 #include "aggregator-positions.h"
+#include "piece-embraced-squares-mask.h"
 
 namespace
 {
@@ -100,20 +101,20 @@ namespace piece::api
 
                     if (! result)
                     {
-                         memory.push({piece.position, piece.observed});
+                         memory.push({piece.position, piece.attackable});
                     }
                 }
                 else
                 {
-                    memory.push({piece.position, piece.observed});
+                    memory.push({piece.position, piece.attackable});
                 }
             }
 
         }
         else if (number_of_king_attackers == 1) {
-            //king_attacker;
             // get fields between attacker and king
-            board::bitmap::Squares interceptable = 1234; // TODO: Create a smaller square as mask with king.position and attacker at edged and then mask attackable
+            auto interceptable = utils::create_embraced_squares_mask(king_attacker->position, king.position, board);
+
             for (const auto& piece: my_army.pieces)
             {
 

@@ -13,6 +13,11 @@
 using namespace piece;
 using namespace board::notation::literal;
 
+template <typename... Squares>
+board::bitmap::Squares combine_squares(board::Board board, Squares... squares) {
+    return (squares.as_squares(board) | ...);
+}
+
 namespace {
     void list_squares(const board::bitmap::Squares squares,const board::Board& board) {
         IteratorBitmap iter{squares};
@@ -94,4 +99,20 @@ TEST(PieceApi_CalcMove, KingOnlyMoveIsAttack) {
     // assert
     EXPECT_EQ(moves_all.size(), 1); // only one piece should move
     EXPECT_EQ(moves_all[0].destinations, "b2"_n.as_squares(board));
+}
+
+TEST(PieceApi_CalcMove, TwoPieceOnlyRockUnderAttack) {
+    board::Board board{3, 3};
+    auto army_list = create_army_list(board, 
+        {pieces::King{board, "a1"_n}, pieces::Rock{board, "b1"_n}}, 
+        {pieces::King{board, "c3"_n}, pieces::Rock{board, "b3"_n}} );
+    // act
+    auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
+    // assert
+    EXPECT_EQ(moves_all.size(), 2);
+    EXPECT_EQ(moves_all[0].src, "a1"_n.as_squares(board));
+    EXPECT_EQ(moves_all[0].destinations, combine_squares(board, "a2"_n));
+    EXPECT_EQ(moves_all[1].src, "b1"_n.as_squares(board));
+    EXPECT_EQ(moves_all[1].destinations, combine_squares(board, "c1"_n, "b2"_n, "b3"_n));
+    list_squares(moves_all[1].destinations, board);
 }
