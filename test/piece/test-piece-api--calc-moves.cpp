@@ -49,7 +49,7 @@ TEST(PieceApi_CalcMove, KingMovementObstructed) {
     // assert
     EXPECT_EQ(moves_all.size(), 1); // only one piece should move
     EXPECT_EQ(moves_all[0].src, "b1"_n.as_squares(board));
-    EXPECT_EQ(moves_all[0].destinations, "a1"_n.as_squares(board) | "c1"_n.as_squares(board));
+    EXPECT_EQ(moves_all[0].destinations, combine_squares(board, "a1"_n, "c1"_n));
 }
 
 TEST(PieceApi_CalcMove, KingMovementUnderAttack) {
@@ -62,7 +62,7 @@ TEST(PieceApi_CalcMove, KingMovementUnderAttack) {
     // assert
     EXPECT_EQ(moves_all.size(), 1); // only one piece should move
     EXPECT_EQ(moves_all[0].src, "b1"_n.as_squares(board));
-    EXPECT_EQ(moves_all[0].destinations, "a1"_n.as_squares(board) | "c1"_n.as_squares(board) | "a2"_n.as_squares(board));
+    EXPECT_EQ(moves_all[0].destinations, combine_squares(board,"a1"_n, "c1"_n, "a2"_n));
     list_squares(moves_all[0].destinations, board);
 }
 
