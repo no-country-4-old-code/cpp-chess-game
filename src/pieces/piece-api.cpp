@@ -10,7 +10,7 @@ namespace
 
     bool does_piece_movement_endanger_own_king(const piece::Piece &piece, const board::Board &board, const piece::aggregator::army_list &army_list, const piece::army::Army &my_army, const board::bitmap::Squares positions_of_my_army, const board::bitmap::Squares under_attack_map)
     {
-        if (piece.position & under_attack_map)
+        if (piece.position & under_attack_map) // only matter if piece is under attack at all
         {
             auto king_position = my_army.king().position;
             auto positions_without_piece = positions_of_my_army & ~piece.position;
@@ -28,13 +28,17 @@ namespace
 
                     if (piece.position & enemy.attackable)
                     {
+                        if (king_position & enemy.attackable) {
+                            // if king is already attacked by this piece, then movement of piece does not matter
+                            continue;
+                        }
                         // (optimize) add quick check if relative position to each other (if king left to piece then attacker has to be right to piece etc.)
 
                         // heavy load calcs:
                         auto tmp = enemy;
                         tmp.update_observed_and_attackable(board, positions_without_piece, positions_without_piece);
 
-                        if (king_position & tmp.attackable)
+                        if (king_position & tmp.attackable )
                         {
                             return true;
                         }
@@ -114,6 +118,7 @@ namespace piece::api
         else if (number_of_king_attackers == 1) {
             // get fields between attacker and king
             auto interceptable = utils::create_embraced_squares_mask(king_attacker->position, king.position, board);
+            interceptable |= king_attacker->position;
 
             for (const auto& piece: my_army.pieces)
             {
