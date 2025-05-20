@@ -4,16 +4,13 @@
 #include "notation.h"
 #include "iterator-bitfield.h"
 #include "piece-actions.h"
+#include "test-helper.h"
+
 
 using namespace piece;
 using namespace board::notation::literal;
 using sqrs = board::bitmap::Squares;
 
-template <typename... Squares>
-board::bitmap::Squares combine_squares(board::Board board, Squares... squares)
-{
-    return (squares.as_squares(board) | ...);
-}
 
 namespace
 {

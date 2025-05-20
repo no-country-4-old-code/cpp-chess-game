@@ -13,12 +13,6 @@
 using namespace piece;
 using namespace board::notation::literal;
 
-template <typename... Squares>
-board::bitmap::Squares combine_squares(board::Board board, Squares... squares)
-{
-    return (squares.as_squares(board) | ...);
-}
-
 namespace
 {
     const board::Board default_board{8, 8};

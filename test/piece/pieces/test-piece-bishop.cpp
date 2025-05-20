@@ -6,15 +6,11 @@
 #include "notation.h"
 #include "piece-actions.h"
 #include "test-helper.h"
+#include "test-helper.h"
 
 using namespace piece;
 using namespace board::notation::literal;
 
-template <typename... Squares>
-board::bitmap::Squares combine_squares(board::Board board, Squares... squares)
-{
-    return (squares.as_squares(board) | ...);
-}
 
 namespace
 {
