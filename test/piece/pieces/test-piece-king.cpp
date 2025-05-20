@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "piece-api.h"
 #include <board.h>
-#include <aggregator-positions.h>
+
 #include "piece-king.h"
 #include "piece-king.h"
 #include "notation.h"
@@ -138,5 +138,5 @@ TEST(Piece_King, BlockedMixed)
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);
-    //piece::update::display_bits_on_board(default_board, expected_observed);
+    // piece::update::display_bits_on_board(default_board, expected_observed);
 }

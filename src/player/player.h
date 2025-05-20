@@ -1,7 +1,6 @@
 #pragma once
 #include "interface-player-behaviour.h"
 #include "pieces-color.h"
-#include <aggregator-positions.h>
 
 class Player
 {

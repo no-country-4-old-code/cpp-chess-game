@@ -9,7 +9,6 @@
 
 namespace piece::army
 {
-
     const u_int8_t max_num_of_armies = 4;    // equals max. number of player
     const u_int8_t max_pieces_per_army = 20; // equals max. pieces per player
 
@@ -28,4 +27,6 @@ namespace piece::army
         u_int8_t size() const;
         const piece::Piece& king() const;
     };
+
+    using army_list = std::array<piece::army::Army, army::max_num_of_armies>;
 }

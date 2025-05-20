@@ -5,7 +5,7 @@
 #include "pieces-color.h"
 #include "player.h"
 #include <board.h>
-#include <aggregator-positions.h>
+
 #include "piece-king.h"
 #include "piece-rock.h"
 #include "piece-bishop.h"
@@ -27,12 +27,12 @@ void run_game()
     using namespace piece;
     using namespace board::notation::literal;
 
-    piece::aggregator::army_list army_list = {
+    piece::army::army_list army_list = {
         piece::army::Army{Color::BLUE, {
                                            pieces::King{"a1"_n.as_squares(board)},
                                            pieces::Rock{"e4"_n.as_squares(board)},
                                            pieces::Rock{"b4"_n.as_squares(board)},
-                                           pieces::Bishop{board,"b6"_n},
+                                           pieces::Bishop{board, "b6"_n},
                                        }},
         piece::army::Army{Color::WHITE, {
                                             pieces::King{"h1"_n.as_squares(board)},

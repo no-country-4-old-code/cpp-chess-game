@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "piece-api.h"
 #include <board.h>
-#include <aggregator-positions.h>
+
 #include "piece-king.h"
 #include "piece-rock.h"
 #include "notation.h"
@@ -38,7 +38,7 @@ namespace
 class PieceApi_MovePiece : public ::testing::Test
 {
 protected:
-    piece::aggregator::army_list army_list;
+    piece::army::army_list army_list;
 
     void SetUp() override
     {
@@ -50,15 +50,15 @@ protected:
             piece::army::Army{Color::WHITE, {PieceMock(PieceType::KING, "g7"_n, mock_update), PieceMock(PieceType::ROCK, "e8"_n, mock_update)}},
             piece::army::Army{Color::ORANGE, {PieceMock(PieceType::KING, "g1"_n, mock_update), PieceMock(PieceType::ROCK, "d8"_n, mock_update)}}};
         /*
-             a   b   c   d   e   f   g   h  
-        1            Rb                  Ko     
-        2                                       
-        3                                       
-        4                                       
-        5                                       
-        6                    Kb                 
-        7                                Kw     
-        8                    Ro  Rw             
+             a   b   c   d   e   f   g   h
+        1            Rb                  Ko
+        2
+        3
+        4
+        5
+        6                    Kb
+        7                                Kw
+        8                    Ro  Rw
         */
     }
 };
@@ -82,7 +82,6 @@ TEST_F(PieceApi_MovePiece, MoveUnseen)
     EXPECT_TRUE(army_list[2].pieces[1] == backup[2].pieces[1]);
 }
 
-
 TEST_F(PieceApi_MovePiece, MoveUnseenWithAttack)
 {
     auto &piece = army_list[0].pieces[1];
@@ -101,7 +100,6 @@ TEST_F(PieceApi_MovePiece, MoveUnseenWithAttack)
     EXPECT_TRUE(army_list[1].pieces[1] == backup[1].pieces[1]);
     EXPECT_TRUE(army_list[2].pieces[1] == backup[2].pieces[1]);
 }
-
 
 TEST_F(PieceApi_MovePiece, MoveFromObservedToUnobserved)
 {
