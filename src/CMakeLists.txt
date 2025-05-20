@@ -2,9 +2,8 @@
 add_subdirectory(main)
 
 # add libraries
-add_subdirectory(board)
+add_subdirectory(engine)
 add_subdirectory(build-info)
-add_subdirectory(pieces)
 add_subdirectory(player-behaviour)
 add_subdirectory(player)
 add_subdirectory(chaos)
