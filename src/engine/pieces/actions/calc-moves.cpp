@@ -2,7 +2,7 @@
 #include "piece.h"
 #include "board.h"
 #include "squares.h"
-#include "piece-embraced-squares-mask.h"
+#include "piece-api.h"
 
 namespace
 {

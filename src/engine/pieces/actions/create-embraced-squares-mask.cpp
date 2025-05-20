@@ -1,4 +1,4 @@
-#include "piece-embraced-squares-mask.h"
+#include "piece-api.h"
 #include <cstdlib>
 #include <bit>
 #include <cassert>

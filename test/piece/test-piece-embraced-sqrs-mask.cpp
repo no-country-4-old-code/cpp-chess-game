@@ -4,7 +4,7 @@
 #include <iostream>
 #include "notation.h"
 #include "iterator-bitfield.h"
-#include "piece-embraced-squares-mask.h"
+#include "piece-api.h"
 
 using namespace piece;
 using namespace board::notation::literal;

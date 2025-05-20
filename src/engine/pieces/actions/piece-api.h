@@ -21,3 +21,9 @@ namespace piece::api
     ArmyDestinations calc_possible_moves(const piece::army::Army &, const board::Board &, const piece::army::army_list &);
     void init_army_list(piece::army::army_list &army_list, const board::Board &board);
 }
+
+namespace piece::utils
+{
+    using sqrs = board::bitmap::Squares;
+    sqrs create_embraced_squares_mask(sqrs, sqrs, const board::Board&);
+}
