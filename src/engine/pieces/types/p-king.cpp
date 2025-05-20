@@ -1,4 +1,4 @@
-#include "piece-king.h"
+#include "pieces.h"
 #include "piece-baseclass.h"
 #include "board-movements.h"
 

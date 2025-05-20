@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 #include "piece-actions.h"
 #include <board.h>
-#include "piece-king.h"
-#include "piece-rock.h"
-#include "piece-bishop.h"
+#include "pieces.h"
+#include "pieces.h"
+#include "pieces.h"
 #include "notation.h"
 #include "piece-actions.h"
 #include "test-helper.h"

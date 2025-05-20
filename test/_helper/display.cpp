@@ -6,8 +6,8 @@
 #include "board-movements.h"
 #include "pieces-color.h"
 
-#include "piece-king.h"
-#include "piece-rock.h"
+#include "pieces.h"
+#include "pieces.h"
 #include "piece-actions.h"
 #include <bit>
 #include <array>

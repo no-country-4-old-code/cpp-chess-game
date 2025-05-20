@@ -6,9 +6,9 @@
 #include "player.h"
 #include <board.h>
 #include "display-pieces.h"
-#include "piece-king.h"
-#include "piece-rock.h"
-#include "piece-bishop.h"
+#include "pieces.h"
+#include "pieces.h"
+#include "pieces.h"
 #include "notation.h"
 #include "piece-actions.h"
 
@@ -16,8 +16,9 @@ using PlayerGroup =
     std::set<Player, decltype([](const Player &a, const Player &b)
                               { return a.color() < b.color(); })>;
 
-namespace {
-    void run(PlayerGroup&, const board::Board &, const piece::army::army_list &);
+namespace
+{
+    void run(PlayerGroup &, const board::Board &, const piece::army::army_list &);
 }
 
 /**
@@ -56,7 +57,8 @@ void run_game()
     run(group, board, army_list);
 }
 
-namespace {
+namespace
+{
     void run(PlayerGroup &group, const board::Board &board, const piece::army::army_list &army_list)
     {
         unsigned int turn = 1;

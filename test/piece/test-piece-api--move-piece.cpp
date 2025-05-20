@@ -2,8 +2,8 @@
 #include "piece-actions.h"
 #include <board.h>
 
-#include "piece-king.h"
-#include "piece-rock.h"
+#include "pieces.h"
+#include "pieces.h"
 #include "notation.h"
 #include "test-helper.h"
 

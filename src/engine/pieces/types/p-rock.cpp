@@ -1,18 +1,19 @@
-#include "piece-bishop.h"
+#include "pieces.h"
 #include "piece-baseclass.h"
 #include "board-movements.h"
+#include <array>
 
-namespace piece::pieces::bishop
+namespace piece::pieces::rock
 {
     namespace move = board::movements;
 
     void update_observed_and_attackable(piece::Piece &piece, const board::Board &board, sqrs pos_all, sqrs pos_hostile_armies)
     {
         const std::array<move::move_func, 4> directions{
-            move::left_down,
-            move::left_up,
-            move::right_down,
-            move::right_up};
+            move::left,
+            move::right,
+            move::up,
+            move::down};
 
         piece.observed = 0;
         piece.attackable = 0;

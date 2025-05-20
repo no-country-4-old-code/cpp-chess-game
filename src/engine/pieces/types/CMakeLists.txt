@@ -1,5 +1,5 @@
 set(LIBRARY_NAME PieceTypes)
-set(SOURCES pieces-color.cpp piece-type.cpp army.cpp piece-king.cpp piece-rock.cpp piece-bishop.cpp)
+set(SOURCES pieces-color.cpp piece-type.cpp army.cpp p-king.cpp p-rock.cpp p-bishop.cpp)
 
 # Add sources to lib
 add_library(${LIBRARY_NAME} STATIC ${SOURCES})
