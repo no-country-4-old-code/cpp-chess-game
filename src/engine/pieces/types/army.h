@@ -1,5 +1,5 @@
 #pragma once
-#include "pieces-color.h"
+#include "color.h"
 #include "piece-baseclass.h"
 #include "squares.h"
 #include <cstdlib>

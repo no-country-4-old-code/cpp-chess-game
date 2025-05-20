@@ -4,7 +4,7 @@
 #include "squares.h"
 #include "notation.h"
 #include "board-movements.h"
-#include "pieces-color.h"
+#include "color.h"
 
 #include "pieces.h"
 #include "pieces.h"

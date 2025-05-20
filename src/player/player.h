@@ -1,6 +1,6 @@
 #pragma once
 #include "interface-player-behaviour.h"
-#include "pieces-color.h"
+#include "color.h"
 
 class Player
 {

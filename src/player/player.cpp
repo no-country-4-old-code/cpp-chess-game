@@ -1,5 +1,5 @@
 #include "player.h"
-#include "pieces-color.h"
+#include "color.h"
 #include <iostream>
 
 Color Player::color() const
@@ -10,7 +10,7 @@ Color Player::color() const
 void Player::make_move() const
 {
     _behaviour->make_move(_army);
-    //std::cout << " > " << this->color() << " makes a move\n";
+    // std::cout << " > " << this->color() << " makes a move\n";
 };
 
 bool Player::is_defeated() const
