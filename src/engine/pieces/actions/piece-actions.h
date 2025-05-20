@@ -1,5 +1,5 @@
 #pragma once
-#include "piece.h"
+#include "piece-baseclass.h"
 #include "board.h"
 #include "squares.h"
 
@@ -25,5 +25,5 @@ namespace piece::api
 namespace piece::utils
 {
     using sqrs = board::bitmap::Squares;
-    sqrs create_embraced_squares_mask(sqrs, sqrs, const board::Board&);
+    sqrs create_embraced_squares_mask(sqrs, sqrs, const board::Board &);
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "pieces-color.h"
-#include "piece.h"
+#include "piece-baseclass.h"
 #include "squares.h"
 #include <cstdlib>
 #include <vector>
@@ -25,7 +25,7 @@ namespace piece::army
         Army(Color color, const std::vector<piece::Piece> &pieces);
         Color color() const;
         u_int8_t size() const;
-        const piece::Piece& king() const;
+        const piece::Piece &king() const;
     };
 
     using army_list = std::array<piece::army::Army, army::max_num_of_armies>;

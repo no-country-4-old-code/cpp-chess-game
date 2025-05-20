@@ -6,7 +6,7 @@
 #include "piece-rock.h"
 #include "notation.h"
 #include "piece-actions.h"
-#include "piece.h"
+#include "piece-baseclass.h"
 
 using namespace piece;
 using namespace board::notation::literal;

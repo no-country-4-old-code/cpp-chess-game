@@ -1,5 +1,5 @@
 #include "piece-actions.h"
-#include "piece.h"
+#include "piece-baseclass.h"
 #include "board.h"
 #include "squares.h"
 

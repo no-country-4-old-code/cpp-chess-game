@@ -1,5 +1,5 @@
 #include "piece-king.h"
-#include "piece.h"
+#include "piece-baseclass.h"
 #include "board-movements.h"
 
 namespace piece::pieces::king

@@ -1,5 +1,5 @@
 #include "display-pieces.h"
-#include "piece.h"
+#include "piece-baseclass.h"
 #include "board.h"
 #include "squares.h"
 #include "notation.h"
