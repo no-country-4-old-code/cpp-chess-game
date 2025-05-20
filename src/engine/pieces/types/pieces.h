@@ -3,11 +3,11 @@
 #include "piece-type.h"
 #include "notation.h"
 
-
-namespace piece::pieces
+namespace piece
 {
 
-    namespace king {
+    namespace king
+    {
         void update_observed_and_attackable(piece::Piece &, const board::Board &, sqrs, sqrs);
     }
 
@@ -23,26 +23,29 @@ namespace piece::pieces
 
     // ---
 
-    namespace rock {
+    namespace rock
+    {
         void update_observed_and_attackable(piece::Piece &, const board::Board &, sqrs, sqrs);
     }
 
-    class Rock : public Piece{
-        public:
-            Rock(board::bitmap::Squares pos) : Piece(PieceType::ROCK, pos, rock::update_observed_and_attackable) {};
-            Rock(board::Board board, board::notation::ChessNotation notation) : Piece(PieceType::ROCK, notation.as_squares(board), rock::update_observed_and_attackable) {};
+    class Rock : public Piece
+    {
+    public:
+        Rock(board::bitmap::Squares pos) : Piece(PieceType::ROCK, pos, rock::update_observed_and_attackable) {};
+        Rock(board::Board board, board::notation::ChessNotation notation) : Piece(PieceType::ROCK, notation.as_squares(board), rock::update_observed_and_attackable) {};
     };
 
     // ---
 
-    namespace bishop {
+    namespace bishop
+    {
         void update_observed_and_attackable(piece::Piece &, const board::Board &, sqrs, sqrs);
     }
 
     class Bishop : public Piece
     {
-        public:
-            Bishop(board::Board board, board::notation::ChessNotation notation) : Piece(PieceType::BISHOP, notation.as_squares(board), piece::pieces::bishop::update_observed_and_attackable) {};
+    public:
+        Bishop(board::Board board, board::notation::ChessNotation notation) : Piece(PieceType::BISHOP, notation.as_squares(board), piece::bishop::update_observed_and_attackable) {};
     };
 
     // ---

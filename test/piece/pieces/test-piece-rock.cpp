@@ -36,7 +36,7 @@ TEST(Piece_Rock, EmptyField)
 8        -  -  -  -  X  -  -  -
 
     */
-    pieces::Rock piece{default_board, "e4"_n};
+    Rock piece{default_board, "e4"_n};
 
     auto expected_observed = combine_squares(default_board,
                                              "e1"_n, "e2"_n, "e3"_n, "e5"_n, "e6"_n, "e7"_n, "e8"_n,
@@ -63,7 +63,7 @@ TEST(Piece_Rock, BlockedByFriend)
 8        -  -  -  -  X  -  -  -
 
     */
-    pieces::Rock piece{default_board, "e4"_n};
+    Rock piece{default_board, "e4"_n};
     auto position_friend = "g4"_n.as_squares(default_board);
 
     auto expected_observed = combine_squares(default_board,
@@ -92,7 +92,7 @@ TEST(Piece_Rock, BlockedByEnemy)
 8        -  -  -  -  X  -  -  -
 
     */
-    pieces::Rock piece{default_board, "e4"_n};
+    Rock piece{default_board, "e4"_n};
     auto position_enemy = "g4"_n.as_squares(default_board);
 
     auto expected_observed = combine_squares(default_board,
@@ -119,7 +119,7 @@ TEST(Piece_Rock, BlockedMixed)
 7        -  -  -  -  -  -  -  -
 8        -  -  -  -  O  -  -  -
     */
-    pieces::Rock piece{default_board, "e4"_n};
+    Rock piece{default_board, "e4"_n};
     auto positions_friend = combine_squares(default_board, "g4"_n, "e6"_n);
     auto positions_enemy = combine_squares(default_board, "a4"_n, "e2"_n, "e8"_n);
 

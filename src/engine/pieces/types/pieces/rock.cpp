@@ -3,7 +3,7 @@
 #include "board-movements.h"
 #include <array>
 
-namespace piece::pieces::rock
+namespace piece::rock
 {
     namespace move = board::movements;
 

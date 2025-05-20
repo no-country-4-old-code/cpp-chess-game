@@ -38,7 +38,7 @@ TEST(Piece_King, EmptyField)
 8        -  -  -  -  -  -  -  -
 
     */
-    pieces::King piece{default_board, "e4"_n};
+    King piece{default_board, "e4"_n};
 
     auto expected_observed = combine_squares(default_board,
                                              "d3"_n, "e3"_n, "f3"_n,
@@ -66,7 +66,7 @@ TEST(Piece_King, BlockedByFriend)
 8        -  -  -  -  -  -  -  -
 
     */
-    pieces::King piece{default_board, "e4"_n};
+    King piece{default_board, "e4"_n};
     auto position_friend = "d4"_n.as_squares(default_board);
 
     auto expected_observed = combine_squares(default_board,
@@ -96,7 +96,7 @@ TEST(Piece_King, BlockedByEnemy)
 8        -  -  -  -  -  -  -  -
 
     */
-    pieces::King piece{default_board, "e4"_n};
+    King piece{default_board, "e4"_n};
     auto position_enemy = "d4"_n.as_squares(default_board);
 
     auto expected_observed = combine_squares(default_board,
@@ -124,7 +124,7 @@ TEST(Piece_King, BlockedMixed)
 7        -  -  -  -  -  -  -  -
 8        -  -  -  -  A  -  -  -
     */
-    pieces::King piece{default_board, "e4"_n};
+    King piece{default_board, "e4"_n};
     auto positions_friend = combine_squares(default_board, "d3"_n, "f5"_n);
     auto positions_enemy = combine_squares(default_board, "d4"_n, "e3"_n, "e8"_n);
 

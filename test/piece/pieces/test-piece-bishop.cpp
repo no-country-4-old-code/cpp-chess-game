@@ -35,7 +35,7 @@ TEST(Piece_Bishop, EmptyField)
 8        X  -  -  -  -  -  -  -
 
     */
-    pieces::Bishop piece{default_board, "e4"_n};
+    Bishop piece{default_board, "e4"_n};
 
     auto expected_observed = combine_squares(default_board,
                                              "b1"_n, "c2"_n, "d3"_n, "f5"_n, "g6"_n, "h7"_n,
@@ -62,7 +62,7 @@ TEST(Piece_Bishop, BlockedByFriend)
 8        -  -  -  -  -  -  -  -
 
     */
-    pieces::Bishop piece{default_board, "e4"_n};
+    Bishop piece{default_board, "e4"_n};
     auto position_friend = "c6"_n.as_squares(default_board);
 
     auto expected_observed = combine_squares(default_board,
@@ -91,7 +91,7 @@ TEST(Piece_Bishop, BlockedByEnemy)
 8        -  -  -  -  -  -  -  -
 
     */
-    pieces::Bishop piece{default_board, "e4"_n};
+    Bishop piece{default_board, "e4"_n};
     auto position_enemy = "c6"_n.as_squares(default_board);
 
     auto expected_observed = combine_squares(default_board,
@@ -118,7 +118,7 @@ TEST(Piece_Bishop, BlockedMixed)
 7        -  -  -  -  -  -  -  -
 8        -  -  -  -  A  -  -  -
     */
-    pieces::Bishop piece{default_board, "e4"_n};
+    Bishop piece{default_board, "e4"_n};
     auto positions_friend = combine_squares(default_board, "c6"_n, "g6"_n);
     auto positions_enemy = combine_squares(default_board, "c2"_n, "e2"_n, "e8"_n);
 

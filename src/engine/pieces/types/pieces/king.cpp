@@ -2,7 +2,7 @@
 #include "piece-baseclass.h"
 #include "board-movements.h"
 
-namespace piece::pieces::king
+namespace piece::king
 {
     namespace move = board::movements;
 

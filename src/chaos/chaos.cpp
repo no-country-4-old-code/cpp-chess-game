@@ -33,18 +33,18 @@ void run_game()
 
     piece::army::army_list army_list = {
         piece::army::Army{Color::BLUE, {
-                                           pieces::King{"a1"_n.as_squares(board)},
-                                           pieces::Rock{"e4"_n.as_squares(board)},
-                                           pieces::Rock{"b4"_n.as_squares(board)},
-                                           pieces::Bishop{board, "b6"_n},
+                                           King{"a1"_n.as_squares(board)},
+                                           Rock{"e4"_n.as_squares(board)},
+                                           Rock{"b4"_n.as_squares(board)},
+                                           Bishop{board, "b6"_n},
                                        }},
         piece::army::Army{Color::WHITE, {
-                                            pieces::King{"h1"_n.as_squares(board)},
-                                            pieces::Rock{"f8"_n.as_squares(board)},
-                                            pieces::Rock{"g7"_n.as_squares(board)},
-                                            pieces::Rock{"h6"_n.as_squares(board)},
+                                            King{"h1"_n.as_squares(board)},
+                                            Rock{"f8"_n.as_squares(board)},
+                                            Rock{"g7"_n.as_squares(board)},
+                                            Rock{"h6"_n.as_squares(board)},
                                         }},
-        piece::army::Army{Color::ORANGE, {pieces::King{"d8"_n.as_squares(board)}, pieces::Rock{"d7"_n.as_squares(board)}}}, piece::army::Army{}};
+        piece::army::Army{Color::ORANGE, {King{"d8"_n.as_squares(board)}, Rock{"d7"_n.as_squares(board)}}}, piece::army::Army{}};
 
     piece::api::init_army_list(army_list, board);
 
