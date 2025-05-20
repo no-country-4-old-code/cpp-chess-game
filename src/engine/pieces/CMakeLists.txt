@@ -1,2 +1,2 @@
-add_subdirectory(pieces)
+add_subdirectory(types)
 add_subdirectory(actions)
