@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
-#include "piece-api.h"
+#include "piece-actions.h"
 #include <board.h>
 
 #include "piece-king.h"
 #include "piece-king.h"
 #include "notation.h"
-#include "piece-api.h"
+#include "piece-actions.h"
 #include <iostream>
 #include <bitset>
 #include "piece-update.h"

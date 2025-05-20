@@ -1,8 +1,8 @@
-#include "piece-api.h"
+#include "piece-actions.h"
 #include "piece.h"
 #include "board.h"
 #include "squares.h"
-#include "piece-api.h"
+#include "piece-actions.h"
 
 namespace
 {

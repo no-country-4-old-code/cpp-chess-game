@@ -3,7 +3,7 @@
 #include <ctime>
 #include <vector>
 #include <format>
-#include "piece-api.h"
+#include "piece-actions.h"
 #include "notation.h"
 #include "piece-type.h"
 #include "piece-update.h"

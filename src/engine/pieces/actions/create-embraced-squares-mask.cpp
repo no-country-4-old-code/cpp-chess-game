@@ -1,24 +1,28 @@
-#include "piece-api.h"
+#include "piece-actions.h"
 #include <cstdlib>
 #include <bit>
 #include <cassert>
 
-namespace {
-    struct Position {
+namespace
+{
+    struct Position
+    {
         int h;
         int v;
         Position(int horizontal, int vertical) : h{horizontal}, v{vertical} {}
     };
 
     inline u_int8_t get_bit_index(board::bitmap::Squares);
-    inline Position map_to_position(board::bitmap::Squares, const board::Board&);
-    inline bool is_straight_or_diagonal(const Position&, const Position&);
+    inline Position map_to_position(board::bitmap::Squares, const board::Board &);
+    inline bool is_straight_or_diagonal(const Position &, const Position &);
     inline int sign(int x) { return (x > 0) - (x < 0); }
 }
 
-namespace piece::utils {
+namespace piece::utils
+{
 
-    sqrs create_embraced_squares_mask(sqrs pos_bitmap1, sqrs pos_bitmap2, const board::Board& board) {
+    sqrs create_embraced_squares_mask(sqrs pos_bitmap1, sqrs pos_bitmap2, const board::Board &board)
+    {
         if (!pos_bitmap1 || !pos_bitmap2 || pos_bitmap1 == pos_bitmap2)
             return 0;
 
@@ -40,7 +44,8 @@ namespace piece::utils {
         const int width = board.num_of_squares_horizontal;
         sqrs result = 0;
 
-        while (x != pos2.h || y != pos2.v) {
+        while (x != pos2.h || y != pos2.v)
+        {
             result |= sqrs{1ULL << (y * width + x)};
             x += step_x;
             y += step_y;
@@ -50,12 +55,15 @@ namespace piece::utils {
     }
 }
 
-namespace {
-    inline u_int8_t get_bit_index(board::bitmap::Squares squares) {
+namespace
+{
+    inline u_int8_t get_bit_index(board::bitmap::Squares squares)
+    {
         return static_cast<u_int8_t>(std::countr_zero(squares));
     }
 
-    inline Position map_to_position(const board::bitmap::Squares pos, const board::Board& board) {
+    inline Position map_to_position(const board::bitmap::Squares pos, const board::Board &board)
+    {
         assert(std::has_single_bit(pos));
         const u_int8_t bit_index = get_bit_index(pos);
         const int h = bit_index % board.num_of_squares_horizontal;
@@ -63,7 +71,8 @@ namespace {
         return Position(h, v);
     }
 
-    inline bool is_straight_or_diagonal(const Position& a, const Position& b) {
+    inline bool is_straight_or_diagonal(const Position &a, const Position &b)
+    {
         const int dx = std::abs(a.h - b.h);
         const int dy = std::abs(a.v - b.v);
         return dx == 0 || dy == 0 || dx == dy;

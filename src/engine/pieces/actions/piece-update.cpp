@@ -8,7 +8,7 @@
 
 #include "piece-king.h"
 #include "piece-rock.h"
-#include "piece-api.h"
+#include "piece-actions.h"
 #include <bit>
 #include <array>
 #include <iostream>

@@ -10,7 +10,7 @@
 #include "piece-rock.h"
 #include "piece-bishop.h"
 #include "notation.h"
-#include "piece-api.h"
+#include "piece-actions.h"
 
 using PlayerGroup =
     std::set<Player, decltype([](const Player &a, const Player &b)
