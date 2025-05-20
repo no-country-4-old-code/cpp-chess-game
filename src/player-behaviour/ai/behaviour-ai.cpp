@@ -6,7 +6,6 @@
 #include "piece-actions.h"
 #include "notation.h"
 #include "piece-type.h"
-#include "piece-update.h"
 #include "iterator-bitfield.h"
 
 using Bitmap = int;  // Define bitmap type
@@ -139,7 +138,7 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
         std::cout << "-> No moves left" << std::endl;
     }
 
-    piece::update::display_all_pieces(_board, _army_list);
+
 }
 
 bool PlayerBehaviourAI::flip_a_coin() {

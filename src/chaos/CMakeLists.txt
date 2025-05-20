@@ -1,5 +1,5 @@
 set(LIBRARY_NAME ChaosLib)
-set(SOURCES chaos.cpp)
+set(SOURCES chaos.cpp display-pieces.cpp)
 
 
 

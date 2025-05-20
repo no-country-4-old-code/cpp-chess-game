@@ -1,4 +1,4 @@
-#include "piece-update.h"
+#include "test-helper.h"
 #include "piece.h"
 #include "board.h"
 #include "squares.h"

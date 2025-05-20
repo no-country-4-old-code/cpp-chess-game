@@ -6,7 +6,7 @@
 #include "piece-rock.h"
 #include "notation.h"
 #include "piece-actions.h"
-#include "piece-update.h"
+#include "test-helper.h"
 
 using namespace piece;
 using namespace board::notation::literal;
@@ -46,7 +46,7 @@ TEST(Piece_Rock, EmptyField)
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_observed);
-    // piece::update::display_bits_on_board(default_board, expected_observed);
+    // test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
 TEST(Piece_Rock, BlockedByFriend)
@@ -75,7 +75,7 @@ TEST(Piece_Rock, BlockedByFriend)
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);
-    // piece::update::display_bits_on_board(default_board, expected_observed);
+    // test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
 TEST(Piece_Rock, BlockedByEnemy)
@@ -103,7 +103,7 @@ TEST(Piece_Rock, BlockedByEnemy)
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_observed);
-    // piece::update::display_bits_on_board(default_board, expected_observed);
+    // test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
 TEST(Piece_Rock, BlockedMixed)
@@ -132,5 +132,5 @@ TEST(Piece_Rock, BlockedMixed)
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);
-    // piece::update::display_bits_on_board(default_board, expected_observed);
+    // test::helper::display_bits_on_board(default_board, expected_observed);
 }

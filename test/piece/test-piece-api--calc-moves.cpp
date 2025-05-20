@@ -6,7 +6,7 @@
 #include "piece-bishop.h"
 #include "notation.h"
 #include "piece-actions.h"
-#include "piece-update.h"
+#include "test-helper.h"
 #include "iterator-bitfield.h"
 #include <iostream>
 

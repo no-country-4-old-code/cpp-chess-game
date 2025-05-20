@@ -5,7 +5,7 @@
 #include "piece-king.h"
 #include "piece-rock.h"
 #include "notation.h"
-#include "piece-update.h"
+#include "test-helper.h"
 
 using namespace piece;
 using namespace board::notation::literal;

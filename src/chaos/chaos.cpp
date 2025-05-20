@@ -5,7 +5,7 @@
 #include "pieces-color.h"
 #include "player.h"
 #include <board.h>
-
+#include "display-pieces.h"
 #include "piece-king.h"
 #include "piece-rock.h"
 #include "piece-bishop.h"
@@ -15,7 +15,10 @@
 using PlayerGroup =
     std::set<Player, decltype([](const Player &a, const Player &b)
                               { return a.color() < b.color(); })>;
-static void run(PlayerGroup &group);
+
+namespace {
+    void run(PlayerGroup&, const board::Board &, const piece::army::army_list &);
+}
 
 /**
  * Everything begins in Chaos
@@ -50,36 +53,39 @@ void run_game()
         Player{&a, army_list[1]},
         Player{&a, army_list[2]},
     };
-    run(group);
+    run(group, board, army_list);
 }
 
-static void run(PlayerGroup &group)
-{
-    unsigned int turn = 1;
-
-    while (group.size() > 1)
+namespace {
+    void run(PlayerGroup &group, const board::Board &board, const piece::army::army_list &army_list)
     {
-        std::cout << "Turn " << turn << "\n";
+        unsigned int turn = 1;
 
-        for (auto player = group.begin(); player != group.end();)
+        while (group.size() > 1)
         {
-            if (player->is_defeated())
-            {
-                std::cout << ">> Remove Player " << player->color() << "\n";
-                player = group.erase(player);
-                if (group.size() <= 1)
-                {
-                    break; // game over
-                }
-            }
-            else
-            {
-                player->make_move();
-                ++player;
-            }
-        };
+            std::cout << "Turn " << turn << "\n";
 
-        ++turn;
-    };
-    std::cout << "Player " << group.begin()->color() << " wins !\n";
+            for (auto player = group.begin(); player != group.end();)
+            {
+                if (player->is_defeated())
+                {
+                    std::cout << ">> Remove Player " << player->color() << "\n";
+                    player = group.erase(player);
+                    if (group.size() <= 1)
+                    {
+                        break; // game over
+                    }
+                }
+                else
+                {
+                    player->make_move();
+                    display::display_all_pieces(board, army_list);
+                    ++player;
+                }
+            };
+
+            ++turn;
+        };
+        std::cout << "Player " << group.begin()->color() << " wins !\n";
+    }
 }

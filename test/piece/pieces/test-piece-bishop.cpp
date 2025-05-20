@@ -1,12 +1,11 @@
 #include <gtest/gtest.h>
 #include "piece-actions.h"
 #include <board.h>
-
 #include "piece-king.h"
 #include "piece-bishop.h"
 #include "notation.h"
 #include "piece-actions.h"
-#include "piece-update.h"
+#include "test-helper.h"
 
 using namespace piece;
 using namespace board::notation::literal;
@@ -46,7 +45,7 @@ TEST(Piece_Bishop, EmptyField)
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_observed);
-    piece::update::display_bits_on_board(default_board, expected_observed);
+    test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
 TEST(Piece_Bishop, BlockedByFriend)
@@ -75,7 +74,7 @@ TEST(Piece_Bishop, BlockedByFriend)
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);
-    // piece::update::display_bits_on_board(default_board, expected_observed);
+    // test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
 TEST(Piece_Bishop, BlockedByEnemy)
@@ -103,7 +102,7 @@ TEST(Piece_Bishop, BlockedByEnemy)
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_observed);
-    // piece::update::display_bits_on_board(default_board, expected_observed);
+    // test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
 TEST(Piece_Bishop, BlockedMixed)
@@ -132,5 +131,5 @@ TEST(Piece_Bishop, BlockedMixed)
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);
-    piece::update::display_bits_on_board(default_board, expected_observed);
+    test::helper::display_bits_on_board(default_board, expected_observed);
 }
