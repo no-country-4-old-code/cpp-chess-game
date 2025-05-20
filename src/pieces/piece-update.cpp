@@ -36,7 +36,8 @@ namespace {
     std::map<piece::PieceType, char> lookup_piece_to_notation {
         // bin. search is slower then simply index, BUT std::cout not used in time critical context anyway
         {piece::PieceType::KING, 'K'},
-        {piece::PieceType::ROCK, 'R'}
+        {piece::PieceType::ROCK, 'R'},
+        {piece::PieceType::BISHOP, 'B'}
     };
 
 

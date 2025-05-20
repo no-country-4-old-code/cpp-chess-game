@@ -150,11 +150,15 @@ namespace piece::api
         assert(std::has_single_bit(src));
         assert(std::has_single_bit(dest));
         assert(dest != src);
+
+        std::array<board::bitmap::Squares, army::max_num_of_armies> army_positions_lookup;
+        board::bitmap::Squares positions_all = 0;
         
-        // remove old piece
-        for (auto &army : army_list)
+        // update and calc positions
+        for (auto i=0; i < army_list.size(); ++i)
         {
-            for (auto& current: army.pieces)
+            army_positions_lookup[i] = 0;
+            for (auto& current: army_list[i].pieces)
             {
                 if (current.position == src) {
                     current.position = dest;
@@ -164,12 +168,11 @@ namespace piece::api
                 {
                     current.mark_as_dead();
                 }
+
+                army_positions_lookup[i] |= current.position;
+                positions_all |= current.position;
             }
         }
-
-        // aggregate positions // TODO: Optimize : Can be done together with the above
-        piece::aggregator::PositionAggregator aggr{army_list};
-        auto positions_all = aggr.positions();
 
         // update observed and attackable of all affected pieces
         auto affected_squares = src | dest;
@@ -177,7 +180,7 @@ namespace piece::api
         auto idx_army = 0;
         for (auto &army : army_list)
         {
-            auto positions_hostile_pieces = positions_all & ~aggr.positions(idx_army);
+            auto positions_hostile_pieces = positions_all & ~army_positions_lookup[idx_army];
             ++idx_army;
             for (auto& current: army.pieces)
             { 
@@ -191,14 +194,24 @@ namespace piece::api
 
     void init_army_list(piece::aggregator::army_list &army_list, const board::Board &board)
     {
+        std::array<board::bitmap::Squares, army::max_num_of_armies> army_positions_lookup;
+        board::bitmap::Squares positions_all = 0;
 
-        piece::aggregator::PositionAggregator aggr{army_list};
-        auto positions_all = aggr.positions();
+        // update and calc positions
+        for (auto i=0; i < army_list.size(); ++i)
+        {
+            army_positions_lookup[i] = 0;
+            for (auto& current: army_list[i].pieces)
+            {
+                army_positions_lookup[i] |= current.position;
+                positions_all |= current.position;
+            }
+        }
 
         auto idx_army = 0;
         for (auto &army : army_list)
         {
-            auto positions_hostile_pieces = positions_all & ~aggr.positions(idx_army);
+            auto positions_hostile_pieces = positions_all & ~army_positions_lookup[idx_army];
             ++idx_army;
 
             for (auto& piece: army.pieces)

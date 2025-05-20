@@ -77,8 +77,16 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
 
     std::vector<Move> moves;
     std::vector<Move> attack;
-    piece::aggregator::PositionAggregator aggr{_army_list};
-    auto positions = aggr.positions();
+    board::bitmap::Squares positions = 0;
+
+    for (auto army: _army_list)
+    {
+        for (auto current: army.pieces)
+        {
+            positions |= current.position;
+        }
+    }
+
 
     for (auto [src, destinations]: moves_all) {
         IteratorBitmap dest{destinations};

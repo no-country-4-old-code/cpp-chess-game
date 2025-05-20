@@ -11,6 +11,10 @@
 # Cmake
 build
 
+# Other
+*.xml
+*.iml
+
 # Precompiled Headers
 *.gch
 *.pch
