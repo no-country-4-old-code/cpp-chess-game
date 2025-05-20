@@ -1,3 +1,3 @@
-add_gtest("${CMAKE_CURRENT_SOURCE_DIR}/test-piece-king.cpp" Pieces)
-add_gtest("${CMAKE_CURRENT_SOURCE_DIR}/test-piece-rock.cpp" Pieces)
-add_gtest("${CMAKE_CURRENT_SOURCE_DIR}/test-piece-bishop.cpp" Pieces)
+add_gtest("${CMAKE_CURRENT_SOURCE_DIR}/test-piece-king.cpp" PieceActions)
+add_gtest("${CMAKE_CURRENT_SOURCE_DIR}/test-piece-rock.cpp" PieceActions)
+add_gtest("${CMAKE_CURRENT_SOURCE_DIR}/test-piece-bishop.cpp" PieceActions)
