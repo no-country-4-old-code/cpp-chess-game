@@ -52,7 +52,7 @@ namespace
 
 }
 
-namespace piece::update
+namespace test::helper
 {
 
     void display_all_pieces(const board::Board &board, const piece::army::army_list &army_list)

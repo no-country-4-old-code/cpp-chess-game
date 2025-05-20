@@ -2,7 +2,7 @@
 #include "board.h"
 #include "army.h"
 
-namespace piece::update
+namespace test::helper
 {
     void display_all_pieces(const board::Board &board, const piece::army::army_list &army_list);
     void display_bits_on_board(const board::Board &board, board::bitmap::Squares sqrs);

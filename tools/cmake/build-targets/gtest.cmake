@@ -1,5 +1,6 @@
 ##
-# Creates a executable which runs the given _TEST_FILE and links _LIBRARY_UNDER_TEST
+# Creates a executable which runs the given _TEST_FILE and links _LIBRARY_UNDER_TEST.
+# Arguments after _LIBRARY_UNDER_TEST are treated as libraries and also linked.
 ##
 function(add_gtest _TEST_FILE _LIBRARY_UNDER_TEST)
     set(_GTEST_LIBS GTest::gtest GTest::gtest_main)
@@ -23,6 +24,11 @@ function(add_gtest _TEST_FILE _LIBRARY_UNDER_TEST)
 
         # link library under test
         target_link_libraries(${_TEST_NAME} PRIVATE ${_LIBRARY_UNDER_TEST})
+
+        # link any additional libraries passed as extra arguments
+        foreach(lib IN LISTS ARGN)
+            target_link_libraries(${_TEST_NAME} PRIVATE ${lib})
+        endforeach()
 
         # Register test with CTest
         gtest_discover_tests(${_TEST_NAME} EXTRA_ARGS --gtest_print_time --gtest_color=yes
