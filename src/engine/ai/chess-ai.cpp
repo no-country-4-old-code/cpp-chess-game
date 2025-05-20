@@ -1,4 +1,3 @@
-#include <behaviour-ai.h>
 #include <cstdlib>
 #include <ctime>
 #include <vector>
@@ -7,8 +6,9 @@
 #include "notation.h"
 #include "piece-type.h"
 #include "iterator-bitfield.h"
+#include "chess-ai.h"
 
-void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
+void ChessAI::make_move(piece::army::Army& my_army) {
 
     struct Move{
         piece::Piece* piece;
@@ -37,7 +37,7 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
 
         // just a temp. solution - iteration everytime is rather ugly
         piece::Piece* ptr = nullptr;
-        for (auto& piece: my_army.pieces) {
+        for(auto& piece: my_army.pieces) {
             if (piece.position == src) {
                 ptr = &piece;
                 break;
@@ -95,7 +95,7 @@ int get_number_of_living_pieces(piece::army::Army &army) {
     return count;
 }
 
-bool PlayerBehaviourAI::is_defeated(piece::army::Army &my_army) const {
+bool ChessAI::is_defeated(piece::army::Army &my_army) const {
     auto valid_moves = piece::api::calc_possible_moves(my_army, this->_board, this->_army_list);
     bool are_there_valid_moves = valid_moves.size() > 0;
     bool is_king_alive = my_army.king().is_alive();

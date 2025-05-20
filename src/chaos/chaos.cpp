@@ -1,9 +1,9 @@
 #include "chaos.h"
 #include <iostream>
 #include <set>
-#include "behaviour-ai.h"
 #include "color.h"
 #include "player.h"
+#include "chess-ai.h"
 #include <board.h>
 #include "display-pieces.h"
 #include "pieces.h"
@@ -48,7 +48,7 @@ void run_game()
 
     piece::api::init_army_list(army_list, board);
 
-    PlayerBehaviourAI a{army_list, board};
+    ChessAI a{army_list, board};
     PlayerGroup group{
         Player{&a, army_list[0]},
         Player{&a, army_list[1]},

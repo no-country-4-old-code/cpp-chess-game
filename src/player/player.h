@@ -1,16 +1,16 @@
 #pragma once
-#include "interface-player-behaviour.h"
+#include "chess-ai.h"
 #include "color.h"
 
 class Player
 {
 private:
     Color _color;
-    IPlayerBehaviour *_behaviour;
+    ChessAI *_behaviour;
     piece::army::Army &_army;
 
 public:
-    explicit Player(IPlayerBehaviour *behaviour, piece::army::Army &army)
+    explicit Player(ChessAI *behaviour, piece::army::Army &army)
         : _color{army.color()}, _behaviour{behaviour}, _army{army} {}
     [[nodiscard]] Color color() const;
     void make_move() const;

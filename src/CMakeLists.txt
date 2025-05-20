@@ -4,7 +4,6 @@ add_subdirectory(main)
 # add libraries
 add_subdirectory(engine)
 add_subdirectory(build-info)
-add_subdirectory(player-behaviour)
 add_subdirectory(player)
 add_subdirectory(chaos)
 
