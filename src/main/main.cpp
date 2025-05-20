@@ -1,5 +1,4 @@
 #include <iostream>
-#include "build-info.h"
 #include "chaos.h"
 
 /**
@@ -11,8 +10,5 @@
  *
  */
 int main() {
-    namespace info = build::info;
-    std::cout << "Start " << info::projectname << " v" << info::version
-              << " from #" << info::hash << "\n";
     run_game();
 }
