@@ -12,4 +12,4 @@ enum class Color : std::uint8_t
     _INVALID
 };
 
-std::ostream &operator<<(std::ostream &out, Color color);
+

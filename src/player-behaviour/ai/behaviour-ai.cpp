@@ -113,7 +113,7 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
 
     }
 
-    std::cout << "- Found " << moves.size() << " possible moves for Player " << my_army.color() << std::endl;
+    std::cout << "- Found " << moves.size() << " possible moves for Player " << std::endl;
 
     // MOVEMENT
     if (attack.size() > 0) {
@@ -122,7 +122,7 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
         auto src = piece->position;
 
         piece::api::move_piece(src, dest, this->_board, this->_army_list);
-        std::cout << "-> Attack with " << piece->type << " from square " << board::notation::ChessNotation{src, this->_board} << " to " << board::notation::ChessNotation{dest, this->_board} << std::endl;
+        //std::cout << "-> Attack with " << piece->type << " from square " << board::notation::ChessNotation{src, this->_board} << " to " << board::notation::ChessNotation{dest, this->_board} << std::endl;
     }
 
     else if (moves.size() > 0) {
@@ -132,7 +132,7 @@ void PlayerBehaviourAI::make_move(piece::army::Army& my_army) {
 
 
         piece::api::move_piece(src, dest, this->_board, this->_army_list);
-        std::cout << "-> Move " << piece->type << " from square " << board::notation::ChessNotation{src, this->_board} << " to " << board::notation::ChessNotation{dest, this->_board} << std::endl;
+        //std::cout << "-> Move " << piece->type << " from square " << board::notation::ChessNotation{src, this->_board} << " to " << board::notation::ChessNotation{dest, this->_board} << std::endl;
     }
     else {
         std::cout << "-> No moves left" << std::endl;

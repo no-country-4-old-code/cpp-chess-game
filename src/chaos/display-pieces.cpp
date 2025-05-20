@@ -52,6 +52,34 @@ namespace
 
 }
 
+static const std::array<std::string_view, static_cast<size_t>(Color::_COUNT)>
+    lookup_color_name{"White", "Black", "Orange", "Blue"};
+
+std::ostream& operator<<(std::ostream& out, const Color color) {
+    auto index = static_cast<size_t>(color);
+    if (index < lookup_color_name.size()) {
+        out << lookup_color_name[index];  // NOLINT (*-pro-bounds-*) // bounds
+                                          // are checked
+    } else {
+        out << "Unknown";
+    }
+    return out;
+};
+
+std::map<piece::PieceType, std::string> lookup_string {
+    // bin. search is slower then simply index, BUT std::cout not used in time critical context anyway
+    {piece::PieceType::KING, "King"},
+    {piece::PieceType::ROCK, "Rock"},
+    {piece::PieceType::BISHOP, "Bishop"}
+};
+
+std::ostream &operator<<(std::ostream &out, const piece::PieceType& type) {
+    out << lookup_string[type];
+    return out;
+}
+
+
+
 namespace display
 {
 

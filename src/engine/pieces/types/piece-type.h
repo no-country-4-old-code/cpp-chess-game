@@ -17,5 +17,5 @@ namespace piece
         _INVALID
     };
 
-    std::ostream &operator<<(std::ostream &out, const piece::PieceType& piece);
+
 }
