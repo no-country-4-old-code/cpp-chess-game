@@ -37,7 +37,7 @@ option(ENABLE_DOXYGEN             "Adds build-target 'code-doc' to create docume
 
 # Application
 include(application)
-set(EXECUTABLE_NAME "application")
+set(EXECUTABLE_NAME "demo-app")
 create_target_application(${ENABLE_UNITTEST_COVERAGE})
 
 # Optional build-targets
