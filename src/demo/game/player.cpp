@@ -9,10 +9,10 @@ Color Player::color() const
 
 void Player::make_move() const
 {
-    ai->make_move(*_army);
+    _ai->make_move(*_army);
 };
 
 bool Player::is_defeated() const
 {
-    return ai->is_defeated(*_army);
+    return _ai->is_defeated(*_army);
 }

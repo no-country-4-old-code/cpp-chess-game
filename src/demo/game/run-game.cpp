@@ -10,9 +10,8 @@
 #include "notation.h"
 #include "piece-actions.h"
 
-
-
-namespace demo::game{
+namespace demo::game
+{
 
     void run(PlayerGroup &group, const board::Board &board, piece::army::army_list &army_list)
     {
@@ -37,7 +36,7 @@ namespace demo::game{
                 else
                 {
                     player->make_move();
-                    display::display_all_pieces(board, army_list);
+                    display::display_board(board, army_list);
                     ++player;
                 }
             };

@@ -4,8 +4,8 @@
 
 namespace display
 {
-    void display_all_pieces(const board::Board &board, const piece::army::army_list &army_list);
+    void display_board(const board::Board &board, const piece::army::army_list &army_list);
 }
 
 std::ostream &operator<<(std::ostream &out, Color color);
-std::ostream &operator<<(std::ostream &out, const piece::PieceType& piece);
+std::ostream &operator<<(std::ostream &out, const piece::PieceType &piece);

@@ -10,9 +10,6 @@
 #include <vector>
 
 namespace demo::game{
-
     using PlayerGroup = std::vector<Player>;
-
     void run(PlayerGroup &group, const board::Board &board, piece::army::army_list &army_list);
-
 }

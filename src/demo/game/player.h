@@ -5,11 +5,11 @@
 class Player
 {
 private:
-    ChessAI *ai;
+    ChessAI *_ai;
     piece::army::Army *_army;
 
 public:
-    explicit Player(ChessAI *ai, piece::army::Army *army): ai{ai}, _army{army} {}
+    explicit Player(ChessAI *ai, piece::army::Army *army): _ai{ai}, _army{army} {}
     [[nodiscard]] Color color() const;
     void make_move() const;
     bool is_defeated() const;
