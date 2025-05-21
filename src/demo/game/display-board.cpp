@@ -20,10 +20,9 @@ namespace {
     // bin. search is slower then simply index, BUT std::cout not used in time
     // time critical context anyway
 
-    std::map<piece::PieceType, char> lookup_piece_to_notation{
-        {piece::PieceType::KING, 'K'},
-        {piece::PieceType::ROCK, 'R'},
-        {piece::PieceType::BISHOP, 'B'}};
+    std::map<piece::PieceType, char> lookup_piece_to_notation{{piece::PieceType::KING, 'K'},
+                                                              {piece::PieceType::ROCK, 'R'},
+                                                              {piece::PieceType::BISHOP, 'B'}};
 
     std::map<piece::PieceType, std::string_view> lookup_piece_to_name{
         {piece::PieceType::KING, "King"},
@@ -45,15 +44,12 @@ namespace {
     };
 
     using TextPerSquare = std::vector<std::array<char, 2>>;
-    TextPerSquare create_text_for_each_square(const board::Board &,
-                                              const piece::army::army_list &);
-    void print_text_for_each_square(const board::Board &,
-                                    const TextPerSquare &);
+    TextPerSquare create_text_for_each_square(const board::Board &, const piece::army::army_list &);
+    void print_text_for_each_square(const board::Board &, const TextPerSquare &);
 }  // namespace
 
 namespace display {
-    void display_board(const board::Board &board,
-                       const piece::army::army_list &army_list) {
+    void display_board(const board::Board &board, const piece::army::army_list &army_list) {
         auto squares = create_text_for_each_square(board, army_list);
         print_text_for_each_square(board, squares);
     }
@@ -79,10 +75,9 @@ std::ostream &operator<<(std::ostream &out, const piece::PieceType &type) {
 
 namespace {
 
-    TextPerSquare create_text_for_each_square(
-        const board::Board &board, const piece::army::army_list &army_list) {
-        const auto num_of_squares =
-            board.num_of_squares_horizontal * board.num_of_squares_vertical;
+    TextPerSquare create_text_for_each_square(const board::Board &board,
+                                              const piece::army::army_list &army_list) {
+        const auto num_of_squares = board.num_of_squares_horizontal * board.num_of_squares_vertical;
         std::vector<std::array<char, 2>> squares;
         squares.resize(num_of_squares, {' ', ' '});
 
@@ -99,8 +94,7 @@ namespace {
         return squares;
     }
 
-    void print_text_for_each_square(const board::Board &board,
-                                    const TextPerSquare &squares) {
+    void print_text_for_each_square(const board::Board &board, const TextPerSquare &squares) {
         const int bits_per_byte = 8;
         u_int row_count         = 0;
 

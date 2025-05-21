@@ -17,7 +17,5 @@ class IteratorBitmap {
             return *this;
         }
 
-        bool operator!=(const IteratorBitmap& other) const {
-            return _all != other._all;
-        }
+        bool operator!=(const IteratorBitmap& other) const { return _all != other._all; }
 };

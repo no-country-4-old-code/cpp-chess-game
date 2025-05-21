@@ -14,18 +14,14 @@ namespace {
     board::bitmap::Squares updated_piece_positions = 0;
     unsigned int call_count                        = 0;
 
-    void mock_update(piece::Piece &piece, const board::Board &board,
-                     sqrs pos_all, sqrs pos_hostile_armies) {
-        EXPECT_FALSE(
-            updated_piece_positions &
-            piece.position);  // function should be called once for each piece
-        EXPECT_TRUE(piece.position &
-                    pos_all);  // piece position should be in "all positions"
-        EXPECT_FALSE(piece.position &
-                     pos_hostile_armies);  // piece position should not be a
-                                           // "hostile position"
-        EXPECT_TRUE(pos_hostile_armies >
-                    0);  // there should be at least 1 hostile position
+    void mock_update(piece::Piece &piece, const board::Board &board, sqrs pos_all,
+                     sqrs pos_hostile_armies) {
+        EXPECT_FALSE(updated_piece_positions &
+                     piece.position);           // function should be called once for each piece
+        EXPECT_TRUE(piece.position & pos_all);  // piece position should be in "all positions"
+        EXPECT_FALSE(piece.position & pos_hostile_armies);  // piece position should not be a
+                                                            // "hostile position"
+        EXPECT_TRUE(pos_hostile_armies > 0);  // there should be at least 1 hostile position
 
         updated_piece_positions |= piece.position;
         ++call_count;
@@ -46,15 +42,15 @@ class PieceApi_MovePiece : public ::testing::Test {
             call_count              = 0;
 
             army_list = {
-                piece::army::Army{Color::BLUE,
-                                  {PieceMock(PieceType::KING, "d6"_n),
-                                   PieceMock(PieceType::ROCK, "b1"_n)}},
-                piece::army::Army{Color::WHITE,
-                                  {PieceMock(PieceType::KING, "g7"_n),
-                                   PieceMock(PieceType::ROCK, "e8"_n)}},
-                piece::army::Army{Color::ORANGE,
-                                  {PieceMock(PieceType::KING, "g1"_n),
-                                   PieceMock(PieceType::ROCK, "d8"_n)}}};
+                piece::army::Army{
+                    Color::BLUE,
+                    {PieceMock(PieceType::KING, "d6"_n), PieceMock(PieceType::ROCK, "b1"_n)}},
+                piece::army::Army{
+                    Color::WHITE,
+                    {PieceMock(PieceType::KING, "g7"_n), PieceMock(PieceType::ROCK, "e8"_n)}},
+                piece::army::Army{
+                    Color::ORANGE,
+                    {PieceMock(PieceType::KING, "g1"_n), PieceMock(PieceType::ROCK, "d8"_n)}}};
             /*
                  a   b   c   d   e   f   g   h
             1            Rb                  Ko

@@ -10,13 +10,11 @@ namespace {
     struct Position {
             int h;
             int v;
-            Position(int horizontal, int vertical)
-                : h{horizontal}, v{vertical} {}
+            Position(int horizontal, int vertical) : h{horizontal}, v{vertical} {}
     };
 
     inline u_int8_t get_bit_index(board::bitmap::Squares);
-    inline Position map_to_position(board::bitmap::Squares,
-                                    const board::Board &);
+    inline Position map_to_position(board::bitmap::Squares, const board::Board &);
     inline bool is_straight_or_diagonal(const Position &, const Position &);
     inline int sign(int x) {
         return static_cast<int>(x > 0) - static_cast<int>(x < 0);
@@ -27,8 +25,7 @@ namespace piece::utils {
 
     sqrs create_embraced_squares_mask(sqrs pos_bitmap1, sqrs pos_bitmap2,
                                       const board::Board &board) {
-        if ((pos_bitmap1 == 0U) || (pos_bitmap2 == 0U) ||
-            pos_bitmap1 == pos_bitmap2) {
+        if ((pos_bitmap1 == 0U) || (pos_bitmap2 == 0U) || pos_bitmap1 == pos_bitmap2) {
             return 0;
         }
 
@@ -66,8 +63,7 @@ namespace {
         return static_cast<u_int8_t>(std::countr_zero(squares));
     }
 
-    inline Position map_to_position(const board::bitmap::Squares pos,
-                                    const board::Board &board) {
+    inline Position map_to_position(const board::bitmap::Squares pos, const board::Board &board) {
         assert(std::has_single_bit(pos));
         const u_int8_t bit_index = get_bit_index(pos);
         const int h              = bit_index % board.num_of_squares_horizontal;

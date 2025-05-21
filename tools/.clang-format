@@ -8,7 +8,7 @@ UseTab: Never         # Prefer spaces over tabs (as per Core Guidelines)
 Language:        Cpp
 
 # Line Length (typically 80 or 100)
-ColumnLimit: 80
+ColumnLimit: 100
 
 # Formatting control for braces
 BraceWrapping:

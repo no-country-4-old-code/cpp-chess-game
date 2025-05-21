@@ -14,8 +14,8 @@ namespace {
 namespace board::movements {
 
     bitmap::Squares left(bitmap::Squares position, const Board &board) {
-        auto mask = build_left_squares_mask(
-            board);  // OPTIMIZE: pull in board later on for speed up
+        auto mask =
+            build_left_squares_mask(board);  // OPTIMIZE: pull in board later on for speed up
         if ((position & mask)) {
             // We are already as 'left' as we can be.
             return 0;
@@ -24,8 +24,8 @@ namespace board::movements {
     }
 
     bitmap::Squares right(bitmap::Squares position, const Board &board) {
-        auto mask = build_right_squares_mask(
-            board);  // OPTIMIZE: pull in board later on for speed up
+        auto mask =
+            build_right_squares_mask(board);  // OPTIMIZE: pull in board later on for speed up
         if ((position & mask)) {
             // We are already as 'right' as we can be.
             return 0;
@@ -34,8 +34,7 @@ namespace board::movements {
     }
 
     bitmap::Squares up(bitmap::Squares position, const Board &board) {
-        auto mask = build_top_squares_mask(
-            board);  // OPTIMIZE: pull in board later on for speed up
+        auto mask = build_top_squares_mask(board);  // OPTIMIZE: pull in board later on for speed up
         if ((position & mask)) {
             // We are already as 'up' as we can be.
             return 0;
@@ -44,8 +43,8 @@ namespace board::movements {
     }
 
     bitmap::Squares down(bitmap::Squares position, const Board &board) {
-        auto mask = build_bottom_squares_mask(
-            board);  // OPTIMIZE: pull in board later on for speed up
+        auto mask =
+            build_bottom_squares_mask(board);  // OPTIMIZE: pull in board later on for speed up
         if ((position & mask)) {
             // We are already as 'down' as we can be.
             return 0;
@@ -107,9 +106,8 @@ namespace {
     board::bitmap::Squares build_right_squares_mask(const board::Board &board) {
         // Create a bitmap representing all square on the right edge (e.g. h1,
         // h2, h3, ...)
-        board::bitmap::Squares mask = 0;
-        board::bitmap::Squares const right_side_bit =
-            1ULL << (board.num_of_squares_horizontal - 1);
+        board::bitmap::Squares mask                 = 0;
+        board::bitmap::Squares const right_side_bit = 1ULL << (board.num_of_squares_horizontal - 1);
         for (int i = 0; std::cmp_less(i, board.num_of_squares_vertical); i++) {
             mask |= right_side_bit << (board.num_of_squares_horizontal * i);
         }
@@ -122,8 +120,7 @@ namespace {
         return (1ULL << board.num_of_squares_vertical) - 1;
     }
 
-    board::bitmap::Squares build_bottom_squares_mask(
-        const board::Board &board) {
+    board::bitmap::Squares build_bottom_squares_mask(const board::Board &board) {
         // Create a bitmap representing all square on the bottom edge (e.g. a8,
         // b8, c8, ...)
         return ~(~0ULL >> board.num_of_squares_vertical);

@@ -36,8 +36,7 @@ namespace {
 
 namespace test::helper {
 
-    void display_bits_on_board(const board::Board &board,
-                               board::bitmap::Squares sqrs) {
+    void display_bits_on_board(const board::Board &board, board::bitmap::Squares sqrs) {
         std::cout << "\nPrint Board\n\n";
         std::cout << " \t a  b  c  d  e  f  g  h  \n";
 

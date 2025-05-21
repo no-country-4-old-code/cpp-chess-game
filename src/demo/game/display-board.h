@@ -3,8 +3,7 @@
 #include "board.h"
 
 namespace display {
-    void display_board(const board::Board &board,
-                       const piece::army::army_list &army_list);
+    void display_board(const board::Board &board, const piece::army::army_list &army_list);
 }
 
 std::ostream &operator<<(std::ostream &out, Color color);

@@ -17,8 +17,7 @@ void ChessAI::make_move(piece::army::Army &my_army) {
     };
 
     // === SELECTION
-    auto moves_all = piece::api::calc_possible_moves(my_army, this->_board,
-                                                     this->_army_list);
+    auto moves_all = piece::api::calc_possible_moves(my_army, this->_board, this->_army_list);
 
     std::vector<Move> moves;
     std::vector<Move> attack;
@@ -54,8 +53,7 @@ void ChessAI::make_move(piece::army::Army &my_army) {
         }
     }
 
-    std::cout << "- Found " << moves.size() << " possible moves for Player "
-              << '\n';
+    std::cout << "- Found " << moves.size() << " possible moves for Player " << '\n';
 
     // MOVEMENT
     if (!attack.empty()) {
@@ -69,7 +67,7 @@ void ChessAI::make_move(piece::army::Army &my_army) {
     }
 
     else if (!moves.empty()) {
-        auto idx = static_cast<int>(rand() * moves.size()) % moves.size();
+        auto idx           = static_cast<int>(rand() * moves.size()) % moves.size();
         auto [piece, dest] = moves[idx];
         auto src           = piece->position;
 
@@ -93,8 +91,7 @@ static int get_number_of_living_pieces(piece::army::Army &army) {
 }
 
 bool ChessAI::is_defeated(piece::army::Army &my_army) const {
-    auto valid_moves = piece::api::calc_possible_moves(my_army, this->_board,
-                                                       this->_army_list);
+    auto valid_moves = piece::api::calc_possible_moves(my_army, this->_board, this->_army_list);
     bool const are_there_valid_moves = valid_moves.size() > 0;
     bool const is_king_alive         = my_army.king().is_alive();
     bool const have_multiple_pieces  = get_number_of_living_pieces(my_army) > 1;

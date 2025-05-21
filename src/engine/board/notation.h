@@ -14,20 +14,15 @@ namespace board::notation {
             char _rank;  // 1, 2, 3, 4, 5 ... (horizontal line)
 
         public:
-            ChessNotation(std::string_view square_as_literal);  // e.g. "a1"
-            ChessNotation(const board::bitmap::Squares& squares,
-                          const board::Board& board);
+            ChessNotation(std::string_view);  // e.g. "a1"
+            ChessNotation(const board::bitmap::Squares&, const board::Board&);
             auto operator<=>(const ChessNotation&) const = default;
+            friend std::ostream& operator<<(std::ostream&, const board::notation::ChessNotation&);
 
-            board::bitmap::Squares as_squares(const board::Board& board) const;
-
-            friend std::ostream& operator<<(
-                std::ostream& out,
-                const board::notation::ChessNotation& notation);
+            board::bitmap::Squares as_squares(const board::Board&) const;
     };
 
-    std::ostream& operator<<(std::ostream& out,
-                             const board::notation::ChessNotation& notation);
+    std::ostream& operator<<(std::ostream& out, const board::notation::ChessNotation& notation);
 }  // namespace board::notation
 
 namespace board::notation::literal {

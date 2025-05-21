@@ -27,8 +27,7 @@ namespace board::notation {
         assert(square_as_literal.size() == 2);  // e.g. "a4"
     };
 
-    ChessNotation::ChessNotation(const board::bitmap::Squares &squares,
-                                 const board::Board &board) {
+    ChessNotation::ChessNotation(const board::bitmap::Squares &squares, const board::Board &board) {
         assert(std::has_single_bit(squares));
 
         const u_int8_t bit_index  = get_bit_index(squares);
@@ -39,21 +38,18 @@ namespace board::notation {
         this->_rank = map_uint_2_rank(vertical);
     };
 
-    board::bitmap::Squares ChessNotation::as_squares(
-        const board::Board &board) const {
+    board::bitmap::Squares ChessNotation::as_squares(const board::Board &board) const {
         const u_int8_t horizontal = map_file_2_uint(this->_file);
         const u_int8_t vertical   = map_rank_2_uint(this->_rank);
 
         assert(horizontal < board.num_of_squares_horizontal);
         assert(vertical < board.num_of_squares_vertical);
 
-        const u_int8_t bit_index =
-            horizontal + (vertical * board.num_of_squares_horizontal);
+        const u_int8_t bit_index = horizontal + (vertical * board.num_of_squares_horizontal);
         return 1ULL << bit_index;
     }
 
-    std::ostream &operator<<(std::ostream &out,
-                             const board::notation::ChessNotation &notation) {
+    std::ostream &operator<<(std::ostream &out, const board::notation::ChessNotation &notation) {
         out << notation._file << notation._rank;
         return out;
     };

@@ -10,11 +10,10 @@ namespace {
     namespace move = board::movements;
     using namespace piece;
 
-    void update_observed_and_attackable(piece::Piece &piece,
-                                        const board::Board &board, sqrs pos_all,
-                                        sqrs pos_hostile_armies) {
-        const std::array<move::move_func, 4> directions{move::left, move::right,
-                                                        move::up, move::down};
+    void update_observed_and_attackable(piece::Piece &piece, const board::Board &board,
+                                        sqrs pos_all, sqrs pos_hostile_armies) {
+        const std::array<move::move_func, 4> directions{move::left, move::right, move::up,
+                                                        move::down};
 
         piece.observed   = 0;
         piece.attackable = 0;
@@ -40,7 +39,6 @@ namespace {
 
 namespace piece {
     Piece Rock(board::Board board, board::notation::ChessNotation notation) {
-        return {PieceType::ROCK, notation.as_squares(board),
-                ::update_observed_and_attackable};
+        return {PieceType::ROCK, notation.as_squares(board), ::update_observed_and_attackable};
     }
 }

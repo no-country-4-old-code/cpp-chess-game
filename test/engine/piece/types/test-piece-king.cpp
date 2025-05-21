@@ -31,9 +31,8 @@ TEST(Piece_King, EmptyField) {
     */
     Piece piece = King(default_board, "e4"_n);
 
-    auto expected_observed =
-        combine_squares(default_board, "d3"_n, "e3"_n, "f3"_n, "d4"_n, "f4"_n,
-                        "d5"_n, "e5"_n, "f5"_n);
+    auto expected_observed = combine_squares(default_board, "d3"_n, "e3"_n, "f3"_n, "d4"_n, "f4"_n,
+                                             "d5"_n, "e5"_n, "f5"_n);
     // act
     piece.update_observed_and_attackable(default_board, 0, 0);
     // expect
@@ -58,9 +57,8 @@ TEST(Piece_King, BlockedByFriend) {
     Piece piece          = King(default_board, "e4"_n);
     auto position_friend = "d4"_n.as_squares(default_board);
 
-    auto expected_observed =
-        combine_squares(default_board, "d3"_n, "e3"_n, "f3"_n, "d4"_n, "f4"_n,
-                        "d5"_n, "e5"_n, "f5"_n);
+    auto expected_observed = combine_squares(default_board, "d3"_n, "e3"_n, "f3"_n, "d4"_n, "f4"_n,
+                                             "d5"_n, "e5"_n, "f5"_n);
     auto expected_attackable = expected_observed & ~position_friend;
     // act
     piece.update_observed_and_attackable(default_board, position_friend, 0);
@@ -86,12 +84,10 @@ TEST(Piece_King, BlockedByEnemy) {
     Piece piece         = King(default_board, "e4"_n);
     auto position_enemy = "d4"_n.as_squares(default_board);
 
-    auto expected_observed =
-        combine_squares(default_board, "d3"_n, "e3"_n, "f3"_n, "d4"_n, "f4"_n,
-                        "d5"_n, "e5"_n, "f5"_n);
+    auto expected_observed = combine_squares(default_board, "d3"_n, "e3"_n, "f3"_n, "d4"_n, "f4"_n,
+                                             "d5"_n, "e5"_n, "f5"_n);
     // act
-    piece.update_observed_and_attackable(default_board, position_enemy,
-                                         position_enemy);
+    piece.update_observed_and_attackable(default_board, position_enemy, position_enemy);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_observed);
@@ -112,16 +108,14 @@ TEST(Piece_King, BlockedMixed) {
     */
     Piece piece           = King(default_board, "e4"_n);
     auto positions_friend = combine_squares(default_board, "d3"_n, "f5"_n);
-    auto positions_enemy =
-        combine_squares(default_board, "d4"_n, "e3"_n, "e8"_n);
+    auto positions_enemy  = combine_squares(default_board, "d4"_n, "e3"_n, "e8"_n);
 
-    auto expected_observed =
-        combine_squares(default_board, "d3"_n, "e3"_n, "f3"_n, "d4"_n, "f4"_n,
-                        "d5"_n, "e5"_n, "f5"_n);
+    auto expected_observed = combine_squares(default_board, "d3"_n, "e3"_n, "f3"_n, "d4"_n, "f4"_n,
+                                             "d5"_n, "e5"_n, "f5"_n);
     auto expected_attackable = expected_observed & ~positions_friend;
     // act
-    piece.update_observed_and_attackable(
-        default_board, positions_enemy | positions_friend, positions_enemy);
+    piece.update_observed_and_attackable(default_board, positions_enemy | positions_friend,
+                                         positions_enemy);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);

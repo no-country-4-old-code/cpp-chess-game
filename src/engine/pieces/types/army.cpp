@@ -8,13 +8,10 @@
 
 namespace piece::army {
 
-    Army::Army(Color color, const std::vector<piece::Piece>& given_pieces)
-        : _color{color} {
+    Army::Army(Color color, const std::vector<piece::Piece>& given_pieces) : _color{color} {
         assert(given_pieces.size() <= max_pieces_per_army);
-
         u_int8_t count_kings = 0;
         u_int8_t idx         = 0;
-        _size                = static_cast<u_int8_t>(given_pieces.size());
 
         for (const auto& given : given_pieces) {
             pieces.push(given);
@@ -25,8 +22,7 @@ namespace piece::army {
             }
             ++idx;
         }
-        assert((count_kings == 1 ||
-                given_pieces.empty()));  // Every army should have ONE king only
+        assert((count_kings == 1 || given_pieces.empty()));  // Every army should have ONE king only
     }
 
     Color Army::color() const {
@@ -34,22 +30,7 @@ namespace piece::army {
     }
 
     u_int8_t Army::size() const {
-#ifndef NDEBUG
-        // "size" is not updated after creation due performance reasons.
-        // Adding / removing pieces is not allowed !
-        if (_size == 0) {
-            // empty army should stay empty
-            assert(pieces[0].type == piece::PieceType::_INVALID);
-        } else {
-            // non-empty army should stay at same size
-            assert(pieces[_size - 1].type != piece::PieceType::_INVALID);
-            if (_size != max_pieces_per_army) {
-                assert(pieces[_size].type == piece::PieceType::_INVALID);
-            }
-        }
-#endif
-
-        return this->_size;
+        return this->pieces.size();
     }
 
     const piece::Piece& Army::king() const {

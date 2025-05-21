@@ -14,7 +14,6 @@ namespace piece::army {
     class Army {
         private:
             Color _color;
-            u_int8_t _size;
             u_int8_t _idx_king;
 
         public:

@@ -8,8 +8,7 @@
 
 namespace demo::game {
 
-    void run(PlayerGroup &group, const board::Board &board,
-             piece::army::army_list &army_list) {
+    void run(PlayerGroup &group, const board::Board &board, piece::army::army_list &army_list) {
         unsigned int turn = 1;
         piece::api::init_army_list(army_list, board);
 

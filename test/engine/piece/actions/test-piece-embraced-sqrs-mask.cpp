@@ -11,8 +11,7 @@ using namespace board::notation::literal;
 using sqrs = board::bitmap::Squares;
 
 namespace {
-    void list_squares(const board::bitmap::Squares squares,
-                      const board::Board &board) {
+    void list_squares(const board::bitmap::Squares squares, const board::Board &board) {
         IteratorBitmap iter{squares};
         std::cout << "Squares: ";
         while (*iter) {
@@ -22,10 +21,10 @@ namespace {
         std::cout << "\n" << std::flush;
     }
 
-    sqrs act(board::notation::ChessNotation pos1,
-             board::notation::ChessNotation pos2, board::Board board) {
-        return utils::create_embraced_squares_mask(
-            pos1.as_squares(board), pos2.as_squares(board), board);
+    sqrs act(board::notation::ChessNotation pos1, board::notation::ChessNotation pos2,
+             board::Board board) {
+        return utils::create_embraced_squares_mask(pos1.as_squares(board), pos2.as_squares(board),
+                                                   board);
     }
 }
 

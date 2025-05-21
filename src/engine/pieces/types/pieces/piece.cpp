@@ -5,8 +5,7 @@
 
 namespace piece {
 
-    void Piece::update_observed_and_attackable(const board::Board &board,
-                                               sqrs pos_all,
+    void Piece::update_observed_and_attackable(const board::Board &board, sqrs pos_all,
                                                sqrs pos_hostile_armies) {
         assert(this->type != PieceType::_INVALID);
         update(*this, board, pos_all, pos_hostile_armies);

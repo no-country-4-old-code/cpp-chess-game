@@ -29,9 +29,7 @@ class StackVector {
                     ++_ptr;
                     return *this;
                 }
-                bool operator!=(const Iterator& other) const {
-                    return _ptr != other._ptr;
-                }
+                bool operator!=(const Iterator& other) const { return _ptr != other._ptr; }
         };
 
         // ConstIterator
@@ -45,18 +43,14 @@ class StackVector {
                     ++_ptr;
                     return *this;
                 }
-                bool operator!=(const ConstIterator& other) const {
-                    return _ptr != other._ptr;
-                }
+                bool operator!=(const ConstIterator& other) const { return _ptr != other._ptr; }
         };
 
         Iterator begin() { return Iterator(_array.data()); }
         Iterator end() { return Iterator(_array.data() + _size); }
 
         ConstIterator begin() const { return ConstIterator(_array.data()); }
-        ConstIterator end() const {
-            return ConstIterator(_array.data() + _size);
-        }
+        ConstIterator end() const { return ConstIterator(_array.data() + _size); }
 
         TYPE& operator[](size_t idx) {
             assert(idx < SIZE);
