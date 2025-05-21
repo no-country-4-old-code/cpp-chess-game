@@ -2,8 +2,9 @@
 #include "piece-baseclass.h"
 #include "board-movements.h"
 
-namespace piece::bishop
+namespace 
 {
+    using namespace piece;
     namespace move = board::movements;
 
     void update_observed_and_attackable(piece::Piece &piece, const board::Board &board, sqrs pos_all, sqrs pos_hostile_armies)
@@ -41,5 +42,11 @@ namespace piece::bishop
                 }
             }
         }
+    }
+}
+
+namespace piece {
+    Piece Bishop(board::Board board, board::notation::ChessNotation notation) {
+        return Piece(PieceType::BISHOP, notation.as_squares(board), ::update_observed_and_attackable);
     }
 }

@@ -2,8 +2,9 @@
 #include "piece-baseclass.h"
 #include "board-movements.h"
 
-namespace piece::king
+namespace
 {
+    using namespace piece;
     namespace move = board::movements;
 
     void update_observed_and_attackable(piece::Piece &piece, const board::Board &board, sqrs pos_all, sqrs pos_hostile_armies)
@@ -22,4 +23,12 @@ namespace piece::king
         auto pos_own_pieces = pos_all & ~pos_hostile_armies;
         piece.attackable = piece.observed & ~pos_own_pieces; // can not attack own pieces
     }
+}
+
+namespace piece {
+
+    Piece King(board::Board board, board::notation::ChessNotation notation) {
+        return Piece(PieceType::KING, notation.as_squares(board), ::update_observed_and_attackable);
+    }
+
 }

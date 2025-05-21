@@ -10,26 +10,22 @@
  * console. It serves as the starting point for executing the program.
  *
  */
-int main() {
+int main()
+{
     using namespace piece;
     using namespace board::notation::literal;
 
     board::Board board{8, 8};
 
     army::army_list army_list = {
-        army::Army{Color::BLUE, {
-                                           King{board, "a1"_n},
-                                           Rock{board, "e4"_n},
-                                           Bishop(board, "b6"_n)
-                                       }},
+        army::Army{Color::BLUE, {King(board, "a1"_n), Rock{board, "e4"_n}, Bishop(board, "b6"_n)}},
         army::Army{Color::WHITE, {
-                                            King{board, "h2"_n},
-                                            Rock{board, "f8"_n},
-                                            Rock{board, "g7"_n},
-                                        }},
-        army::Army{Color::ORANGE, {King{board, "d8"_n}, Rock{board, "d7"_n}}}, piece::army::Army{}};
+                                     King(board, "h2"_n),
+                                     Rock{board, "f8"_n},
+                                     Rock{board, "g7"_n},
+                                 }},
+        army::Army{Color::ORANGE, {King(board, "d8"_n), Rock{board, "d7"_n}}}, piece::army::Army{}};
 
- 
     ChessAI ai{army_list, board};
 
     demo::game::PlayerGroup group{

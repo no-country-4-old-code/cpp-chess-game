@@ -11,7 +11,6 @@
 using namespace piece;
 using namespace board::notation::literal;
 
-
 namespace
 {
     const board::Board default_board{8, 8};
@@ -31,7 +30,7 @@ TEST(Piece_Bishop, EmptyField)
 8        X  -  -  -  -  -  -  -
 
     */
-    Bishop piece{default_board, "e4"_n};
+    Piece piece = Bishop(default_board, "e4"_n);
 
     auto expected_observed = combine_squares(default_board,
                                              "b1"_n, "c2"_n, "d3"_n, "f5"_n, "g6"_n, "h7"_n,
@@ -58,7 +57,7 @@ TEST(Piece_Bishop, BlockedByFriend)
 8        -  -  -  -  -  -  -  -
 
     */
-    Bishop piece{default_board, "e4"_n};
+    Piece piece = Bishop(default_board, "e4"_n);
     auto position_friend = "c6"_n.as_squares(default_board);
 
     auto expected_observed = combine_squares(default_board,
@@ -87,7 +86,7 @@ TEST(Piece_Bishop, BlockedByEnemy)
 8        -  -  -  -  -  -  -  -
 
     */
-    Bishop piece{default_board, "e4"_n};
+    Piece piece = Bishop(default_board, "e4"_n);
     auto position_enemy = "c6"_n.as_squares(default_board);
 
     auto expected_observed = combine_squares(default_board,
@@ -114,7 +113,7 @@ TEST(Piece_Bishop, BlockedMixed)
 7        -  -  -  -  -  -  -  -
 8        -  -  -  -  A  -  -  -
     */
-    Bishop piece{default_board, "e4"_n};
+    Piece piece = Bishop(default_board, "e4"_n);
     auto positions_friend = combine_squares(default_board, "c6"_n, "g6"_n);
     auto positions_enemy = combine_squares(default_board, "c2"_n, "e2"_n, "e8"_n);
 
