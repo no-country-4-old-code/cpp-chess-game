@@ -9,11 +9,11 @@ Color Player::color() const
 
 void Player::make_move() const
 {
-    _behaviour->make_move(_army);
+    _behaviour->make_move(*_army);
     // std::cout << " > " << this->color() << " makes a move\n";
 };
 
 bool Player::is_defeated() const
 {
-    return _behaviour->is_defeated(_army);
+    return _behaviour->is_defeated(*_army);
 }
