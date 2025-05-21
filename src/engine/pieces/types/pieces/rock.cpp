@@ -3,9 +3,10 @@
 #include "board-movements.h"
 #include <array>
 
-namespace piece::rock
+namespace 
 {
     namespace move = board::movements;
+    using namespace piece;
 
     void update_observed_and_attackable(piece::Piece &piece, const board::Board &board, sqrs pos_all, sqrs pos_hostile_armies)
     {
@@ -42,5 +43,12 @@ namespace piece::rock
                 }
             }
         }
+    }
+}
+
+namespace piece
+{
+    Piece Rock(board::Board board, board::notation::ChessNotation notation) {
+        return Piece(PieceType::ROCK, notation.as_squares(board), ::update_observed_and_attackable);
     }
 }

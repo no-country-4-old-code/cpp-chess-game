@@ -58,7 +58,7 @@ TEST(PieceApi_CalcMove, KingMovementUnderAttack)
     board::Board board{3, 3};
     auto army_list = create_army_list(board,
                                       {King(board, "b1"_n)},
-                                      {King(board, "c3"_n), Rock{board, "b3"_n}});
+                                      {King(board, "c3"_n), Rock(board, "b3"_n)});
     // act
     auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
     // assert
@@ -73,7 +73,7 @@ TEST(PieceApi_CalcMove, KingNoMovementPossible)
     board::Board board{3, 3};
     auto army_list = create_army_list(board,
                                       {King(board, "a1"_n)},
-                                      {King(board, "c3"_n), Rock{board, "b3"_n}, Rock{board, "c2"_n}});
+                                      {King(board, "c3"_n), Rock(board, "b3"_n), Rock(board, "c2"_n)});
     // act
     auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
     // assert
@@ -85,7 +85,7 @@ TEST(PieceApi_CalcMove, KingCheckmate)
     board::Board board{3, 3};
     auto army_list = create_army_list(board,
                                       {King(board, "a1"_n)},
-                                      {King(board, "c3"_n), Rock{board, "b3"_n}, Rock{board, "a3"_n}});
+                                      {King(board, "c3"_n), Rock(board, "b3"_n), Rock(board, "a3"_n)});
     // act
     auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
     // assert
@@ -110,8 +110,8 @@ TEST(PieceApi_CalcMove, TwoPieceOnlyRockUnderAttack)
 {
     board::Board board{3, 3};
     auto army_list = create_army_list(board,
-                                      {King(board, "a1"_n), Rock{board, "b1"_n}},
-                                      {King(board, "c3"_n), Rock{board, "b3"_n}});
+                                      {King(board, "a1"_n), Rock(board, "b1"_n)},
+                                      {King(board, "c3"_n), Rock(board, "b3"_n)});
     // act
     auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
     // assert
@@ -127,8 +127,8 @@ TEST(PieceApi_CalcMove, TwoPieceKingUnderAttackOneAttackerInterceptImpossible)
 {
     board::Board board{3, 3};
     auto army_list = create_army_list(board,
-                                      {King(board, "b1"_n), Rock{board, "a1"_n}},
-                                      {King(board, "c3"_n), Rock{board, "b3"_n}});
+                                      {King(board, "b1"_n), Rock(board, "a1"_n)},
+                                      {King(board, "c3"_n), Rock(board, "b3"_n)});
     // act
     auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
     // assert
@@ -142,8 +142,8 @@ TEST(PieceApi_CalcMove, TwoPieceKingUnderAttackOneAttackerInterceptPossible)
 {
     board::Board board{3, 3};
     auto army_list = create_army_list(board,
-                                      {King(board, "b1"_n), Rock{board, "a2"_n}},
-                                      {King(board, "c3"_n), Rock{board, "b3"_n}});
+                                      {King(board, "b1"_n), Rock(board, "a2"_n)},
+                                      {King(board, "c3"_n), Rock(board, "b3"_n)});
     // act
     auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
     // assert
@@ -151,7 +151,7 @@ TEST(PieceApi_CalcMove, TwoPieceKingUnderAttackOneAttackerInterceptPossible)
     EXPECT_EQ(moves_all[0].src, "b1"_n.as_squares(board));
     EXPECT_EQ(moves_all[0].destinations, combine_squares(board, "a1"_n, "c1"_n));
     EXPECT_EQ(moves_all[1].src, "a2"_n.as_squares(board));
-    EXPECT_EQ(moves_all[1].destinations, combine_squares(board, "b2"_n)); // rock intercept aggressor
+    EXPECT_EQ(moves_all[1].destinations, combine_squares(board, "b2"_n)); // Piece intercept aggressor
     list_squares(moves_all[0].destinations, board);
 }
 
@@ -159,8 +159,8 @@ TEST(PieceApi_CalcMove, TwoPieceKingUnderAttackOneAttackerInterceptPossible2)
 {
     board::Board board{3, 3};
     auto army_list = create_army_list(board,
-                                      {King(board, "b1"_n), Rock{board, "a3"_n}},
-                                      {King(board, "c3"_n), Rock{board, "b3"_n}});
+                                      {King(board, "b1"_n), Rock(board, "a3"_n)},
+                                      {King(board, "c3"_n), Rock(board, "b3"_n)});
     // act
     auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
     // assert
@@ -168,7 +168,7 @@ TEST(PieceApi_CalcMove, TwoPieceKingUnderAttackOneAttackerInterceptPossible2)
     EXPECT_EQ(moves_all[0].src, "b1"_n.as_squares(board));
     EXPECT_EQ(moves_all[0].destinations, combine_squares(board, "a1"_n, "c1"_n, "a2"_n));
     EXPECT_EQ(moves_all[1].src, "a3"_n.as_squares(board));
-    EXPECT_EQ(moves_all[1].destinations, combine_squares(board, "b3"_n)); // rock eliminates aggressor
+    EXPECT_EQ(moves_all[1].destinations, combine_squares(board, "b3"_n)); // Piece eliminates aggressor
     list_squares(moves_all[0].destinations, board);
 }
 
@@ -176,8 +176,8 @@ TEST(PieceApi_CalcMove, TwoPieceMovementWouldEndangerKing)
 {
     board::Board board{3, 3};
     auto army_list = create_army_list(board,
-                                      {King(board, "b1"_n), Rock{board, "b2"_n}},
-                                      {King(board, "c3"_n), Rock{board, "b3"_n}});
+                                      {King(board, "b1"_n), Rock(board, "b2"_n)},
+                                      {King(board, "c3"_n), Rock(board, "b3"_n)});
     // act
     auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
     // assert
@@ -191,8 +191,8 @@ TEST(PieceApi_CalcMove, TwoPieceKingUnderAttackOneAttackerInterceptWouldEndanger
 {
     board::Board board{3, 3};
     auto army_list = create_army_list(board,
-                                      {King(board, "c1"_n), Rock{board, "c2"_n}},
-                                      {Bishop(board, "a3"_n), King(board, "b3"_n), Rock{board, "c3"_n}});
+                                      {King(board, "c1"_n), Rock(board, "c2"_n)},
+                                      {Bishop(board, "a3"_n), King(board, "b3"_n), Rock(board, "c3"_n)});
     // act
     auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
     // assert
