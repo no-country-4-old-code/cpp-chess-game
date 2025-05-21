@@ -17,7 +17,6 @@ namespace piece
            Only refer to stateless pure functions.
            Object slicing might otherwise cause side effect when used in local std::array.*/
     public:
-        King(board::bitmap::Squares pos) : Piece(PieceType::KING, pos, king::update_observed_and_attackable) {};
         King(board::Board board, board::notation::ChessNotation notation) : Piece(PieceType::KING, notation.as_squares(board), king::update_observed_and_attackable) {};
     };
 
@@ -31,7 +30,6 @@ namespace piece
     class Rock : public Piece
     {
     public:
-        Rock(board::bitmap::Squares pos) : Piece(PieceType::ROCK, pos, rock::update_observed_and_attackable) {};
         Rock(board::Board board, board::notation::ChessNotation notation) : Piece(PieceType::ROCK, notation.as_squares(board), rock::update_observed_and_attackable) {};
     };
 
