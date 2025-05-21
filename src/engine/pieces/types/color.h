@@ -2,8 +2,7 @@
 #include <cstdint>
 #include <ostream>
 
-enum class Color : std::uint8_t
-{
+enum class Color : std::uint8_t {
     WHITE,
     BLACK,
     ORANGE,
@@ -11,5 +10,3 @@ enum class Color : std::uint8_t
     _COUNT,
     _INVALID
 };
-
-

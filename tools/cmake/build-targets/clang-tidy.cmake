@@ -12,7 +12,7 @@ function(create_target_clang_tidy)
         ${_TOOL_NAME}
         COMMAND
             find ${CMAKE_SOURCE_DIR}/src/ -iname '*.c' -o -iname '*.cpp' -o -iname '*.cc' | xargs -I
-            {} ${_TOOL_EXECUTABLE} {} -p ${BUILD_FOLDER_PATH} --fix 
+            {} ${_TOOL_EXECUTABLE} {} -p ${BUILD_FOLDER_PATH} # --fix 
             --config-file=${TOOLS_FOLDER_PATH}/.clang-tidy
         COMMENT "Runs '${_TOOL_NAME}' on source files (.c, .cpp, .cc)")
 endfunction()

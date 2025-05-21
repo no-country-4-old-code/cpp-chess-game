@@ -2,10 +2,8 @@
 #include <cstdlib>
 #include <ostream>
 
-namespace piece
-{
-    enum class PieceType : u_int8_t
-    {
+namespace piece {
+    enum class PieceType : u_int8_t {
         KING,
         QUEEN,
         KNIGHT,

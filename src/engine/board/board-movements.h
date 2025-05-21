@@ -3,7 +3,8 @@
 #include "squares.h"
 
 namespace board::movements {
-    using move_func = bitmap::Squares (*) (bitmap::Squares position, const Board& board);
+    using move_func = bitmap::Squares (*)(bitmap::Squares position,
+                                          const Board& board);
 
     bitmap::Squares left(bitmap::Squares position, const Board& board);
     bitmap::Squares right(bitmap::Squares position, const Board& board);
