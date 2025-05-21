@@ -5,8 +5,6 @@
 #include "notation.h"
 #include "board-movements.h"
 #include "color.h"
-
-#include "pieces.h"
 #include "pieces.h"
 #include "piece-actions.h"
 #include <bit>
@@ -21,79 +19,48 @@ using namespace board::notation::literal;
 
 namespace
 {
+    // bin. search is slower then simply index, BUT std::cout not used in time critical context anyway
 
-    const int bits_per_byte = 8;
-
-    template <typename T, typename FUNCTION>
-    void for_each_bit(T value, FUNCTION func)
-    {
-        // Iterate through every(!) bit starting with LSB
-        u_int num_of_bits = bits_per_byte * sizeof(value);
-        for (u_int i = 0; i < num_of_bits; ++i)
-        {
-            func(value & 1);
-            value = value >> 1;
-        }
-    }
-
-    std::map<piece::PieceType, char> lookup_piece_to_notation{
-        // bin. search is slower then simply index, BUT std::cout not used in time critical context anyway
+     std::map<piece::PieceType, char> lookup_piece_to_notation{
         {piece::PieceType::KING, 'K'},
         {piece::PieceType::ROCK, 'R'},
         {piece::PieceType::BISHOP, 'B'}};
 
-    std::map<Color, char> lookup_color_to_notation{
-        // bin. search is slower then simply index, BUT std::cout not used in time critical context anyway
+     std::map<piece::PieceType, std::string> lookup_piece_to_name{
+        {piece::PieceType::KING, "King"},
+        {piece::PieceType::ROCK, "Rock"},
+        {piece::PieceType::BISHOP, "Bishop"}};
+
+     std::map<Color, char> lookup_color_to_notation{
         {Color::WHITE, 'w'},
         {Color::BLACK, 'b'},
         {Color::ORANGE, 'o'},
         {Color::BLUE, 'b'},
     };
 
+     std::map<Color, std::string> lookup_color_to_name{
+        {Color::WHITE, "White"},
+        {Color::BLACK, "Black"},
+        {Color::ORANGE, "Orange"},
+        {Color::BLUE, "Blue"},
+    };
 }
 
-static const std::array<std::string_view, static_cast<size_t>(Color::_COUNT)>
-    lookup_color_name{"White", "Black", "Orange", "Blue"};
-
-std::ostream &operator<<(std::ostream &out, const Color color)
-{
-    auto index = static_cast<size_t>(color);
-    if (index < lookup_color_name.size())
-    {
-        out << lookup_color_name[index]; // NOLINT (*-pro-bounds-*) // bounds
-                                         // are checked
-    }
-    else
-    {
-        out << "Unknown";
-    }
-    return out;
-};
-
-std::map<piece::PieceType, std::string> lookup_string{
-    // bin. search is slower then simply index, BUT std::cout not used in time critical context anyway
-    {piece::PieceType::KING, "King"},
-    {piece::PieceType::ROCK, "Rock"},
-    {piece::PieceType::BISHOP, "Bishop"}};
-
-std::ostream &operator<<(std::ostream &out, const piece::PieceType &type)
-{
-    out << lookup_string[type];
-    return out;
-}
 
 namespace display
 {
-
     void display_all_pieces(const board::Board &board, const piece::army::army_list &army_list)
     {
+        const int bits_per_byte = 8;
+        const auto num_of_squares = board.num_of_squares_horizontal * board.num_of_squares_vertical;
+
         std::cout << "\nPrint Board\n\n";
         std::cout << " \t a   b   c   d   e   f   g   h  \n";
 
-        const auto num_of_squares = board.num_of_squares_horizontal * board.num_of_squares_vertical;
         std::vector<std::array<char, 2>> squares;
         squares.resize(num_of_squares, {' ', '\0'});
 
+        
         for (auto &sqr : squares)
         {
             sqr[0] = ' ';
@@ -102,14 +69,13 @@ namespace display
 
         for (auto army : army_list)
         {
-            for (auto i = 0; i < army.size(); ++i)
+            for ( auto& piece: army.pieces)
             {
-                const piece::Piece *ptr = &army.pieces[i];
-                if (ptr->is_alive())
+                if (piece.is_alive())
                 {
-                    assert(std::has_single_bit(ptr->position));
-                    const auto idx = std::countr_zero(ptr->position);
-                    squares[idx][0] = lookup_piece_to_notation[ptr->type];
+                    assert(std::has_single_bit(piece.position));
+                    const auto idx = std::countr_zero(piece.position);
+                    squares[idx][0] = lookup_piece_to_notation[piece.type];
                     squares[idx][1] = lookup_color_to_notation[army.color()];
                 }
             }
@@ -133,4 +99,35 @@ namespace display
         std::cout << "\n";
     }
 
+}
+
+std::ostream &operator<<(std::ostream &out, const Color color)
+{
+    auto it = lookup_color_to_name.find(color);
+    if (it != lookup_color_to_name.end()) {
+        out << "The color is: " << it->second << std::endl;
+    } else {
+        out << "Color not found!" << std::endl;
+    }
+    /*
+    if (lookup_color_to_name.contains(color)) {
+        out << lookup_color_to_name[color];
+    } else {
+        out << "Unknown";
+    }
+    */
+    return out;
+};
+
+
+std::ostream &operator<<(std::ostream &out, const piece::PieceType &type)
+{
+    /*
+    if (lookup_piece_to_name.contains(type)) {
+        out << lookup_piece_to_name[type];
+    } else {
+        out << "Unknown";
+    }
+    */
+    return out;
 }
