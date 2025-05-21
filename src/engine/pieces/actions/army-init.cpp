@@ -1,9 +1,9 @@
+#include <array>
 #include "army.h"
 #include "board.h"
 #include "piece-actions.h"
 #include "piece.h"
 #include "squares.h"
-#include <array>
 
 namespace piece::api {
     void init_army_list(piece::army::army_list &army_list,

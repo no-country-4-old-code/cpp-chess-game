@@ -1,53 +1,45 @@
+#include <array>
 #include "board-movements.h"
 #include "board.h"
 #include "notation.h"
 #include "piece-type.h"
 #include "piece.h"
 #include "pieces.h"
-#include <array>
 
-namespace
-{
+namespace {
     using namespace piece;
     namespace move = board::movements;
 
     void update_observed_and_attackable(piece::Piece &piece,
                                         const board::Board &board, sqrs pos_all,
-                                        sqrs pos_hostile_armies)
-    {
+                                        sqrs pos_hostile_armies) {
         const std::array<move::move_func, 4> directions{
             move::left_down, move::left_up, move::right_down, move::right_up};
 
-        piece.observed = 0;
+        piece.observed   = 0;
         piece.attackable = 0;
 
-        for (auto go : directions)
-        {
+        for (auto go : directions) {
             auto current = piece.position;
-            while (current != 0)
-            {
+            while (current != 0) {
                 current = go(current, board);
                 piece.observed |= current;
 
-                if ((current & pos_all))
-                {
-                    if ((current & pos_hostile_armies))
-                    {
+                if ((current & pos_all)) {
+                    if ((current & pos_hostile_armies)) {
                         // only pieces of enemies can be attacked
                         piece.attackable |= current;
                     }
                     break;
-                } // squares in sight without a piece can be attacked
+                }  // squares in sight without a piece can be attacked
                 piece.attackable |= current;
             }
         }
     }
-} // namespace
+}  // namespace
 
-namespace piece
-{
-    Piece Bishop(board::Board board, board::notation::ChessNotation notation)
-    {
+namespace piece {
+    Piece Bishop(board::Board board, board::notation::ChessNotation notation) {
         return {PieceType::BISHOP, notation.as_squares(board),
                 ::update_observed_and_attackable};
     }

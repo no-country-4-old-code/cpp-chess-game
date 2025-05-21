@@ -29,7 +29,7 @@ namespace piece {
 
     Piece King(board::Board board, board::notation::ChessNotation notation) {
         return {PieceType::KING, notation.as_squares(board),
-                     ::update_observed_and_attackable};
+                ::update_observed_and_attackable};
     }
 
 }

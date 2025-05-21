@@ -1,9 +1,9 @@
-#include "board.h"
 #include "army.h"
-#include "color.h"
-#include "pieces.h"
-#include "notation.h"
+#include "board.h"
 #include "chess-ai.h"
+#include "color.h"
+#include "notation.h"
+#include "pieces.h"
 #include "player.h"
 #include "run-game.h"
 

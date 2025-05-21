@@ -1,7 +1,7 @@
 #include "piece.h"
+#include <cassert>
 #include "board.h"
 #include "piece-type.h"
-#include <cassert>
 
 namespace piece {
 

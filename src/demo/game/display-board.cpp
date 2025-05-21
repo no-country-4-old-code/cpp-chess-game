@@ -1,4 +1,5 @@
 #include "display-board.h"
+#include <sys/types.h>
 #include <array>
 #include <bit>
 #include <cassert>
@@ -7,7 +8,6 @@
 #include <string_view>
 #include <vector>
 #include "army.h"
-#include <sys/types.h>
 #include "board.h"
 #include "color.h"
 #include "notation.h"
@@ -45,8 +45,10 @@ namespace {
     };
 
     using TextPerSquare = std::vector<std::array<char, 2>>;
-    TextPerSquare create_text_for_each_square(const board::Board &, const piece::army::army_list &);
-    void print_text_for_each_square(const board::Board &, const TextPerSquare &);
+    TextPerSquare create_text_for_each_square(const board::Board &,
+                                              const piece::army::army_list &);
+    void print_text_for_each_square(const board::Board &,
+                                    const TextPerSquare &);
 }  // namespace
 
 namespace display {

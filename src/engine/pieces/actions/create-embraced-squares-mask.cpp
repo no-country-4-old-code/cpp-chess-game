@@ -1,7 +1,7 @@
+#include <sys/types.h>
 #include <bit>
 #include <cassert>
 #include <cstdlib>
-#include <sys/types.h>
 #include "board.h"
 #include "piece-actions.h"
 #include "squares.h"
@@ -16,7 +16,7 @@ namespace {
 
     inline u_int8_t get_bit_index(board::bitmap::Squares);
     inline Position map_to_position(board::bitmap::Squares,
-                                    const board::Board & );
+                                    const board::Board &);
     inline bool is_straight_or_diagonal(const Position &, const Position &);
     inline int sign(int x) {
         return static_cast<int>(x > 0) - static_cast<int>(x < 0);
@@ -27,9 +27,10 @@ namespace piece::utils {
 
     sqrs create_embraced_squares_mask(sqrs pos_bitmap1, sqrs pos_bitmap2,
                                       const board::Board &board) {
-        if ((pos_bitmap1 == 0U) || (pos_bitmap2 == 0U) || pos_bitmap1 == pos_bitmap2) {
+        if ((pos_bitmap1 == 0U) || (pos_bitmap2 == 0U) ||
+            pos_bitmap1 == pos_bitmap2) {
             return 0;
-}
+        }
 
         const auto pos1 = map_to_position(pos_bitmap1, board);
         const auto pos2 = map_to_position(pos_bitmap2, board);
@@ -37,8 +38,9 @@ namespace piece::utils {
         const int dx = pos2.h - pos1.h;
         const int dy = pos2.v - pos1.v;
 
-        if (!is_straight_or_diagonal(pos1, pos2)) { return 0;
-}
+        if (!is_straight_or_diagonal(pos1, pos2)) {
+            return 0;
+        }
 
         const int step_x = sign(dx);
         const int step_y = sign(dy);

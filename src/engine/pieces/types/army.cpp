@@ -1,8 +1,8 @@
 #include "army.h"
-#include <cassert>
-#include "color.h"
-#include <vector>
 #include <sys/types.h>
+#include <cassert>
+#include <vector>
+#include "color.h"
 #include "piece-type.h"
 #include "piece.h"
 
