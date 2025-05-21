@@ -20,7 +20,7 @@ int main() {
         army::Army{Color::BLUE, {
                                            King{board, "a1"_n},
                                            Rock{board, "e4"_n},
-                                           Bishop{board, "b6"_n}
+                                           Bishop(board, "b6"_n)
                                        }},
         army::Army{Color::WHITE, {
                                             King{board, "h2"_n},

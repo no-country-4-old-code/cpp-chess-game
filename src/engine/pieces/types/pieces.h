@@ -20,6 +20,8 @@ namespace piece
         King(board::Board board, board::notation::ChessNotation notation) : Piece(PieceType::KING, notation.as_squares(board), king::update_observed_and_attackable) {};
     };
 
+
+
     // ---
 
     namespace rock
@@ -35,16 +37,7 @@ namespace piece
 
     // ---
 
-    namespace bishop
-    {
-        void update_observed_and_attackable(piece::Piece &, const board::Board &, sqrs, sqrs);
-    }
-
-    class Bishop : public Piece
-    {
-    public:
-        Bishop(board::Board board, board::notation::ChessNotation notation) : Piece(PieceType::BISHOP, notation.as_squares(board), piece::bishop::update_observed_and_attackable) {};
-    };
+    Piece Bishop(board::Board board, board::notation::ChessNotation notation);
 
     // ---
 

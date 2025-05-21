@@ -17,7 +17,7 @@ namespace piece {
         private:
             update_fn update;
 
-        protected:
+        public:
             Piece(PieceType ptype, board::bitmap::Squares pos, update_fn _fn): update{_fn}, type{ptype}, position{pos} {};
   
         public:
