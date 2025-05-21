@@ -1,4 +1,9 @@
-#include <iostream>
+#include "board.h"
+#include "army.h"
+#include "color.h"
+#include "pieces.h"
+#include "notation.h"
+#include "chess-ai.h"
 #include "player.h"
 #include "run-game.h"
 
@@ -14,7 +19,7 @@ int main() {
     using namespace piece;
     using namespace board::notation::literal;
 
-    board::Board board{8, 8};
+    board::Board const board{8, 8};
 
     army::army_list army_list = {
         army::Army{

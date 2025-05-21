@@ -1,12 +1,14 @@
 #include "chess-ai.h"
 #include <cstdlib>
 #include <ctime>
-#include <format>
+#include <iostream>
+#include <ostream>
 #include <vector>
+#include "army.h"
 #include "iterator-bitfield.h"
-#include "notation.h"
 #include "piece-actions.h"
-#include "piece-type.h"
+#include "piece.h"
+#include "squares.h"
 
 void ChessAI::make_move(piece::army::Army& my_army) {
     struct Move {
@@ -41,8 +43,8 @@ void ChessAI::make_move(piece::army::Army& my_army) {
         }
 
         if (ptr != nullptr) {
-            while (*dest) {
-                if (ptr->attackable & positions) {
+            while ((*dest) != 0u) {
+                if ((ptr->attackable & positions) != 0u) {
                     attack.emplace_back(ptr, *dest);
                 } else {
                     moves.emplace_back(ptr, *dest);
@@ -53,10 +55,10 @@ void ChessAI::make_move(piece::army::Army& my_army) {
     }
 
     std::cout << "- Found " << moves.size() << " possible moves for Player "
-              << std::endl;
+              << '\n';
 
     // MOVEMENT
-    if (attack.size() > 0) {
+    if (!attack.empty()) {
         auto [piece, dest] = attack[0];
         auto src           = piece->position;
 
@@ -66,7 +68,7 @@ void ChessAI::make_move(piece::army::Army& my_army) {
         // board::notation::ChessNotation{dest, this->_board} << std::endl;
     }
 
-    else if (moves.size() > 0) {
+    else if (!moves.empty()) {
         auto idx = static_cast<int>(rand() * moves.size()) % moves.size();
         auto [piece, dest] = moves[idx];
         auto src           = piece->position;
@@ -76,11 +78,11 @@ void ChessAI::make_move(piece::army::Army& my_army) {
         // board::notation::ChessNotation{src, this->_board} << " to " <<
         // board::notation::ChessNotation{dest, this->_board} << std::endl;
     } else {
-        std::cout << "-> No moves left" << std::endl;
+        std::cout << "-> No moves left" << '\n';
     }
 }
 
-int get_number_of_living_pieces(piece::army::Army& army) {
+static int get_number_of_living_pieces(piece::army::Army& army) {
     int count = 0;
     for (auto piece : army.pieces) {
         if (piece.is_alive()) {
@@ -93,8 +95,8 @@ int get_number_of_living_pieces(piece::army::Army& army) {
 bool ChessAI::is_defeated(piece::army::Army& my_army) const {
     auto valid_moves = piece::api::calc_possible_moves(my_army, this->_board,
                                                        this->_army_list);
-    bool are_there_valid_moves = valid_moves.size() > 0;
-    bool is_king_alive         = my_army.king().is_alive();
-    bool have_multiple_pieces  = get_number_of_living_pieces(my_army) > 1;
+    bool const are_there_valid_moves = valid_moves.size() > 0;
+    bool const is_king_alive         = my_army.king().is_alive();
+    bool const have_multiple_pieces  = get_number_of_living_pieces(my_army) > 1;
     return !(are_there_valid_moves & is_king_alive & have_multiple_pieces);
 }

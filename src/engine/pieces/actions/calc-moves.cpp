@@ -1,3 +1,6 @@
+#include "army.h"
+#include <utility>
+
 #include "board.h"
 #include "piece-actions.h"
 #include "piece.h"
@@ -10,23 +13,23 @@ namespace {
         const piece::army::Army &my_army,
         const board::bitmap::Squares positions_of_my_army,
         const board::bitmap::Squares under_attack_map) {
-        if (piece.position &
-            under_attack_map)  // only matter if piece is under attack at all
+        if ((piece.position &
+            under_attack_map) != 0U)  // only matter if piece is under attack at all
         {
             auto king_position = my_army.king().position;
             auto positions_without_piece =
                 positions_of_my_army & ~piece.position;
             // check enemy pieces
-            for (auto &enemy_army : army_list) {
+            for (const auto &enemy_army : army_list) {
                 if (enemy_army.color() == my_army.color()) {
                     continue;
                 }
 
-                for (auto j = 0; j < enemy_army.size(); ++j) {
-                    auto &enemy = enemy_army.pieces[j];
+                for (auto j = 0; std::cmp_less(j , enemy_army.size()); ++j) {
+                    const auto &enemy = enemy_army.pieces[j];
 
-                    if (piece.position & enemy.attackable) {
-                        if (king_position & enemy.attackable) {
+                    if ((piece.position & enemy.attackable) != 0U) {
+                        if ((king_position & enemy.attackable) != 0U) {
                             // if king is already attacked by this piece, then
                             // movement of piece does not matter
                             continue;
@@ -41,7 +44,7 @@ namespace {
                             board, positions_without_piece,
                             positions_without_piece);
 
-                        if (king_position & tmp.attackable) {
+                        if ((king_position & tmp.attackable) != 0U) {
                             return true;
                         }
                     }
@@ -76,7 +79,7 @@ namespace piece::api {
                     enemy_attack_map |= piece.attackable;
                     enemy_observation_map |= piece.observed;
 
-                    if (piece.attackable & king.position) {
+                    if ((piece.attackable & king.position) != 0U) {
                         ++number_of_king_attackers;
                         king_attacker = &piece;
                     }
@@ -86,8 +89,8 @@ namespace piece::api {
 
         // king movement
         auto movable_king = king.attackable & ~enemy_observation_map;
-        if (movable_king) {
-            memory.push({king.position, movable_king});
+        if (movable_king != 0U) {
+            memory.push({.src=king.position, .destinations=movable_king});
         }
 
         // other pieces
@@ -95,16 +98,16 @@ namespace piece::api {
             for (const auto &piece : my_army.pieces) {
                 if (piece.position == king.position) {
                     continue;
-                } else if (piece.position & enemy_attack_map) {
-                    bool result = does_piece_movement_endanger_own_king(
+                } if ((piece.position & enemy_attack_map) != 0u) {
+                    bool const result = does_piece_movement_endanger_own_king(
                         piece, board, army_list, my_army, my_positions_map,
                         enemy_attack_map);
 
                     if (!result) {
-                        memory.push({piece.position, piece.attackable});
+                        memory.push({.src=piece.position, .destinations=piece.attackable});
                     }
                 } else {
-                    memory.push({piece.position, piece.attackable});
+                    memory.push({.src=piece.position, .destinations=piece.attackable});
                 }
             }
         } else if (number_of_king_attackers == 1) {
@@ -120,12 +123,12 @@ namespace piece::api {
 
                 auto movable = piece.attackable & interceptable;
 
-                if (movable) {
-                    bool result = does_piece_movement_endanger_own_king(
+                if (movable != 0U) {
+                    bool const result = does_piece_movement_endanger_own_king(
                         piece, board, army_list, my_army, my_positions_map,
                         enemy_attack_map);
                     if (!result) {
-                        memory.push({piece.position, movable});
+                        memory.push({.src=piece.position, .destinations=movable});
                     }
                 }
             }

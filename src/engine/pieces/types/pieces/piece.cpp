@@ -1,6 +1,7 @@
 #include "piece.h"
-#include "board-movements.h"
-#include "pieces.h"
+#include "board.h"
+#include "piece-type.h"
+#include <cassert>
 
 namespace piece {
 
@@ -26,4 +27,4 @@ namespace piece {
                attackable == other.attackable && type == other.type;
     }
 
-}
+}  // namespace piece

@@ -4,23 +4,21 @@
 #include <cassert>
 #include <iostream>
 #include <map>
-#include <string>
 #include <string_view>
-#include "board-movements.h"
+#include <vector>
+#include "army.h"
+#include <sys/types.h>
 #include "board.h"
 #include "color.h"
 #include "notation.h"
-#include "piece-actions.h"
 #include "piece-type.h"
 #include "piece.h"
-#include "pieces.h"
-#include "squares.h"
 
 using namespace board::notation::literal;
 
 namespace {
     // bin. search is slower then simply index, BUT std::cout not used in time
-    // critical context anyway
+    // time critical context anyway
 
     std::map<piece::PieceType, char> lookup_piece_to_notation{
         {piece::PieceType::KING, 'K'},
@@ -47,11 +45,9 @@ namespace {
     };
 
     using TextPerSquare = std::vector<std::array<char, 2>>;
-    TextPerSquare create_text_for_each_square(const board::Board &,
-                                              const piece::army::army_list &);
-    void print_text_for_each_square(const board::Board &,
-                                    const TextPerSquare &);
-}
+    TextPerSquare create_text_for_each_square(const board::Board &, const piece::army::army_list &);
+    void print_text_for_each_square(const board::Board &, const TextPerSquare &);
+}  // namespace
 
 namespace display {
     void display_board(const board::Board &board,

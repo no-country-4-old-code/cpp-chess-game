@@ -1,5 +1,4 @@
 #include "player.h"
-#include <iostream>
 #include "color.h"
 
 Color Player::color() const {

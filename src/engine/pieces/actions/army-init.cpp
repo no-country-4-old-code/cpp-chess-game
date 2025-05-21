@@ -1,13 +1,15 @@
+#include "army.h"
 #include "board.h"
 #include "piece-actions.h"
 #include "piece.h"
 #include "squares.h"
+#include <array>
 
 namespace piece::api {
     void init_army_list(piece::army::army_list &army_list,
                         const board::Board &board) {
         std::array<board::bitmap::Squares, army::max_num_of_armies>
-            army_positions_lookup;
+            army_positions_lookup{};
         board::bitmap::Squares positions_all = 0;
 
         // update and calc positions

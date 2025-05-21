@@ -1,13 +1,9 @@
 #include "run-game.h"
 #include <board.h>
 #include <iostream>
-#include <set>
-#include "chess-ai.h"
-#include "color.h"
+#include "army.h"
 #include "display-board.h"
-#include "notation.h"
 #include "piece-actions.h"
-#include "pieces.h"
 #include "player.h"
 
 namespace demo::game {

@@ -1,4 +1,7 @@
 #include "board-movements.h"
+#include "board.h"
+#include "notation.h"
+#include "piece-type.h"
 #include "piece.h"
 #include "pieces.h"
 
@@ -20,13 +23,13 @@ namespace {
         piece.attackable =
             piece.observed & ~pos_own_pieces;  // can not attack own pieces
     }
-}
+}  // namespace
 
 namespace piece {
 
     Piece King(board::Board board, board::notation::ChessNotation notation) {
-        return Piece(PieceType::KING, notation.as_squares(board),
-                     ::update_observed_and_attackable);
+        return {PieceType::KING, notation.as_squares(board),
+                     ::update_observed_and_attackable};
     }
 
 }

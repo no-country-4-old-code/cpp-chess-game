@@ -1,6 +1,10 @@
 #include "board-movements.h"
+#include "board.h"
+#include "notation.h"
+#include "piece-type.h"
 #include "piece.h"
 #include "pieces.h"
+#include <array>
 
 namespace {
     using namespace piece;
@@ -21,16 +25,15 @@ namespace {
                 current = go(current, board);
                 piece.observed |= current;
 
-                if (current & pos_all) {
-                    if (current & pos_hostile_armies) {
+                if ((current & pos_all) != 0U) {
+                    if ((current & pos_hostile_armies) != 0U) {
                         // only pieces of enemies can be attacked
                         piece.attackable |= current;
                     }
                     break;
-                } else {
-                    // squares in sight without a piece can be attacked
+                }                     // squares in sight without a piece can be attacked
                     piece.attackable |= current;
-                }
+               
             }
         }
     }
@@ -38,7 +41,7 @@ namespace {
 
 namespace piece {
     Piece Bishop(board::Board board, board::notation::ChessNotation notation) {
-        return Piece(PieceType::BISHOP, notation.as_squares(board),
-                     ::update_observed_and_attackable);
+        return {PieceType::BISHOP, notation.as_squares(board),
+                     ::update_observed_and_attackable};
     }
 }

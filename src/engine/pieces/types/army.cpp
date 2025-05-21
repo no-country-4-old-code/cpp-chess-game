@@ -1,7 +1,10 @@
 #include "army.h"
-#include <algorithm>
 #include <cassert>
+#include "color.h"
+#include <vector>
+#include <sys/types.h>
 #include "piece-type.h"
+#include "piece.h"
 
 namespace piece::army {
 
@@ -13,7 +16,7 @@ namespace piece::army {
         u_int8_t idx         = 0;
         _size                = static_cast<u_int8_t>(given_pieces.size());
 
-        for (auto& given : given_pieces) {
+        for (const auto& given : given_pieces) {
             pieces.push(given);
 
             if (given.type == piece::PieceType::KING) {
@@ -23,8 +26,7 @@ namespace piece::army {
             ++idx;
         }
         assert((count_kings == 1 ||
-                given_pieces.size() ==
-                    0));  // Every army should have ONE king only
+                given_pieces.empty()));  // Every army should have ONE king only
     }
 
     Color Army::color() const {
