@@ -5,7 +5,7 @@
 #include "player.h"
 #include "chess-ai.h"
 #include <board.h>
-#include "display-pieces.h"
+#include "display-board.h"
 #include "pieces.h"
 #include "notation.h"
 #include "piece-actions.h"

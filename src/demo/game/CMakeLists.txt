@@ -1,5 +1,5 @@
 set(LIBRARY_NAME GameLib)
-set(SOURCES run-game.cpp display-pieces.cpp player.cpp)
+set(SOURCES run-game.cpp display-board.cpp player.cpp)
 
 
 

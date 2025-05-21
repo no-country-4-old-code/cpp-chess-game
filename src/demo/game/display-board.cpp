@@ -1,4 +1,4 @@
-#include "display-pieces.h"
+#include "display-board.h"
 #include "piece.h"
 #include "board.h"
 #include "squares.h"
@@ -14,6 +14,7 @@
 #include <string>
 #include <map>
 #include "piece-type.h"
+#include <string_view>
 
 using namespace board::notation::literal;
 
@@ -26,7 +27,7 @@ namespace
         {piece::PieceType::ROCK, 'R'},
         {piece::PieceType::BISHOP, 'B'}};
 
-    std::map<piece::PieceType, std::string> lookup_piece_to_name{
+    std::map<piece::PieceType, std::string_view> lookup_piece_to_name{
         {piece::PieceType::KING, "King"},
         {piece::PieceType::ROCK, "Rock"},
         {piece::PieceType::BISHOP, "Bishop"}};
@@ -38,7 +39,7 @@ namespace
         {Color::BLUE, 'b'},
     };
 
-    std::map<Color, std::string> lookup_color_to_name{
+    std::map<Color, std::string_view> lookup_color_to_name{
         {Color::WHITE, "White"},
         {Color::BLACK, "Black"},
         {Color::ORANGE, "Orange"},
@@ -87,13 +88,7 @@ namespace {
     TextPerSquare create_text_for_each_square(const board::Board &board, const piece::army::army_list &army_list) {
         const auto num_of_squares = board.num_of_squares_horizontal * board.num_of_squares_vertical;
         std::vector<std::array<char, 2>> squares;
-        squares.resize(num_of_squares, {' ', '\0'});
-
-        for (auto &sqr : squares)
-        {
-            sqr[0] = ' ';
-            sqr[1] = ' ';
-        }
+        squares.resize(num_of_squares, {' ', ' '});
 
         for (auto army : army_list)
         {
@@ -113,23 +108,20 @@ namespace {
 
     void print_text_for_each_square(const board::Board &board, const TextPerSquare& squares) {
         const int bits_per_byte = 8;
-        u_int row_count = 1;
+        u_int row_count = 0;
 
         std::cout << "\nPrint Board\n\n";
-        std::cout << " \t a   b   c   d   e   f   g   h  \n";
-        std::cout << row_count << "\t";
+        std::cout << " \t a   b   c   d   e   f   g   h \n";
 
         for (auto sqr : squares)
         {
-            std::cout << " " << sqr[0] << sqr[1] << " ";
             if (row_count % board.num_of_squares_horizontal == 0)
             {
-                std::cout << "\n"
-                          << (row_count / bits_per_byte) + 1 << "\t";
+                std::cout << "\n" << (row_count / bits_per_byte) + 1 << "\t";
             }
-            std::cout << std::flush;
+            std::cout << " " << sqr[0] << sqr[1] << " ";
             ++row_count;
         }
-        std::cout << "\n";
+        std::cout << "\n\n" << std::flush;
     }
 }
