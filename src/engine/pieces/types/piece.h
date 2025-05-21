@@ -10,7 +10,7 @@ namespace piece {
 
     using sqrs =  board::bitmap::Squares;
     
-    class Piece {
+    class Piece final {
         public:
             using update_fn = void (*)(piece::Piece& piece, const board::Board& board, sqrs pos_all, sqrs pos_hostile_armies);
 

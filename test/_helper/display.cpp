@@ -1,5 +1,5 @@
 #include "test-helper.h"
-#include "piece-baseclass.h"
+#include "piece.h"
 #include "board.h"
 #include "squares.h"
 #include "notation.h"

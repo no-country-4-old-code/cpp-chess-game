@@ -1,6 +1,6 @@
 #pragma once
 #include "color.h"
-#include "piece-baseclass.h"
+#include "piece.h"
 #include "squares.h"
 #include <cstdlib>
 #include <vector>

@@ -27,11 +27,10 @@ namespace
         ++call_count;
     };
 
-    class PieceMock : public Piece
-    {
-    public:
-        PieceMock(PieceType type, board::notation::ChessNotation notation, update_fn mock_update) : Piece(type, notation.as_squares(default_board), mock_update) {};
-    };
+    Piece PieceMock(PieceType type, board::notation::ChessNotation notation) {
+        return Piece(type, notation.as_squares(default_board), mock_update);
+    } 
+
 }
 
 class PieceApi_MovePiece : public ::testing::Test
@@ -45,9 +44,9 @@ protected:
         call_count = 0;
 
         army_list = {
-            piece::army::Army{Color::BLUE, {PieceMock(PieceType::KING, "d6"_n, mock_update), PieceMock(PieceType::ROCK, "b1"_n, mock_update)}},
-            piece::army::Army{Color::WHITE, {PieceMock(PieceType::KING, "g7"_n, mock_update), PieceMock(PieceType::ROCK, "e8"_n, mock_update)}},
-            piece::army::Army{Color::ORANGE, {PieceMock(PieceType::KING, "g1"_n, mock_update), PieceMock(PieceType::ROCK, "d8"_n, mock_update)}}};
+            piece::army::Army{Color::BLUE, {PieceMock(PieceType::KING, "d6"_n), PieceMock(PieceType::ROCK, "b1"_n)}},
+            piece::army::Army{Color::WHITE, {PieceMock(PieceType::KING, "g7"_n), PieceMock(PieceType::ROCK, "e8"_n)}},
+            piece::army::Army{Color::ORANGE, {PieceMock(PieceType::KING, "g1"_n), PieceMock(PieceType::ROCK, "d8"_n)}}};
         /*
              a   b   c   d   e   f   g   h
         1            Rb                  Ko

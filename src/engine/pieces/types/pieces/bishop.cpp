@@ -1,8 +1,8 @@
 #include "pieces.h"
-#include "piece-baseclass.h"
+#include "piece.h"
 #include "board-movements.h"
 
-namespace 
+namespace
 {
     using namespace piece;
     namespace move = board::movements;
@@ -45,8 +45,10 @@ namespace
     }
 }
 
-namespace piece {
-    Piece Bishop(board::Board board, board::notation::ChessNotation notation) {
+namespace piece
+{
+    Piece Bishop(board::Board board, board::notation::ChessNotation notation)
+    {
         return Piece(PieceType::BISHOP, notation.as_squares(board), ::update_observed_and_attackable);
     }
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "piece-baseclass.h"
+#include "piece.h"
 #include "piece-type.h"
 #include "notation.h"
 

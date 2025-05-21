@@ -6,7 +6,7 @@
 #include "pieces.h"
 #include "notation.h"
 #include "piece-actions.h"
-#include "piece-baseclass.h"
+#include "piece.h"
 
 using namespace piece;
 using namespace board::notation::literal;
@@ -28,19 +28,19 @@ namespace
         ++call_count;
     };
 
-    class PieceMock : public Piece
-    {
-    public:
-        PieceMock(PieceType type, board::notation::ChessNotation notation, update_fn mock_update) : Piece(type, notation.as_squares(default_board), mock_update) {};
-    };
+
+    Piece PieceMock(PieceType type, board::notation::ChessNotation notation) {
+        return Piece(type, notation.as_squares(default_board), mock_update);
+    } 
+
 }
 
 TEST(PieceApi_InitArmy, Simple)
 {
     piece::army::army_list army_list = {
-        piece::army::Army{Color::BLUE, {PieceMock(PieceType::KING, "a1"_n, mock_update), PieceMock(PieceType::ROCK, "a2"_n, mock_update)}},
-        piece::army::Army{Color::WHITE, {PieceMock(PieceType::KING, "e4"_n, mock_update)}},
-        piece::army::Army{Color::ORANGE, {PieceMock(PieceType::KING, "g8"_n, mock_update), PieceMock(PieceType::ROCK, "g7"_n, mock_update), PieceMock(PieceType::ROCK, "g6"_n, mock_update)}}};
+        piece::army::Army{Color::BLUE, {PieceMock(PieceType::KING, "a1"_n), PieceMock(PieceType::ROCK, "a2"_n)}},
+        piece::army::Army{Color::WHITE, {PieceMock(PieceType::KING, "e4"_n)}},
+        piece::army::Army{Color::ORANGE, {PieceMock(PieceType::KING, "g8"_n), PieceMock(PieceType::ROCK, "g7"_n), PieceMock(PieceType::ROCK, "g6"_n)}}};
     // act
     piece::api::init_army_list(army_list, default_board);
     // expect
