@@ -20,23 +20,23 @@ namespace {
     // bin. search is slower then simply index, BUT std::cout not used in time
     // time critical context anyway
 
-    std::map<piece::PieceType, char> lookup_piece_to_notation{{piece::PieceType::KING, 'K'},
-                                                              {piece::PieceType::ROCK, 'R'},
-                                                              {piece::PieceType::BISHOP, 'B'}};
+    const std::map<piece::PieceType, char> lookup_piece_to_notation{{piece::PieceType::KING, 'K'},
+                                                                    {piece::PieceType::ROCK, 'R'},
+                                                                    {piece::PieceType::BISHOP, 'B'}};
 
-    std::map<piece::PieceType, std::string_view> lookup_piece_to_name{
+    const std::map<piece::PieceType, std::string_view> lookup_piece_to_name{
         {piece::PieceType::KING, "King"},
         {piece::PieceType::ROCK, "Rock"},
         {piece::PieceType::BISHOP, "Bishop"}};
 
-    std::map<Color, char> lookup_color_to_notation{
+    const std::map<Color, char> lookup_color_to_notation{
         {Color::WHITE, 'w'},
         {Color::BLACK, 'b'},
         {Color::ORANGE, 'o'},
         {Color::BLUE, 'b'},
     };
 
-    std::map<Color, std::string_view> lookup_color_to_name{
+    const std::map<Color, std::string_view> lookup_color_to_name{
         {Color::WHITE, "White"},
         {Color::BLACK, "Black"},
         {Color::ORANGE, "Orange"},
@@ -57,7 +57,7 @@ namespace display {
 
 std::ostream &operator<<(std::ostream &out, const Color color) {
     if (lookup_color_to_name.contains(color)) {
-        out << lookup_color_to_name[color];
+        out << lookup_color_to_name.at(color);
     } else {
         out << "Unknown";
     }
@@ -66,7 +66,7 @@ std::ostream &operator<<(std::ostream &out, const Color color) {
 
 std::ostream &operator<<(std::ostream &out, const piece::PieceType &type) {
     if (lookup_piece_to_name.contains(type)) {
-        out << lookup_piece_to_name[type];
+        out << lookup_piece_to_name.at(type);
     } else {
         out << "Unknown";
     }
@@ -86,8 +86,8 @@ namespace {
                 if (piece.is_alive()) {
                     assert(std::has_single_bit(piece.position));
                     const auto idx  = std::countr_zero(piece.position);
-                    squares[idx][0] = lookup_piece_to_notation[piece.type];
-                    squares[idx][1] = lookup_color_to_notation[army.color()];
+                    squares[idx][0] = lookup_piece_to_notation.at(piece.type);
+                    squares[idx][1] = lookup_color_to_notation.at(army.color());
                 }
             }
         }
