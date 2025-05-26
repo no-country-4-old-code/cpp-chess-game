@@ -14,7 +14,7 @@ namespace board::notation {
             char _rank;  // 1, 2, 3, 4, 5 ... (horizontal line)
 
         public:
-            ChessNotation(std::string_view);  // e.g. "a1"
+            explicit ChessNotation(std::string_view);  // e.g. "a1"
             ChessNotation(const board::bitmap::Squares&, const board::Board&);
             auto operator<=>(const ChessNotation&) const = default;
             friend std::ostream& operator<<(std::ostream&, const board::notation::ChessNotation&);

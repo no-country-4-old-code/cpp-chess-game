@@ -11,7 +11,7 @@
 #include "squares.h"
 
 namespace {
-    int get_number_of_living_pieces(piece::army::Army&);
+    int get_number_of_living_pieces(const piece::army::Army&);
 }
 
 
@@ -94,7 +94,7 @@ bool ChessAI::is_defeated(piece::army::Army &my_army) const {
 }
 
 namespace {
-    int get_number_of_living_pieces(piece::army::Army &army) {
+    int get_number_of_living_pieces(const piece::army::Army &army) {
         int count = 0;
         for (auto piece : army.pieces) {
             if (piece.is_alive()) {

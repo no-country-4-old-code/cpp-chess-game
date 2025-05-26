@@ -13,7 +13,7 @@ namespace piece::api {
         // update and calc positions
         for (auto i = 0; i < army_list.size(); ++i) {
             army_positions_lookup.at(i) = 0;
-            for (auto &current : army_list.at(i).pieces) {
+            for (const auto &current : army_list.at(i).pieces) {
                 army_positions_lookup.at(i) |= current.position;
                 positions_all |= current.position;
             }
