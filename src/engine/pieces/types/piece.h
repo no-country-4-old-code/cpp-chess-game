@@ -9,10 +9,14 @@ namespace piece {
 
     using sqrs = board::bitmap::Squares;
 
+    struct Positions {
+        sqrs all_armies;
+        sqrs hostile_armies;
+    };
+
     class Piece final {
         public:
-            using update_fn = void (*)(piece::Piece& piece, const board::Board& board, sqrs pos_all,
-                                       sqrs pos_hostile_armies);
+            using update_fn = void (*)(piece::Piece& piece, const board::Board& board, const Positions& positions);
 
         private:
             update_fn update;
@@ -22,7 +26,7 @@ namespace piece {
                 : update{_fn}, type{ptype}, position{pos} {};
             Piece()
                 : Piece(PieceType::_INVALID, 0,
-                        [](piece::Piece&, const board::Board&, sqrs, sqrs) {}) {};
+                        [](piece::Piece&, const board::Board&, const piece::Positions&) {}) {};
 
             PieceType type{PieceType::_INVALID};
             board::bitmap::Squares position{0};

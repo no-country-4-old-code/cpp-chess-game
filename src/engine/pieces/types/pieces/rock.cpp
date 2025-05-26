@@ -7,8 +7,7 @@
 #include "pieces.h"
 
 namespace {
-    void update_observed_and_attackable(piece::Piece &piece, const board::Board &board,
-                                        piece::sqrs pos_all, piece::sqrs pos_hostile_armies);
+    void update_observed_and_attackable(piece::Piece &piece, const board::Board &board, const piece::Positions&);
 }
 
 namespace piece {
@@ -20,8 +19,7 @@ namespace piece {
 namespace {
     namespace move = board::movements;
 
-    void update_observed_and_attackable(piece::Piece &piece, const board::Board &board,
-                                        piece::sqrs pos_all, piece::sqrs pos_hostile_armies) {
+    void update_observed_and_attackable(piece::Piece &piece, const board::Board &board, const piece::Positions& positions) {
 
         const std::array<move::move_func, 4> directions{move::left, move::right, move::up,
                                                         move::down};
@@ -35,8 +33,8 @@ namespace {
                 current = move_fn(current, board);
                 piece.observed |= current;
 
-                if ((current & pos_all)) {
-                    if ((current & pos_hostile_armies)) {
+                if ((current & positions.all_armies)) {
+                    if ((current & positions.hostile_armies)) {
                         // only pieces of enemies can be attacked
                         piece.attackable |= current;
                     }
