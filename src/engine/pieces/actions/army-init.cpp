@@ -13,8 +13,8 @@ namespace {
     };
     Positions collect_positions(const piece::army::army_list&);
     void update_pieces(const Positions& , const board::Board&, piece::army::army_list &);
-    
-}
+
+}  // namespace
 
 
 namespace piece::api {
@@ -32,7 +32,7 @@ namespace {
     Positions collect_positions(const piece::army::army_list &army_list) {
         Positions positions;
 
-        for (auto i = 0; i < army_list.size(); ++i) {
+        for (size_t i = 0; i < army_list.size(); ++i) {
             positions.army_positions_lookup.at(i) = 0;
             for (const auto &current : army_list.at(i).pieces) {
                 positions.army_positions_lookup.at(i) |= current.position;
@@ -43,7 +43,7 @@ namespace {
     }
 
     void update_pieces(const Positions& positions, const board::Board &board, piece::army::army_list &army_list) {
-        auto idx_army = 0;
+        size_t idx_army = 0;
         for (auto &army : army_list) {
             auto positions_hostile_pieces = positions.positions_all & ~positions.army_positions_lookup.at(idx_army);
             ++idx_army;
@@ -53,4 +53,4 @@ namespace {
             }
         }
     }
-}
+}  // namespace
