@@ -7,50 +7,17 @@
 #include "squares.h"
 
 namespace {
-    bool does_piece_movement_endanger_own_king(const piece::Piece &piece, const board::Board &board,
-                                               const piece::army::army_list &army_list,
-                                               const piece::army::Army &my_army,
-                                               const board::bitmap::Squares positions_of_my_army,
-                                               const board::bitmap::Squares under_attack_map) {
-        if ((piece.position & under_attack_map))  // only matter if piece is under attack at all
-        {
-            auto king_position           = my_army.king().position;
-            auto positions_without_piece = positions_of_my_army & ~piece.position;
-            // check enemy pieces
-            for (const auto &enemy_army : army_list) {
-                if (enemy_army.color() == my_army.color()) {
-                    continue;
-                }
 
-                for (auto j = 0; std::cmp_less(j, enemy_army.size()); ++j) {
-                    const auto &enemy = enemy_army.pieces[j];
+    struct Context {
+        board::bitmap::Squares position_my_army;
+        board::bitmap::Squares under_attack_map;
+    };
 
-                    if ((piece.position & enemy.attackable)) {
-                        if ((king_position & enemy.attackable)) {
-                            // if king is already attacked by this piece, then
-                            // movement of piece does not matter
-                            continue;
-                        }
-                        // (optimize) add quick check if relative position to
-                        // each other (if king left to piece then attacker has
-                        // to be right to piece etc.)
-
-                        // heavy load calcs:
-                        auto tmp = enemy;
-                        tmp.update_observed_and_attackable(board, positions_without_piece,
-                                                           positions_without_piece);
-
-                        if ((king_position & tmp.attackable)) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-}  // namespace
+    bool does_piece_movement_endanger_own_king(const piece::Piece &, const board::Board &,
+                                               const piece::army::army_list &,
+                                               const piece::army::Army &,
+                                               const Context&);
+} // namespace
 
 namespace piece::api {
 
@@ -97,7 +64,11 @@ namespace piece::api {
                 }
                 if ((piece.position & enemy_attack_map)) {
                     bool const result = does_piece_movement_endanger_own_king(
-                        piece, board, army_list, my_army, my_positions_map, enemy_attack_map);
+                        piece, board, army_list, my_army, 
+                        Context{
+                            .position_my_army = my_positions_map,
+                            .under_attack_map = enemy_attack_map
+                        });
 
                     if (!result) {
                         memory.push({.src = piece.position, .destinations = piece.attackable});
@@ -121,7 +92,11 @@ namespace piece::api {
 
                 if (movable) {
                     bool const result = does_piece_movement_endanger_own_king(
-                        piece, board, army_list, my_army, my_positions_map, enemy_attack_map);
+                        piece, board, army_list, my_army,
+                        Context{
+                            .position_my_army = my_positions_map,
+                            .under_attack_map = enemy_attack_map
+                        });
                     if (!result) {
                         memory.push({.src = piece.position, .destinations = movable});
                     }
@@ -131,3 +106,50 @@ namespace piece::api {
         return memory;
     }
 }  // namespace piece::api
+
+
+namespace {
+    bool does_piece_movement_endanger_own_king(const piece::Piece &piece, const board::Board &board,
+                                               const piece::army::army_list &army_list,
+                                               const piece::army::Army &my_army,
+                                               const Context& context) {
+
+        if ((piece.position & context.under_attack_map))  // only matter if piece is under attack at all
+        {
+            auto king_position           = my_army.king().position;
+            auto positions_without_piece = context.position_my_army & ~piece.position;
+            // check enemy pieces
+            for (const auto &enemy_army : army_list) {
+                if (enemy_army.color() == my_army.color()) {
+                    continue;
+                }
+
+                for (auto j = 0; std::cmp_less(j, enemy_army.size()); ++j) {
+                    const auto &enemy = enemy_army.pieces[j];
+
+                    if ((piece.position & enemy.attackable)) {
+                        if ((king_position & enemy.attackable)) {
+                            // if king is already attacked by this piece, then
+                            // movement of piece does not matter
+                            continue;
+                        }
+                        // (optimize) add quick check if relative position to
+                        // each other (if king left to piece then attacker has
+                        // to be right to piece etc.)
+
+                        // heavy load calcs:
+                        auto tmp = enemy;
+                        tmp.update_observed_and_attackable(board, positions_without_piece,
+                                                           positions_without_piece);
+
+                        if ((king_position & tmp.attackable)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+}  // namespace

@@ -10,11 +10,11 @@
 #include "army.h"
 #include "board.h"
 #include "color.h"
-#include "notation.h"
+#include "notation.h"  //NOLINT - is used
 #include "piece-type.h"
 #include "piece.h"
 
-using namespace board::notation::literal;
+using namespace board::notation::literal;  //NOLINT - using namespace for literals is pretty ok
 
 namespace {
     // bin. search is slower then simply index, BUT std::cout not used in time

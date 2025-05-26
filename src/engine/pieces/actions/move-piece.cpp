@@ -19,8 +19,8 @@ namespace piece::api {
 
         // update and calc positions
         for (auto i = 0; i < army_list.size(); ++i) {
-            army_positions_lookup[i] = 0;
-            for (auto &current : army_list[i].pieces) {
+            army_positions_lookup[i] = 0; // NOLINT due performance reasons
+            for (auto &current : army_list[i].pieces) { // NOLINT
                 if (current.position == src) {
                     current.position = dest;
                 }
@@ -29,7 +29,7 @@ namespace piece::api {
                     current.mark_as_dead();
                 }
 
-                army_positions_lookup[i] |= current.position;
+                army_positions_lookup[i] |= current.position; // NOLINT
                 positions_all |= current.position;
             }
         }
@@ -39,7 +39,7 @@ namespace piece::api {
 
         auto idx_army = 0;
         for (auto &army : army_list) {
-            auto positions_hostile_pieces = positions_all & ~army_positions_lookup[idx_army];
+            auto positions_hostile_pieces = positions_all & ~army_positions_lookup[idx_army]; // NOLINT
             ++idx_army;
             for (auto &current : army.pieces) {
                 if (((current.observed | current.position) & affected_squares)) {
