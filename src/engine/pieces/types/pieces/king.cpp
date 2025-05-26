@@ -5,12 +5,26 @@
 #include "piece.h"
 #include "pieces.h"
 
+
+
 namespace {
-    using namespace piece;
+    void update_observed_and_attackable(piece::Piece &piece, const board::Board &board,
+                                        piece::sqrs pos_all, piece::sqrs pos_hostile_armies);
+}  
+
+namespace piece {
+
+    Piece King(board::Board board, board::notation::ChessNotation notation) {
+        return {PieceType::KING, notation.as_squares(board), ::update_observed_and_attackable};
+    }
+
+}
+
+namespace {
     namespace move = board::movements;
 
     void update_observed_and_attackable(piece::Piece &piece, const board::Board &board,
-                                        sqrs pos_all, sqrs pos_hostile_armies) {
+                                        piece::sqrs pos_all, piece::sqrs pos_hostile_armies) {
         const auto &position = piece.position;
         piece.observed       = move::left(position, board) | move::left_up(position, board) |
                          move::up(position, board) | move::right_up(position, board) |
@@ -21,11 +35,3 @@ namespace {
         piece.attackable    = piece.observed & ~pos_own_pieces;  // can not attack own pieces
     }
 }  // namespace
-
-namespace piece {
-
-    Piece King(board::Board board, board::notation::ChessNotation notation) {
-        return {PieceType::KING, notation.as_squares(board), ::update_observed_and_attackable};
-    }
-
-}

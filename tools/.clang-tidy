@@ -9,11 +9,9 @@ Checks: >
   modernize-*,
   performance-*,
   portability-*,
-  readability-*,
   -misc-no-recursion,
   -modernize-use-trailing-return-type,
-  -readability-implicit-bool*,
-  -readability-named-parameter
+
 
 HeaderFilterRegex: '\(src\)\/*.\(h|hpp\)'
 CheckOptions:
