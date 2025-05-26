@@ -5,29 +5,52 @@
 #include "piece.h"
 #include "squares.h"
 
-namespace piece::api {
-    void init_army_list(piece::army::army_list &army_list, const board::Board &board) {
-        std::array<board::bitmap::Squares, army::max_num_of_armies> army_positions_lookup{};
-        board::bitmap::Squares positions_all = 0;
+namespace {
 
-        // update and calc positions
+    struct Positions {
+        board::bitmap::Squares positions_all = 0;
+        std::array<board::bitmap::Squares, piece::army::max_num_of_armies> army_positions_lookup{};
+    };
+    Positions collect_positions(const piece::army::army_list&);
+    void update_pieces(const Positions& , const board::Board&, piece::army::army_list &);
+    
+}
+
+
+namespace piece::api {
+    
+    void init_army_list(piece::army::army_list &army_list, const board::Board &board) {
+        auto positions = collect_positions(army_list);
+        update_pieces(positions, board, army_list);
+    }
+
+}  // namespace piece::api
+
+
+namespace {
+
+    Positions collect_positions(const piece::army::army_list &army_list) {
+        Positions positions;
+
         for (auto i = 0; i < army_list.size(); ++i) {
-            army_positions_lookup.at(i) = 0;
+            positions.army_positions_lookup.at(i) = 0;
             for (const auto &current : army_list.at(i).pieces) {
-                army_positions_lookup.at(i) |= current.position;
-                positions_all |= current.position;
+                positions.army_positions_lookup.at(i) |= current.position;
+                positions.positions_all |= current.position;
             }
         }
+        return positions;
+    }
 
+    void update_pieces(const Positions& positions, const board::Board &board, piece::army::army_list &army_list) {
         auto idx_army = 0;
         for (auto &army : army_list) {
-            auto positions_hostile_pieces = positions_all & ~army_positions_lookup.at(idx_army);
+            auto positions_hostile_pieces = positions.positions_all & ~positions.army_positions_lookup.at(idx_army);
             ++idx_army;
 
             for (auto &piece : army.pieces) {
-                piece.update_observed_and_attackable(board, positions_all,
-                                                     positions_hostile_pieces);
+                piece.update_observed_and_attackable(board, positions.positions_all, positions_hostile_pieces);
             }
         }
     }
-}  // namespace piece::api
+}
