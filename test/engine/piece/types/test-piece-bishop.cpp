@@ -28,8 +28,10 @@ TEST(Piece_Bishop, EmptyField) {
     Piece piece = Bishop(default_board, "e4"_n);
 
     auto expected_observed =
-        combine_squares(default_board, "b1"_n, "c2"_n, "d3"_n, "f5"_n, "g6"_n, "h7"_n, "a8"_n,
-                        "b7"_n, "c6"_n, "d5"_n, "f3"_n, "g2"_n, "h1"_n);
+        combine_squares(default_board, 
+                        "b1"_n, "c2"_n, "d3"_n, "f5"_n, "g6"_n, "h7"_n, "a8"_n,
+                        "b7"_n, "c6"_n, "d5"_n, "f3"_n, "g2"_n, "h1"_n
+                    );
     // act
     piece.update_observed_and_attackable(default_board, 0, 0);
     // expect
