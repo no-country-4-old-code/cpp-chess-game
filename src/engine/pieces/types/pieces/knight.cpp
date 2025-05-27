@@ -1,12 +1,13 @@
-#include <array>
 #include "board-movements.h"
 #include "board.h"
+#include "squares.h"
 #include "notation.h"
 #include "piece-type.h"
 #include "piece.h"
 #include "pieces.h"
 
 namespace {
+
     void update_observed_and_attackable(piece::Piece &piece, const board::Board &board, const piece::Positions&);
 
     template <board::movements::move_func FN_DIRECTION_1, board::movements::move_func FN_DIRECTION_2>
@@ -16,9 +17,11 @@ namespace {
         return FN_DIRECTION_2(tmp, board);
     }
 
-}
+} // namespace
+
 
 namespace piece {
+
     Piece Knight(board::Board board, board::notation::ChessNotation notation) {
         return {PieceType::KNIGHT, notation.as_squares(board), ::update_observed_and_attackable};
     }

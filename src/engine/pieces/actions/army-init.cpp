@@ -1,6 +1,7 @@
 #include <array>
 #include "army.h"
 #include "board.h"
+#include <cstdlib>
 #include "piece-actions.h"
 #include "piece.h"
 #include "squares.h"
