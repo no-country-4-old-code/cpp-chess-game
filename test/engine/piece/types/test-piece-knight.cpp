@@ -36,6 +36,7 @@ TEST(Piece_Knight, EmptyField) {
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_observed);
+    EXPECT_EQ(piece.movable, piece.attackable); // should always be the same for knight
     //test::helper::display_bits_on_board(default_board, piece.observed);
 }
 
@@ -65,5 +66,6 @@ TEST(Piece_Knight, BlockedMixed) {
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);
+    EXPECT_EQ(piece.movable, piece.attackable); // should always be the same for knight
     // test::helper::display_bits_on_board(default_board, expected_observed);
 }

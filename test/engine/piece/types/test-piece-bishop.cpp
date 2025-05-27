@@ -37,6 +37,7 @@ TEST(Piece_Bishop, EmptyField) {
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_observed);
+    EXPECT_EQ(piece.movable, piece.attackable); // should always be the same for bishop
     test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
@@ -118,5 +119,6 @@ TEST(Piece_Bishop, BlockedMixed) {
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);
+    EXPECT_EQ(piece.movable, piece.attackable); // should always be the same for bishop
     test::helper::display_bits_on_board(default_board, expected_observed);
 }

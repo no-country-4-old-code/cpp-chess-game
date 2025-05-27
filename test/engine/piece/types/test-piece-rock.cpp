@@ -120,5 +120,6 @@ TEST(Piece_Rock, BlockedMixed) {
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);
+    EXPECT_EQ(piece.movable, piece.attackable); // should always be the same for rock
     // test::helper::display_bits_on_board(default_board, expected_observed);
 }

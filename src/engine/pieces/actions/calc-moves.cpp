@@ -51,7 +51,7 @@ namespace piece::api {
         }
 
         // king movement
-        auto movable_king = king.attackable & ~enemy_observation_map;
+        auto movable_king = king.movable & ~enemy_observation_map;
         if (movable_king) {
             memory.push({.src = king.position, .destinations = movable_king});
         }
@@ -71,10 +71,10 @@ namespace piece::api {
                         });
 
                     if (!result) {
-                        memory.push({.src = piece.position, .destinations = piece.attackable});
+                        memory.push({.src = piece.position, .destinations = piece.movable});
                     }
                 } else {
-                    memory.push({.src = piece.position, .destinations = piece.attackable});
+                    memory.push({.src = piece.position, .destinations = piece.movable});
                 }
             }
         } else if (number_of_king_attackers == 1) {
@@ -88,7 +88,7 @@ namespace piece::api {
                     continue;
                 }
 
-                auto movable = piece.attackable & interceptable;
+                auto movable = piece.movable & interceptable;
 
                 if (movable) {
                     bool const result = does_piece_movement_endanger_own_king(
