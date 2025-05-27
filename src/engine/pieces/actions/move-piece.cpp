@@ -22,7 +22,7 @@ namespace piece::api {
             army_positions_lookup[i] = 0; // NOLINT due performance reasons
             for (auto &current : army_list[i].pieces) { // NOLINT
                 if (current.position == src) {
-                    current.position = dest;
+                    current.move(dest);
                 }
 
                 else if (current.position == dest) {

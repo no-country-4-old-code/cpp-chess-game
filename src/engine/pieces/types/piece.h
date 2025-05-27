@@ -20,6 +20,7 @@ namespace piece {
 
         private:
             update_fn update;
+            bool was_moved{false};
 
         public:
             Piece(PieceType ptype, board::bitmap::Squares pos, update_fn _fn)
@@ -30,12 +31,15 @@ namespace piece {
 
             PieceType type{PieceType::_INVALID};
             board::bitmap::Squares position{0};
-            board::bitmap::Squares observed{0};    // == attackable & ~positions_of_friendly_pieces
-            board::bitmap::Squares attackable{0};
-
+            board::bitmap::Squares observed{0};   // changes on these squares require update of piece
+            board::bitmap::Squares attackable{0}; // squares which can be attacked by the piece
+            board::bitmap::Squares movable{0};    // squares to which the piece can move to
+ 
             void update_observed_and_attackable(const board::Board&, sqrs,sqrs);
             void mark_as_dead();
+            void move(board::bitmap::Squares dest);
             bool is_alive() const;
+            bool has_moved() const;
             bool operator==(const Piece& other) const;
     };
 

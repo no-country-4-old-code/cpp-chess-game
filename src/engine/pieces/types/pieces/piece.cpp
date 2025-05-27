@@ -1,4 +1,5 @@
 #include "piece.h"
+#include <bit>
 #include <cassert>
 #include "board.h"
 #include "piece-type.h"
@@ -18,10 +19,24 @@ namespace piece {
         position   = 0;
         observed   = 0;
         attackable = 0;
+        movable    = 0;
+    }
+
+    void Piece::move(board::bitmap::Squares dest) {
+        assert(std::has_single_bit(dest));
+        position = dest;
+        observed   = 0;
+        attackable = 0;
+        movable    = 0;
+        was_moved = true;
     }
 
     bool Piece::is_alive() const {
         return position > 0;
+    }
+
+    bool Piece::has_moved() const {
+        return was_moved;
     }
 
     bool Piece::operator==(const Piece &other) const {

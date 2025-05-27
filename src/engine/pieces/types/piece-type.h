@@ -9,7 +9,7 @@ namespace piece {
         KNIGHT,
         BISHOP,
         ROCK,
-        PEASANT,
+        PAWN,
         _COUNT,
         _INVALID
     };

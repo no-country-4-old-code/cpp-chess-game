@@ -44,5 +44,6 @@ namespace {
         
         auto positions_my_army = positions.all_armies & ~positions.hostile_armies;
         piece.attackable = piece.observed & ~positions_my_army;
+        piece.movable = piece.attackable;
     }
 }  // namespace

@@ -44,5 +44,6 @@ namespace {
                 piece.attackable |= current;
             }
         }
+        piece.movable = piece.attackable;
     }
 }  // namespace

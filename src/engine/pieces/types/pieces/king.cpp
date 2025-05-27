@@ -31,5 +31,6 @@ namespace {
 
         auto pos_own_pieces = positions.all_armies & ~positions.hostile_armies;
         piece.attackable    = piece.observed & ~pos_own_pieces;  // can not attack own pieces
+        piece.movable       = piece.attackable;
     }
 }  // namespace

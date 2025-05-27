@@ -1,6 +1,6 @@
 set(LIBRARY_NAME PieceTypes)
 set(SOURCES army.cpp 
-    pieces/king.cpp pieces/rock.cpp pieces/bishop.cpp pieces/queen.cpp pieces/knight.cpp 
+    pieces/king.cpp pieces/rock.cpp pieces/bishop.cpp pieces/queen.cpp pieces/knight.cpp pieces/pawn.cpp
     pieces/piece.cpp)
 
 # Add sources to lib
