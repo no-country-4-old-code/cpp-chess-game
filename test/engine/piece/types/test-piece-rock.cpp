@@ -10,11 +10,13 @@
 using namespace piece;
 using namespace board::notation::literal;
 
-namespace {
+namespace
+{
     const board::Board default_board{8, 8};
 }
 
-TEST(Piece_Rock, EmptyField) {
+TEST(Piece_Rock, EmptyField)
+{
     /*
          a  b  c  d  e  f  g  h
 1        -  -  -  -  X  -  -  -
@@ -33,14 +35,15 @@ TEST(Piece_Rock, EmptyField) {
         combine_squares(default_board, "e1"_n, "e2"_n, "e3"_n, "e5"_n, "e6"_n, "e7"_n, "e8"_n,
                         "a4"_n, "b4"_n, "c4"_n, "d4"_n, "f4"_n, "g4"_n, "h4"_n);
     // act
-    piece.update_observed_and_attackable(default_board, 0, 0);
+    piece.update(default_board, 0, 0);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_observed);
     // test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
-TEST(Piece_Rock, BlockedByFriend) {
+TEST(Piece_Rock, BlockedByFriend)
+{
     /*
         a  b  c  d  e  f  g  h
 1        -  -  -  -  X  -  -  -
@@ -53,7 +56,7 @@ TEST(Piece_Rock, BlockedByFriend) {
 8        -  -  -  -  X  -  -  -
 
     */
-    Piece piece          = Rock(default_board, "e4"_n);
+    Piece piece = Rock(default_board, "e4"_n);
     auto position_friend = "g4"_n.as_squares(default_board);
 
     auto expected_observed =
@@ -61,14 +64,15 @@ TEST(Piece_Rock, BlockedByFriend) {
                         "a4"_n, "b4"_n, "c4"_n, "d4"_n, "f4"_n, "g4"_n);
     auto expected_attackable = expected_observed & ~position_friend;
     // act
-    piece.update_observed_and_attackable(default_board, position_friend, 0);
+    piece.update(default_board, position_friend, 0);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);
     // test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
-TEST(Piece_Rock, BlockedByEnemy) {
+TEST(Piece_Rock, BlockedByEnemy)
+{
     /*
          a  b  c  d  e  f  g  h
 1        -  -  -  -  X  -  -  -
@@ -81,21 +85,22 @@ TEST(Piece_Rock, BlockedByEnemy) {
 8        -  -  -  -  X  -  -  -
 
     */
-    Piece piece         = Rock(default_board, "e4"_n);
+    Piece piece = Rock(default_board, "e4"_n);
     auto position_enemy = "g4"_n.as_squares(default_board);
 
     auto expected_observed =
         combine_squares(default_board, "e1"_n, "e2"_n, "e3"_n, "e5"_n, "e6"_n, "e7"_n, "e8"_n,
                         "a4"_n, "b4"_n, "c4"_n, "d4"_n, "f4"_n, "g4"_n);
     // act
-    piece.update_observed_and_attackable(default_board, position_enemy, position_enemy);
+    piece.update(default_board, position_enemy, position_enemy);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_observed);
     // test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
-TEST(Piece_Rock, BlockedMixed) {
+TEST(Piece_Rock, BlockedMixed)
+{
     /*
          a  b  c  d  e  f  g  h
 1        -  -  -  -  -  -  -  -
@@ -107,16 +112,16 @@ TEST(Piece_Rock, BlockedMixed) {
 7        -  -  -  -  -  -  -  -
 8        -  -  -  -  O  -  -  -
     */
-    Piece piece           = Rock(default_board, "e4"_n);
+    Piece piece = Rock(default_board, "e4"_n);
     auto positions_friend = combine_squares(default_board, "g4"_n, "e6"_n);
-    auto positions_enemy  = combine_squares(default_board, "a4"_n, "e2"_n, "e8"_n);
+    auto positions_enemy = combine_squares(default_board, "a4"_n, "e2"_n, "e8"_n);
 
     auto expected_observed = combine_squares(default_board, "e2"_n, "e3"_n, "e5"_n, "e6"_n, "a4"_n,
                                              "b4"_n, "c4"_n, "d4"_n, "f4"_n, "g4"_n);
     auto expected_attackable = expected_observed & ~positions_friend;
     // act
-    piece.update_observed_and_attackable(default_board, positions_enemy | positions_friend,
-                                         positions_enemy);
+    piece.update(default_board, positions_enemy | positions_friend,
+                 positions_enemy);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);
