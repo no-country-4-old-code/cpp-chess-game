@@ -8,4 +8,5 @@ namespace piece {
     Piece Queen(board::Board board, board::notation::ChessNotation notation);
     Piece Rock(board::Board board, board::notation::ChessNotation notation);
     Piece Bishop(board::Board board, board::notation::ChessNotation notation);
+    Piece Knight(board::Board board, board::notation::ChessNotation notation);
 }
