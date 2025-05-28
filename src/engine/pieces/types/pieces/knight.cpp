@@ -8,18 +8,8 @@
 
 namespace
 {
-
     void update(piece::Piece &piece, const board::Board &board, const piece::Positions &);
-
-    template <board::movements::move_func FN_DIRECTION_1, board::movements::move_func FN_DIRECTION_2>
-    board::bitmap::Squares knight_move(board::bitmap::Squares position, const board::Board &board)
-    {
-        auto tmp = FN_DIRECTION_1(position, board);
-        tmp = FN_DIRECTION_2(tmp, board);
-        return FN_DIRECTION_2(tmp, board);
-    }
-
-} // namespace
+} 
 
 namespace piece
 {
@@ -33,6 +23,15 @@ namespace piece
 namespace
 {
     namespace move = board::movements;
+
+    template <move::move_func FN_DIRECTION_1, move::move_func FN_DIRECTION_2>
+    board::bitmap::Squares knight_move(board::bitmap::Squares position, const board::Board &board)
+    {
+        auto tmp = FN_DIRECTION_1(position, board);
+        tmp = FN_DIRECTION_2(tmp, board);
+        return FN_DIRECTION_2(tmp, board);
+    }
+
 
     void update(piece::Piece &piece, const board::Board &board, const piece::Positions &positions)
     {

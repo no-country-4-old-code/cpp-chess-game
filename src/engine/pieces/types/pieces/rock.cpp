@@ -7,7 +7,6 @@
 #include "pieces.h"
 #include "update-linear-movement.h"
 
-
 namespace piece
 {
     namespace move = board::movements;
