@@ -7,8 +7,22 @@
 
 namespace
 {
-    void update(piece::Piece &piece, const board::Board &board, const piece::Positions &);
-}
+    void update(piece::Piece &piece, const board::Board &board, const piece::Positions &positions)
+    {
+        const auto &position = piece.position;
+        namespace move = board::movements;
+        piece.observed = move::left(position, board) | move::left_up(position, board) |
+                         move::up(position, board) | move::right_up(position, board) |
+                         move::right(position, board) | move::right_down(position, board) |
+                         move::down(position, board) | move::left_down(position, board);
+
+        auto pos_own_pieces = positions.all_armies & ~positions.hostile_armies;
+        piece.attackable = piece.observed & ~pos_own_pieces; // can not attack own pieces
+        piece.movable = piece.attackable;
+    }
+
+} // namespace
+
 
 namespace piece
 {
@@ -19,21 +33,3 @@ namespace piece
     }
 
 }
-
-namespace
-{
-    namespace move = board::movements;
-
-    void update(piece::Piece &piece, const board::Board &board, const piece::Positions &positions)
-    {
-        const auto &position = piece.position;
-        piece.observed = move::left(position, board) | move::left_up(position, board) |
-                         move::up(position, board) | move::right_up(position, board) |
-                         move::right(position, board) | move::right_down(position, board) |
-                         move::down(position, board) | move::left_down(position, board);
-
-        auto pos_own_pieces = positions.all_armies & ~positions.hostile_armies;
-        piece.attackable = piece.observed & ~pos_own_pieces; // can not attack own pieces
-        piece.movable = piece.attackable;
-    }
-} // namespace

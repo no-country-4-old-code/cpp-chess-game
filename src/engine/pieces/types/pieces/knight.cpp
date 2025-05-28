@@ -8,30 +8,15 @@
 
 namespace
 {
-    void update(piece::Piece &piece, const board::Board &board, const piece::Positions &);
-} 
-
-namespace piece
-{
-
-    Piece Knight(board::Board board, board::notation::ChessNotation notation)
-    {
-        return {PieceType::KNIGHT, notation.as_squares(board), ::update};
-    }
-}
-
-namespace
-{
     namespace move = board::movements;
 
-    template <move::move_func FN_DIRECTION_1, move::move_func FN_DIRECTION_2>
+    template <move::move_func Fn_direction_1, move::move_func Fn_direction_2>
     board::bitmap::Squares knight_move(board::bitmap::Squares position, const board::Board &board)
     {
-        auto tmp = FN_DIRECTION_1(position, board);
-        tmp = FN_DIRECTION_2(tmp, board);
-        return FN_DIRECTION_2(tmp, board);
+        auto tmp = Fn_direction_1(position, board);
+        tmp = Fn_direction_2(tmp, board);
+        return Fn_direction_2(tmp, board);
     }
-
 
     void update(piece::Piece &piece, const board::Board &board, const piece::Positions &positions)
     {
@@ -50,3 +35,15 @@ namespace
         piece.movable = piece.attackable;
     }
 } // namespace
+
+
+namespace piece
+{
+
+    Piece Knight(board::Board board, board::notation::ChessNotation notation)
+    {
+        return {PieceType::KNIGHT, notation.as_squares(board), ::update};
+    }
+}
+
+

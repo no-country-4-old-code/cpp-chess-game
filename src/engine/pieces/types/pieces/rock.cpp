@@ -9,10 +9,9 @@
 
 namespace piece
 {
-    namespace move = board::movements;
-
     Piece Rock(board::Board board, board::notation::ChessNotation notation)
     {
+        namespace move = board::movements;
         return {
             PieceType::ROCK,
             notation.as_squares(board),

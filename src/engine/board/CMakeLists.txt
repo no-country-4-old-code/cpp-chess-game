@@ -1,5 +1,5 @@
 set(LIBRARY_NAME Board)
-set(SOURCES notation.cpp board-movements.cpp)
+set(SOURCES notation.cpp board-movements.cpp board-edges.cpp)
 
 # Add sources to lib
 add_library(${LIBRARY_NAME} STATIC ${SOURCES})
