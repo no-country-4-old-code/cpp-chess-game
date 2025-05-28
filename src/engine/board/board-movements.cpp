@@ -1,5 +1,4 @@
 #include "board-movements.h"
-
 #include <utility>
 #include "board.h"
 #include "squares.h"
