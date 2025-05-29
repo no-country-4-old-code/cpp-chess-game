@@ -296,3 +296,90 @@ TEST(Piece_Pawn_RIGHT, ShouldBeAbleToMove2StepsAtFirstMove)
     act(piece, context, expect);
 }
 
+// === Test envolving
+
+TEST(Piece_Pawn_Envolvment, ShouldEnvolveInStrongerPieceAtEndOfBoard)
+{
+    Piece piece = Pawn(default_board, "e7"_n, MoveDirection::DOWN);
+    piece.move("e8"_n.as_squares(default_board));
+
+    Context context = {
+        .positions_friendly = piece.position,
+        .positions_hostile  = 0
+    };
+
+    auto queen_map = combine_squares(default_board, "a8"_n, "b8"_n, "c8"_n, "d8"_n, "f8"_n, "g8"_n, "h8"_n, 
+                                                   "e1"_n, "e2"_n, "e3"_n, "e4"_n, "e5"_n, "e6"_n, "e7"_n,
+                                                   "a4"_n, "b5"_n, "c6"_n, "d7"_n, 
+                                                   "f7"_n, "g6"_n, "h5"_n);
+    Expectation expect = {
+        .observed = queen_map,
+        .attackable = queen_map,
+        .movable = queen_map
+    };
+
+    act(piece, context, expect);
+    EXPECT_EQ(piece.type, piece::PieceType::QUEEN);
+}
+
+TEST(Piece_Pawn, ShouldNotEnvolveDirectionNotMatchEdge)
+{
+    Piece piece = Pawn(default_board, "e7"_n, MoveDirection::LEFT);
+    piece.move("e8"_n.as_squares(default_board));
+
+    Context context = {
+        .positions_friendly = piece.position,
+        .positions_hostile  = 0
+    };
+
+    Expectation expect = {
+        .observed = combine_squares(default_board, "d8"_n, "d7"_n),
+        .attackable = combine_squares(default_board, "d7"_n),
+        .movable = combine_squares(default_board, "d8"_n)
+    };
+
+    act(piece, context, expect);
+    EXPECT_EQ(piece.type, piece::PieceType::PAWN);
+}
+
+TEST(Piece_Pawn_LEFT, ShouldEnvolveInStrongerPieceAtEndOfBoard)
+{
+    Piece piece = Pawn(default_board, "a6"_n, MoveDirection::LEFT);
+    piece.update(default_board, piece.position, 0);
+    EXPECT_EQ(piece.type, piece::PieceType::QUEEN);
+}
+
+TEST(Piece_Pawn_LEFT, ShouldNotEnvolveInStrongerPieceAtWrongEdge)
+{
+    Piece piece = Pawn(default_board, "b1"_n, MoveDirection::LEFT);
+    piece.update(default_board, piece.position, 0);
+    EXPECT_EQ(piece.type, piece::PieceType::PAWN);
+}
+
+TEST(Piece_Pawn_UP, ShouldEnvolveInStrongerPieceAtEndOfBoard)
+{
+    Piece piece = Pawn(default_board, "b1"_n, MoveDirection::UP);
+    piece.update(default_board, piece.position, 0);
+    EXPECT_EQ(piece.type, piece::PieceType::QUEEN);
+}
+
+TEST(Piece_Pawn_UP, ShouldNotEnvolveInStrongerPieceAtWrongEdge)
+{
+    Piece piece = Pawn(default_board, "h4"_n, MoveDirection::UP);
+    piece.update(default_board, piece.position, 0);
+    EXPECT_EQ(piece.type, piece::PieceType::PAWN);
+}
+
+TEST(Piece_Pawn_RIGHT, ShouldEnvolveInStrongerPieceAtEndOfBoard)
+{
+    Piece piece = Pawn(default_board, "h4"_n, MoveDirection::RIGHT);
+    piece.update(default_board, piece.position, 0);
+    EXPECT_EQ(piece.type, piece::PieceType::QUEEN);
+}
+
+TEST(Piece_Pawn_RIGHT, ShouldNotEnvolveInStrongerPieceAtWrongEdge)
+{
+    Piece piece = Pawn(default_board, "d8"_n, MoveDirection::RIGHT);
+    piece.update(default_board, piece.position, 0);
+    EXPECT_EQ(piece.type, piece::PieceType::PAWN);
+}

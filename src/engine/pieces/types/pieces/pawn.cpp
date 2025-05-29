@@ -7,6 +7,7 @@
 #include <utility>
 #include <map>
 #include "board-edges.h"
+#include "update-linear-movement.h"
 
 namespace {    
     namespace move = board::movements;
@@ -26,7 +27,7 @@ namespace {
     const auto& bottom_edge_mask = board::edges::build_bottom_squares_mask;
 
     const std::map<piece::MoveDirection, piece::Piece::update_fn_ptr> lookup_builder{
-        // movement options of pawn depend on generel direction.
+        // movement options of pawn depend on direction.
         // e.g. in classic chess white pawns move DOWN and black pawns move UP
         {piece::MoveDirection::LEFT, update<move::left, move::left_down, move::left_up, left_edge_mask>},
         {piece::MoveDirection::RIGHT, update<move::right, move::right_down, move::right_up, right_edge_mask>},
@@ -52,21 +53,27 @@ namespace {
     void update(piece::Piece &piece, const board::Board &board, const piece::Positions & positions)
     {
         if (piece.position & Mask_edge(board)) {
+            // pawn reached end of board and envolve
             envolve_pawn_to_stronger_piece(piece, board, positions);
         } else {
+            // run normal pawn update procedure
             update_pawn<Move, Attack_1, Attack_2>(piece, board, positions);
         }
     };
 
 
     inline void envolve_pawn_to_stronger_piece(piece::Piece &piece, const board::Board &board, const piece::Positions & positions) {
-        // TODO
+        piece.type = piece::PieceType::QUEEN;
+        piece.update_fn = piece::movement::update_linear_movements<
+                                                     move::left_down, move::left_up, move::right_down, move::right_up,
+                                                     move::left, move::right, move::up, move::down>;
+        piece.update(board, positions.all_armies , positions.hostile_armies);
     }
 
 
     template <move::move_func Move, move::move_func Attack_1, move::move_func Attack_2>
     inline void update_pawn(piece::Piece &piece, const board::Board &board, const piece::Positions & positions) {
-        const auto attack_options = Attack_1(piece.position, board) | Attack_2(piece.position, board);
+        auto attack_options = Attack_1(piece.position, board) | Attack_2(piece.position, board);
         const auto positions_my_army = positions.all_armies & ~positions.hostile_armies;
         auto move_option = Move(piece.position, board);  // Not movable IF blocked by enemy OR Friend
 

@@ -22,7 +22,6 @@ namespace piece
         using update_fn_ptr = void (*)(piece::Piece &piece, const board::Board &board, const Positions &positions);
 
     private:
-        update_fn_ptr update_fn;
         bool was_moved{false};
 
     public:
@@ -31,6 +30,7 @@ namespace piece
         Piece()
             : Piece(PieceType::_INVALID, 0, [](piece::Piece &, const board::Board &, const piece::Positions &) {}) {};
 
+        update_fn_ptr update_fn;
         PieceType type{PieceType::_INVALID};
         board::bitmap::Squares position{0};
         board::bitmap::Squares observed{0};   // changes on these squares require update of piece
