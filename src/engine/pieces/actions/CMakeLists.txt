@@ -1,5 +1,5 @@
 set(LIBRARY_NAME PieceActions)
-set(SOURCES create-embraced-squares-mask.cpp army-init.cpp calc-moves.cpp move-piece.cpp)
+set(SOURCES create-embraced-squares-mask.cpp army-init.cpp calc-moves.cpp move-piece.cpp handle-special-movement.cpp)
 
 # Add sources to lib
 add_library(${LIBRARY_NAME} STATIC ${SOURCES})

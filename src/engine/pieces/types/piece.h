@@ -18,13 +18,12 @@ namespace piece
 
     class Piece final
     {
+    private:
+        bool was_moved{false};
+    
     public:
         using update_fn_ptr = void (*)(piece::Piece &piece, const board::Board &board, const Positions &positions);
 
-    private:
-        bool was_moved{false};
-
-    public:
         Piece(PieceType ptype, board::bitmap::Squares pos, update_fn_ptr _fn)
             : update_fn{_fn}, type{ptype}, position{pos} {};
         Piece()

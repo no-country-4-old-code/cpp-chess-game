@@ -4,6 +4,7 @@
 #include <iterator>
 #include "squares.h"
 
+// TODO: refactor name bitfield <-> map + add namespace
 class IteratorBitmap {
         board::bitmap::Squares _all;
 

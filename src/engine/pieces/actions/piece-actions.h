@@ -8,6 +8,12 @@
 
 namespace piece::api {
 
+    struct Context
+    {
+        board::bitmap::Squares positions_all_armies;
+        board::bitmap::Squares under_attack_map;
+    };
+
     struct PieceDestinations {
             board::bitmap::Squares src{0};           // singular
             board::bitmap::Squares destinations{0};  // plural
@@ -23,4 +29,7 @@ namespace piece::api {
 namespace piece::utils {
     using sqrs = board::bitmap::Squares;
     sqrs create_embraced_squares_mask(sqrs, sqrs, const board::Board &);
+    void calc_special_moves (const piece::army::Army &my_army,
+                                         const board::Board &board,
+                                         const api::Context &context, api::ArmyDestinations& memory);
 }

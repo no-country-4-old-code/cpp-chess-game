@@ -9,16 +9,12 @@
 namespace
 {
 
-    struct Context
-    {
-        board::bitmap::Squares position_my_army;
-        board::bitmap::Squares under_attack_map;
-    };
+
 
     bool does_piece_movement_endanger_own_king(const piece::Piece &, const board::Board &,
                                                const piece::army::army_list &,
                                                const piece::army::Army &,
-                                               const Context &);
+                                               const piece::api::Context &);
 } // namespace
 
 namespace piece::api
@@ -30,7 +26,7 @@ namespace piece::api
     {
         board::bitmap::Squares enemy_attack_map = 0;
         board::bitmap::Squares enemy_observation_map = 0;
-        board::bitmap::Squares my_positions_map = 0;
+        board::bitmap::Squares positions_all_armies = 0;
         unsigned int number_of_king_attackers = 0;
         const piece::Piece *king_attacker = nullptr;
         const auto &king = my_army.king();
@@ -42,7 +38,7 @@ namespace piece::api
             {
                 for (const auto &piece : army.pieces)
                 {
-                    my_positions_map |= piece.position;
+                    positions_all_armies |= piece.position;
                 }
             }
             else
@@ -51,6 +47,7 @@ namespace piece::api
                 {
                     enemy_attack_map |= piece.attackable;
                     enemy_observation_map |= piece.observed;
+                    positions_all_armies |= piece.position;
 
                     if ((piece.attackable & king.position))
                     {
@@ -60,6 +57,10 @@ namespace piece::api
                 }
             }
         }
+
+        auto context = Context{
+                            .positions_all_armies = positions_all_armies,
+                            .under_attack_map = enemy_attack_map};
 
         // king movement
         auto movable_king = king.movable & ~enemy_observation_map;
@@ -80,10 +81,7 @@ namespace piece::api
                 if ((piece.position & enemy_attack_map))
                 {
                     bool const result = does_piece_movement_endanger_own_king(
-                        piece, board, army_list, my_army,
-                        Context{
-                            .position_my_army = my_positions_map,
-                            .under_attack_map = enemy_attack_map});
+                        piece, board, army_list, my_army, context);
 
                     if (!result)
                     {
@@ -115,10 +113,7 @@ namespace piece::api
                 if (movable)
                 {
                     bool const result = does_piece_movement_endanger_own_king(
-                        piece, board, army_list, my_army,
-                        Context{
-                            .position_my_army = my_positions_map,
-                            .under_attack_map = enemy_attack_map});
+                        piece, board, army_list, my_army, context);
                     if (!result)
                     {
                         memory.push({.src = piece.position, .destinations = movable});
@@ -126,6 +121,9 @@ namespace piece::api
                 }
             }
         }
+
+        utils::calc_special_moves(my_army, board, context, memory);
+
         return memory;
     }
 } // namespace piece::api
@@ -135,13 +133,13 @@ namespace
     bool does_piece_movement_endanger_own_king(const piece::Piece &piece, const board::Board &board,
                                                const piece::army::army_list &army_list,
                                                const piece::army::Army &my_army,
-                                               const Context &context)
+                                               const piece::api::Context &context)
     {
 
         if ((piece.position & context.under_attack_map)) // only matter if piece is under attack at all
         {
             auto king_position = my_army.king().position;
-            auto positions_without_piece = context.position_my_army & ~piece.position;
+            auto positions_without_piece = context.positions_all_armies & ~piece.position;
             // check enemy pieces
             for (const auto &enemy_army : army_list)
             {
