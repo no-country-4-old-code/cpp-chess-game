@@ -16,6 +16,33 @@ namespace {
 
 
 void ChessAI::make_move(piece::army::Army &my_army) {
+
+
+    /*
+    
+    calc_moves
+    -> for each move:
+            copy_of_army_list = army_list;
+            make_move(copy_army_list)
+            if extra-action:
+                make_move(copy_army_list)
+
+            stats = run_recursive(copy_army_list, recursivion_counter, army_index + 1 % size, board)
+
+            if (stats[army_index] > best_choice.stats[army_index]) {
+                best_choice = {stats, move}
+            }
+    return best_choice.move ;
+
+
+    ==
+    Unittest:
+    - Setting checkmate (one right move sets check mate)
+    - Preventing checkmate
+
+    */
+
+
     struct Move {
             piece::Piece *piece;
             board::bitmap::Squares dest;
