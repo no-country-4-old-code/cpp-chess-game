@@ -20,6 +20,7 @@ namespace {
     }
 }  // namespace
 
+// TODO: might move to board because no pieces involved
 namespace piece::utils {
 
     sqrs create_embraced_squares_mask(sqrs pos_bitmap1, sqrs pos_bitmap2,
