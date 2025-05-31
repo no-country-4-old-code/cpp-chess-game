@@ -80,8 +80,11 @@ namespace
                         if (dest_king && dest_rock) {
                             if (((dest_king | dest_rock) & context.under_attack_map) == 0UL) {
                                 // king can move to new dest without threat
-                                memory.push({.src = my_army.king().position, .destinations = dest_king});
-                                // TODO: add hook for move ROCK later on
+                                memory.push({
+                                    .src = my_army.king().position, 
+                                    .destinations = dest_king,
+                                    .extra = {piece.position, dest_rock}
+                                });
                             }
                         }
                     }

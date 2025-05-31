@@ -23,7 +23,7 @@ void ChessAI::make_move(piece::army::Army &my_army) {
 
     // === SELECTION
     auto moves_all = piece::api::calc_possible_moves(my_army, this->_board, this->_army_list);
-
+    // Do not forget extra Move
     std::vector<Move> moves;
     std::vector<Move> attack;
     board::bitmap::Squares positions = 0;
@@ -34,7 +34,7 @@ void ChessAI::make_move(piece::army::Army &my_army) {
         }
     }
 
-    for (auto [src, destinations, run_additional_action] : moves_all) {
+    for (auto [src, destinations, extra_move] : moves_all) {
         IteratorBitmap dest{destinations};
 
         // just a temp. solution - iteration everytime is rather ugly

@@ -14,10 +14,16 @@ namespace piece::api {
         board::bitmap::Squares under_attack_map;
     };
 
+    
+    struct ExtraMove {
+            board::bitmap::Squares src{0};  // singular
+            board::bitmap::Squares dest{0}; // singular
+    };
+
     struct PieceDestinations {
             board::bitmap::Squares src{0};           // singular
             board::bitmap::Squares destinations{0};  // plural
-            void (*run_additional_action)() = nullptr; // hook to e.g. move a second piece in case of castling
+            ExtraMove extra{0}; // special moves like castling require an extra move (king & rock)
     };
 
     using ArmyDestinations = StackVector<PieceDestinations, piece::army::max_pieces_per_army>;

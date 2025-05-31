@@ -64,6 +64,8 @@ TEST(PieceAction_Castling, SimpleCastleMoveLeft) {
     EXPECT_EQ(castling_moves.size(), 1);
     EXPECT_EQ(castling_moves[0].src, "a1"_n.as_squares(board));
     EXPECT_EQ(castling_moves[0].destinations, "c1"_n.as_squares(board));
+    EXPECT_EQ(castling_moves[0].extra.src, "d1"_n.as_squares(board));
+    EXPECT_EQ(castling_moves[0].extra.dest, "b1"_n.as_squares(board));
 }
 
 
@@ -87,6 +89,8 @@ TEST(PieceAction_Castling, SimpleCastleMoveRight) {
     EXPECT_EQ(castling_moves.size(), 1);
     EXPECT_EQ(castling_moves[0].src, "d1"_n.as_squares(board));
     EXPECT_EQ(castling_moves[0].destinations, "b1"_n.as_squares(board));
+    EXPECT_EQ(castling_moves[0].extra.src, "a1"_n.as_squares(board));
+    EXPECT_EQ(castling_moves[0].extra.dest, "c1"_n.as_squares(board));
 }
 
 TEST(PieceAction_Castling, SimpleCastleMoveDown) {
@@ -98,6 +102,8 @@ TEST(PieceAction_Castling, SimpleCastleMoveDown) {
     EXPECT_EQ(castling_moves.size(), 1);
     EXPECT_EQ(castling_moves[0].src, "d1"_n.as_squares(board));
     EXPECT_EQ(castling_moves[0].destinations, "d3"_n.as_squares(board));
+    EXPECT_EQ(castling_moves[0].extra.src, "d5"_n.as_squares(board));
+    EXPECT_EQ(castling_moves[0].extra.dest, "d2"_n.as_squares(board));
 }
 
 TEST(PieceAction_Castling, SimpleCastleMoveUp) {
@@ -109,6 +115,8 @@ TEST(PieceAction_Castling, SimpleCastleMoveUp) {
     EXPECT_EQ(castling_moves.size(), 1);
     EXPECT_EQ(castling_moves[0].src, "d5"_n.as_squares(board));
     EXPECT_EQ(castling_moves[0].destinations, "d3"_n.as_squares(board));
+    EXPECT_EQ(castling_moves[0].extra.src, "d1"_n.as_squares(board));
+    EXPECT_EQ(castling_moves[0].extra.dest, "d4"_n.as_squares(board));
 }
 
 // === Multiple Castle-Moves possible

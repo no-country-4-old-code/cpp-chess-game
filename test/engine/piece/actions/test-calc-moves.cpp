@@ -40,6 +40,7 @@ TEST(PieceApi_CalcMove, KingMovementObstructed) {
     EXPECT_EQ(moves_all.size(), 1);  // only one piece should move
     EXPECT_EQ(moves_all[0].src, "b1"_n.as_squares(board));
     EXPECT_EQ(moves_all[0].destinations, combine_squares(board, "a1"_n, "c1"_n));
+    EXPECT_EQ(moves_all[0].extra.src, 0);
 }
 
 TEST(PieceApi_CalcMove, KingMovementUnderAttack) {
@@ -52,6 +53,7 @@ TEST(PieceApi_CalcMove, KingMovementUnderAttack) {
     EXPECT_EQ(moves_all.size(), 1);  // only one piece should move
     EXPECT_EQ(moves_all[0].src, "b1"_n.as_squares(board));
     EXPECT_EQ(moves_all[0].destinations, combine_squares(board, "a1"_n, "c1"_n, "a2"_n));
+    EXPECT_EQ(moves_all[0].extra.src, 0);
     list_squares(moves_all[0].destinations, board);
 }
 
@@ -188,5 +190,7 @@ TEST(PieceApi_CalcMove, ShouldSupportCastling) {
     EXPECT_EQ(moves_all.size(), 3);
     EXPECT_EQ(moves_all[2].src, "a1"_n.as_squares(board));
     EXPECT_EQ(moves_all[2].destinations, combine_squares(board, "c1"_n));
+    EXPECT_EQ(moves_all[2].extra.src, "d1"_n.as_squares(board));
+    EXPECT_EQ(moves_all[2].extra.dest, "b1"_n.as_squares(board));
     list_squares(moves_all[2].destinations, board);
 }
