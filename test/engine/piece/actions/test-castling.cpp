@@ -123,15 +123,15 @@ TEST(PieceAction_Castling, MultipleCastleMovesPossible) {
     EXPECT_EQ(castling_moves.size(), 2);
     EXPECT_EQ(castling_moves[0].src, "b1"_n.as_squares(board));
     EXPECT_EQ(castling_moves[0].destinations, "d1"_n.as_squares(board));
-    EXPECT_EQ(castling_moves[0].src, "b1"_n.as_squares(board));
-    EXPECT_EQ(castling_moves[0].destinations, "b3"_n.as_squares(board));
+    EXPECT_EQ(castling_moves[1].src, "b1"_n.as_squares(board));
+    EXPECT_EQ(castling_moves[1].destinations, "b3"_n.as_squares(board));
 }
 
 
 // === Negative
 
 
-TEST(PieceAction_Castling, NoCastleMoveIfNoSquareBetween) {
+TEST(PieceAction_Castling, NoLeftSideCastleMoveIfNoSquareBetween) {
     board::Board board{5, 5};
     auto army_list = create_army_list(board, 
                                       {King(board, "a1"_n), Rock(board, "b1"_n)},
@@ -140,10 +140,28 @@ TEST(PieceAction_Castling, NoCastleMoveIfNoSquareBetween) {
     EXPECT_EQ(castling_moves.size(), 0);
 }
 
-TEST(PieceAction_Castling, NoCastleMoveIfOneSquareBetween) {
+TEST(PieceAction_Castling, NoLeftSideCastleMoveIfOneSquareBetween) {
     board::Board board{5, 5};
     auto army_list = create_army_list(board, 
                                       {King(board, "a1"_n), Rock(board, "c1"_n)},
+                                      {King(board, "a5"_n)});
+    auto castling_moves = act(army_list[0], army_list, board);
+    EXPECT_EQ(castling_moves.size(), 0);
+}
+
+TEST(PieceAction_Castling, NoRightSideCastleMoveIfNoSquareBetween) {
+    board::Board board{5, 5};
+    auto army_list = create_army_list(board, 
+                                      {King(board, "b1"_n), Rock(board, "a1"_n)},
+                                      {King(board, "a5"_n)});
+    auto castling_moves = act(army_list[0], army_list, board);
+    EXPECT_EQ(castling_moves.size(), 0);
+}
+
+TEST(PieceAction_Castling, NoRightSideCastleMoveIfOneSquareBetween) {
+    board::Board board{5, 5};
+    auto army_list = create_army_list(board, 
+                                      {King(board, "c1"_n), Rock(board, "a1"_n)},
                                       {King(board, "a5"_n)});
     auto castling_moves = act(army_list[0], army_list, board);
     EXPECT_EQ(castling_moves.size(), 0);

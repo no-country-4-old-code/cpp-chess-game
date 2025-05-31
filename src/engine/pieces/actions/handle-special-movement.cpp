@@ -50,22 +50,22 @@ namespace
                         IteratorBitmap iter{sqrs_between};
 
                         if (king_position > piece.position) {
-                            // king is left from rock
+                            // king is right from rock
                             while (*iter != 0UL) {
-                                if (dest_rock == 0UL) {
+                                if (dest_king == 0UL) {
+                                    dest_king = *iter;
+                                } else if (dest_rock == 0UL) {
                                     dest_rock = *iter;
-                                } else if (dest_king == 0UL) {
-                                    dest_king = *iter;
                                 } else {
-                                    dest_rock = dest_king;
-                                    dest_king = *iter;
+                                    dest_king = dest_rock;
+                                    dest_rock = *iter;
                                 }
                                 ++iter;
                             }
 
                         } else {
 
-                            // king is right from rock
+                            // king is left from rock
                             while (*iter != 0UL) {
                                 if (dest_rock == 0UL) {
                                     dest_rock = *iter;
@@ -77,7 +77,7 @@ namespace
                             }
                         }
 
-                        if (dest_king) {
+                        if (dest_king && dest_rock) {
                             if (((dest_king | dest_rock) & context.under_attack_map) == 0UL) {
                                 // king can move to new dest without threat
                                 memory.push({.src = my_army.king().position, .destinations = dest_king});
