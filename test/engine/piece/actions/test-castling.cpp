@@ -53,7 +53,6 @@ namespace {
 
 }
 
-// TODO: also add simpel casteling test in calc-moves
 TEST(PieceAction_Castling, SimpleCastleMoveLeft) {
     board::Board board{5, 5};
     auto army_list = create_army_list(board, 

@@ -174,3 +174,19 @@ TEST(PieceApi_CalcMove, TwoPieceKingUnderAttackOneAttackerInterceptWouldEndanger
     EXPECT_EQ(moves_all[0].destinations, combine_squares(board, "b1"_n));
     list_squares(moves_all[0].destinations, board);
 }
+
+
+TEST(PieceApi_CalcMove, ShouldSupportCastling) {
+    // castling itself is covered by other unittest
+    board::Board board{5, 5};
+    auto army_list = create_army_list(board, 
+                                      {King(board, "a1"_n), Rock(board, "d1"_n)},
+                                      {King(board, "a5"_n)});
+    // act
+    auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
+    // assert
+    EXPECT_EQ(moves_all.size(), 3);
+    EXPECT_EQ(moves_all[2].src, "a1"_n.as_squares(board));
+    EXPECT_EQ(moves_all[2].destinations, combine_squares(board, "c1"_n));
+    list_squares(moves_all[2].destinations, board);
+}
