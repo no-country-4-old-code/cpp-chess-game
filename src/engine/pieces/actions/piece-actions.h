@@ -17,6 +17,7 @@ namespace piece::api {
     struct PieceDestinations {
             board::bitmap::Squares src{0};           // singular
             board::bitmap::Squares destinations{0};  // plural
+            void (*run_additional_action)() = nullptr; // hook to e.g. move a second piece in case of castling
     };
 
     using ArmyDestinations = StackVector<PieceDestinations, piece::army::max_pieces_per_army>;
