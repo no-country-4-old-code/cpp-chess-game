@@ -33,7 +33,7 @@ struct SimulationResult {
     Score score;
 };
 
-const u_int8_t max_recursion = 6;
+const u_int8_t max_recursion = 7;
 
 std::map<piece::PieceType, u_int8_t> lookup_piece_value {
     {piece::PieceType::KING, 0},
