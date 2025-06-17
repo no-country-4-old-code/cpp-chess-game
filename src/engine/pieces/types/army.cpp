@@ -25,6 +25,12 @@ namespace piece::army {
         assert((count_kings == 1 || given_pieces.empty()));  // Every army should have ONE king only
     }
 
+    void Army::mark_as_defeated() {
+        for (auto& piece : this->pieces) {
+            piece.mark_as_dead();
+        }
+    }
+
     Color Army::color() const {
         return this->_color;
     }

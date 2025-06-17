@@ -26,6 +26,7 @@ namespace piece::api
     {
         board::bitmap::Squares enemy_attack_map = 0;
         board::bitmap::Squares enemy_observation_map = 0;
+        board::bitmap::Squares enemy_king_attacker_free_view_map = 0; 
         board::bitmap::Squares positions_all_armies = 0;
         unsigned int number_of_king_attackers = 0;
         const piece::Piece *king_attacker = nullptr;
@@ -53,6 +54,13 @@ namespace piece::api
                     {
                         ++number_of_king_attackers;
                         king_attacker = &piece;
+
+                        // calc movement without blocking presence of king to
+                        // verify if retreat (squares behind king) are also under attack
+                        // after king moves
+                        auto tmp = piece;
+                        tmp.update(board, 0, 0);
+                        enemy_king_attacker_free_view_map |= tmp.observed;
                     }
                 }
             }
@@ -63,9 +71,10 @@ namespace piece::api
                             .under_attack_map = enemy_attack_map};
 
         // king movement
-        auto movable_king = king.movable & ~enemy_observation_map;
+        auto movable_king = king.movable & ~(enemy_observation_map | enemy_king_attacker_free_view_map);
         if (movable_king)
         {
+            // check 
             memory.push({.src = king.position, .destinations = movable_king});
         }
 

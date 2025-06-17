@@ -20,6 +20,7 @@ namespace piece::army {
             StackVector<piece::Piece, max_pieces_per_army> pieces;
             Army() : Army{Color::_INVALID, std::vector<piece::Piece>{}} {};
             Army(Color color, const std::vector<piece::Piece> &pieces);
+            void mark_as_defeated();
             Color color() const;
             u_int8_t size() const;
             const piece::Piece &king() const;

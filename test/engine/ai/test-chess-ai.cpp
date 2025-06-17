@@ -36,6 +36,36 @@ TEST(ChessAIMakeMove, CheckmateEnemyInOneMove) {
     EXPECT_EQ(move.extra.src, 0); // no extra move (like in casteling etc.)
 }
 
+TEST(ChessAIMakeMove, PreventCheckmateInOneMove) {
+    board::Board board{4, 4};
+    auto army_list = create_army_list(board, 
+        {King(board, "a1"_n), Rock(board, "d4"_n)},
+        {King(board, "b3"_n), Rock(board, "c3"_n)}
+    );
+    auto ai = ChessAI(army_list, board);
+    auto move = ai.make_move(army_list[0]);
+    EXPECT_EQ(move.src, "a1"_n.as_squares(board));  // move king to prevent checkmate by rock on c1
+    EXPECT_EQ(move.dest, "b1"_n.as_squares(board));
+    EXPECT_EQ(move.extra.src, 0); // no extra move (like in casteling etc.)
+}
+
+
+TEST(ChessAIMakeMove, CheckmateEnemyInTwoMoves) {
+    board::Board board{4, 4};
+    auto army_list = create_army_list(board, 
+        {King(board, "c4"_n), Rock(board, "d4"_n)},
+        {King(board, "a1"_n)}
+    );
+    auto ai = ChessAI(army_list, board);
+    ai.make_move(army_list[0]);
+    ai.make_move(army_list[1]);
+    ai.make_move(army_list[0]);
+    auto move = ai.make_move(army_list[1]);
+
+    EXPECT_EQ(move.src, 0);  // checkmated
+    EXPECT_EQ(move.dest, 0);
+    EXPECT_EQ(move.extra.src, 0); // no extra move (like in casteling etc.)
+}
 
 // END make_move tests
 // START defeated tests

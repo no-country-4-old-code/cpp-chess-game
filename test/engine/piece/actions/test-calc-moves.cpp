@@ -90,6 +90,16 @@ TEST(PieceApi_CalcMove, KingOnlyMoveIsAttack) {
     EXPECT_EQ(moves_all[0].destinations, "b2"_n.as_squares(board));
 }
 
+TEST(PieceApi_CalcMove, KingCanNotEscapeAtlongAttackLine) {
+    board::Board board{4, 4};
+    auto army_list =
+        create_army_list(board, {King(board, "b1"_n)}, {King(board, "b3"_n), Rock(board, "d1"_n)});
+    // act
+    auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
+    // assert
+    EXPECT_EQ(moves_all.size(), 0);  // no move possibly
+}
+
 TEST(PieceApi_CalcMove, TwoPieceOnlyRockUnderAttack) {
     board::Board board{3, 3};
     auto army_list = create_army_list(board, {King(board, "a1"_n), Rock(board, "b1"_n)},

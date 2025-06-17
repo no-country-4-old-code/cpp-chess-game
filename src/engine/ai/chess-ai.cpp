@@ -32,7 +32,7 @@ struct SimulationResult {
 const u_int8_t max_recursion = 7;
 
 std::map<piece::PieceType, u_int8_t> lookup_piece_value {
-    {piece::PieceType::KING, 0},
+    {piece::PieceType::KING, 1}, // just placeholder - if king is checkmate all pieces are marked dead 
     {piece::PieceType::QUEEN, 9},
     {piece::PieceType::ROCK, 4},
     {piece::PieceType::BISHOP, 4},
@@ -115,27 +115,32 @@ Score run_recursive_simulation(const board::Board &board,
     int max_score_value = std::numeric_limits<int>::min();
     auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);
 
-    for (auto [src, destinations, extra] : possible_moves) {
-        IteratorBitmap dest{destinations};
-        
-        while (*dest) {
-            auto copy_al = army_list;
-            piece::api::move_piece(src, *dest, board, copy_al);
-            if (extra.src != 0UL) {
-                // also execute extra action
-                piece::api::move_piece(extra.src, extra.dest, board, copy_al);
-            }
-            Score result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
-            auto result_value = map_scores_to_value(result, army_index);
+    if (possible_moves.size() > 0) {
+        for (auto [src, destinations, extra] : possible_moves) {
+            IteratorBitmap dest{destinations};
+            
+            while (*dest) {
+                auto copy_al = army_list;
+                piece::api::move_piece(src, *dest, board, copy_al);
+                if (extra.src != 0UL) {
+                    // also execute extra action
+                    piece::api::move_piece(extra.src, extra.dest, board, copy_al);
+                }
+                Score result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
+                auto result_value = map_scores_to_value(result, army_index);
 
-            if (result_value > max_score_value) {
-                max_score = result;
-                max_score_value = result_value;
-            }
+                if (result_value > max_score_value) {
+                    max_score = result;
+                    max_score_value = result_value;
+                }
 
-            ++dest;
+                ++dest;
+            }
         }
-
+    } else {
+        auto copy_al = army_list;
+        copy_al[army_index].mark_as_defeated();
+        return run_recursive_simulation(board, copy_al, (army_index + 1) % army_list.size(), recursions_count + 1);       
     }
 
     return max_score;
@@ -196,13 +201,19 @@ ai::Move ChessAI::make_move(piece::army::Army &my_army) {
 
     auto result = run_simulation(this->_board, this->_army_list, army_index);
 
-    piece::api::move_piece(result.move.src, result.move.dest, this->_board, this->_army_list);
-    std::cout << "Moved from " << board::notation::ChessNotation(result.move.src, this->_board) << " to " << 
-    board::notation::ChessNotation(result.move.dest, this->_board)  << std::endl;
+    if (result.move.src) {
+        piece::api::move_piece(result.move.src, result.move.dest, this->_board, this->_army_list);
+        std::cout << "Moved from " << board::notation::ChessNotation(result.move.src, this->_board) << " to " << 
+        board::notation::ChessNotation(result.move.dest, this->_board)  << std::endl;
 
-    if (result.move.extra.src) {
-        piece::api::move_piece(result.move.extra.src, result.move.extra.dest, this->_board, this->_army_list);        
+        if (result.move.extra.src) {
+            piece::api::move_piece(result.move.extra.src, result.move.extra.dest, this->_board, this->_army_list);        
+        }
+    } else {
+        my_army.mark_as_defeated();
+        std::cout << "# CHECKMATE - No further move possible !!!\n" << std::flush;
     }
+
 
     return result.move;
 }
