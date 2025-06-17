@@ -35,7 +35,8 @@ namespace board::edges {
     board::bitmap::Squares build_bottom_squares_mask(const board::Board &board) {
         // Create a bitmap representing all square on the bottom edge (e.g. a8,
         // b8, c8, ...)
-        return ~(~0ULL >> board.num_of_squares_vertical);
+        auto top_mask = build_top_squares_mask(board);
+        return top_mask << ((board.num_of_squares_horizontal - 1) * board.num_of_squares_vertical);
     }
 
 }  // namespace board::edges
