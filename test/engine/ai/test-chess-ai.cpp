@@ -21,7 +21,24 @@ namespace {
     }
 }
 
-// START == defeated tests
+// START make_move tests
+
+TEST(ChessAIMakeMove, CheckmateEnemyInOneMove) {
+    board::Board board{4, 4};
+    auto army_list = create_army_list(board, 
+        {King(board, "b3"_n), Rock(board, "c3"_n)},
+        {King(board, "a1"_n), Rock(board, "d4"_n)}
+    );
+    auto ai = ChessAI(army_list, board);
+    auto move = ai.make_move(army_list[0]);
+    EXPECT_EQ(move.src, "c3"_n.as_squares(board));  // move rock to checkmate king on a1
+    EXPECT_EQ(move.dest, "c1"_n.as_squares(board));
+    EXPECT_EQ(move.extra.src, 0); // no extra move (like in casteling etc.)
+}
+
+
+// END make_move tests
+// START defeated tests
 
 TEST(ChessAIDefeated, DefeatedIfOnlyKingAlive) {
     board::Board board{3, 3};
@@ -64,4 +81,4 @@ TEST(ChessAIDefeated, NotDefeated) {
     EXPECT_FALSE(ai.is_defeated(army_list[0]));    
 }
 
-// END == defeated tests
+// END defeated tests

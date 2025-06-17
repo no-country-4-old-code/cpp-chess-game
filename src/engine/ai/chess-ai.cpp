@@ -22,14 +22,10 @@ namespace {
 
 using Score = StackVector<u_int16_t, piece::army::max_num_of_armies>;
 
-struct Move {
-    board::bitmap::Squares src{0};
-    board::bitmap::Squares dest{0};
-    piece::api::ExtraMove extra;
-};
+
 
 struct SimulationResult {
-    Move move;
+    ai::Move move;
     Score score;
 };
 
@@ -188,7 +184,7 @@ SimulationResult run_simulation(const board::Board &board,
 
 
 
-void ChessAI::make_move(piece::army::Army &my_army) {
+ai::Move ChessAI::make_move(piece::army::Army &my_army) {
 
     auto army_index = 0;
     for (auto army: this->_army_list) {
@@ -208,6 +204,7 @@ void ChessAI::make_move(piece::army::Army &my_army) {
         piece::api::move_piece(result.move.extra.src, result.move.extra.dest, this->_board, this->_army_list);        
     }
 
+    return result.move;
 }
 
 bool ChessAI::is_defeated(piece::army::Army &my_army) const {
