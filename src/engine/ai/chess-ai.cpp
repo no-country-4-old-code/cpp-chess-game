@@ -29,7 +29,7 @@ struct SimulationResult {
     Score score;
 };
 
-const u_int8_t max_recursion = 7;
+const u_int8_t max_recursion = 9;
 
 std::map<piece::PieceType, u_int8_t> lookup_piece_value {
     {piece::PieceType::KING, 1}, // just placeholder - if king is checkmate all pieces are marked dead 

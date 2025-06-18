@@ -21,13 +21,21 @@ namespace {
     // time critical context anyway
 
     const std::map<piece::PieceType, char> lookup_piece_to_notation{{piece::PieceType::KING, 'K'},
+                                                                    {piece::PieceType::QUEEN, 'Q'},
                                                                     {piece::PieceType::ROCK, 'R'},
-                                                                    {piece::PieceType::BISHOP, 'B'}};
+                                                                    {piece::PieceType::BISHOP, 'B'},
+                                                                    {piece::PieceType::KNIGHT, 'N'}, // to distinguise from King
+                                                                    {piece::PieceType::PAWN, 'P'}                                                                
+                                                                };
 
     const std::map<piece::PieceType, std::string_view> lookup_piece_to_name{
         {piece::PieceType::KING, "King"},
+        {piece::PieceType::QUEEN, "Queen"},
         {piece::PieceType::ROCK, "Rock"},
-        {piece::PieceType::BISHOP, "Bishop"}};
+        {piece::PieceType::BISHOP, "Bishop"},
+        {piece::PieceType::KNIGHT, "Knight"},
+        {piece::PieceType::PAWN, "Pawn"},
+    };
 
     const std::map<Color, char> lookup_color_to_notation{
         {Color::WHITE, 'w'},
@@ -86,6 +94,8 @@ namespace {
                 if (piece.is_alive()) {
                     assert(std::has_single_bit(piece.position));
                     const auto idx  = std::countr_zero(piece.position);
+                    assert(lookup_piece_to_notation.contains(piece.type)); // piece not known in lookup table yet !
+                    assert(lookup_color_to_notation.contains(army.color()));
                     squares[idx][0] = lookup_piece_to_notation.at(piece.type);
                     squares[idx][1] = lookup_color_to_notation.at(army.color());
                 }
