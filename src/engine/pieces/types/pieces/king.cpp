@@ -11,14 +11,14 @@ namespace
     {
         const auto &position = piece.position;
         namespace move = board::movements;
-        piece.observed = move::left(position, board) | move::left_up(position, board) |
+        piece.attackable = move::left(position, board) | move::left_up(position, board) |
                          move::up(position, board) | move::right_up(position, board) |
                          move::right(position, board) | move::right_down(position, board) |
                          move::down(position, board) | move::left_down(position, board);
 
-        auto pos_own_pieces = positions.all_armies & ~positions.hostile_armies;
-        piece.attackable = piece.observed & ~pos_own_pieces; // can not attack own pieces
-        piece.movable = piece.attackable;
+        auto positions_my_army = positions.all_armies & ~positions.hostile_armies;
+        piece.movable = piece.attackable & ~positions_my_army;;      
+        piece.observed = piece.attackable;
     }
 
 } // namespace

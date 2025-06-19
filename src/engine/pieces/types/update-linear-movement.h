@@ -9,30 +9,20 @@ namespace piece::movement
     template <move_func Move>
     void move_until_blocked(piece::Piece &piece, const board::Board &board, const piece::Positions &positions) {
         auto current = piece.position;
-        while (current != 0)
+        auto blocking_positions = positions.all_armies & ~piece.position; // remove own position from all
+        while (current != 0 && ((current & blocking_positions) == 0))
         {
             current = Move(current, board);
-            piece.observed |= current;
-
-            if ((current & positions.all_armies))
-            {
-                if ((current & positions.hostile_armies))
-                {
-                    // only pieces of enemies can be attacked
-                    piece.attackable |= current;
-                }
-                break;
-            } 
-            // squares in sight without a piece can be attacked
             piece.attackable |= current;
         }
     }
 
     template <move_func... Funcs>
     void update_linear_movements(piece::Piece &piece, const board::Board &board, const piece::Positions &positions) {
-        piece.observed = 0;
         piece.attackable = 0;
         (move_until_blocked<Funcs>(piece, board, positions) , ...);
-        piece.movable = piece.attackable;
+        auto positions_my_army = positions.all_armies & ~positions.hostile_armies;
+        piece.observed = piece.attackable;
+        piece.movable = piece.attackable & ~positions_my_army;;         
     }
 }

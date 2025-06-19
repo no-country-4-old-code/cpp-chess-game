@@ -38,7 +38,7 @@ TEST(Piece_Bishop, EmptyField)
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_observed);
-    EXPECT_EQ(piece.movable, piece.attackable); // should always be the same for bishop
+    EXPECT_EQ(piece.movable, piece.attackable);
     test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
@@ -61,12 +61,13 @@ TEST(Piece_Bishop, BlockedByFriend)
 
     auto expected_observed = combine_squares(default_board, "b1"_n, "c2"_n, "d3"_n, "f5"_n, "g6"_n,
                                              "h7"_n, "c6"_n, "d5"_n, "f3"_n, "g2"_n, "h1"_n);
-    auto expected_attackable = expected_observed & ~position_friend;
+    auto expected_attackable = expected_observed;
     // act
     piece.update(default_board, position_friend, 0);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
     EXPECT_EQ(piece.attackable, expected_attackable);
+    EXPECT_EQ(piece.movable, expected_attackable  & ~position_friend);
     // test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
@@ -116,13 +117,12 @@ TEST(Piece_Bishop, BlockedMixed)
 
     auto expected_observed = combine_squares(default_board, "c2"_n, "d3"_n, "f5"_n, "g6"_n, "c6"_n,
                                              "d5"_n, "f3"_n, "g2"_n, "h1"_n);
-    auto expected_attackable = expected_observed & ~positions_friend;
     // act
     piece.update(default_board, positions_enemy | positions_friend,
                  positions_enemy);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
-    EXPECT_EQ(piece.attackable, expected_attackable);
-    EXPECT_EQ(piece.movable, piece.attackable); // should always be the same for bishop
+    EXPECT_EQ(piece.attackable, expected_observed);
+    EXPECT_EQ(piece.movable, expected_observed & ~positions_friend);
     test::helper::display_bits_on_board(default_board, expected_observed);
 }

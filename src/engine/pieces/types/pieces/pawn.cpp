@@ -86,7 +86,7 @@ namespace {
         }
 
         piece.observed = attack_options | move_option;
-        piece.attackable = attack_options & ~positions_my_army;
+        piece.attackable = attack_options;
         piece.movable = move_option & ~positions.all_armies | piece.attackable & positions.hostile_armies;
     }
 

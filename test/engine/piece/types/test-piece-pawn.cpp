@@ -315,7 +315,7 @@ TEST(Piece_Pawn_Envolvment, ShouldEnvolveInStrongerPieceAtEndOfBoard)
     Expectation expect = {
         .observed = queen_map,
         .attackable = queen_map,
-        .movable = queen_map
+        .movable = queen_map 
     };
 
     act(piece, context, expect);

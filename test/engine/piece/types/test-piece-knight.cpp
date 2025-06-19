@@ -60,13 +60,12 @@ TEST(Piece_Knight, BlockedMixed)
     auto positions_enemy = combine_squares(default_board, "g5"_n, "d6"_n, "f5"_n);
 
     auto expected_observed = combine_squares(default_board, "d2"_n, "f2"_n, "c3"_n, "g3"_n, "c5"_n, "g5"_n, "d6"_n, "f6"_n);
-    auto expected_attackable = expected_observed & ~positions_friend;
     // act
     piece.update(default_board, positions_enemy | positions_friend,
                  positions_enemy);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
-    EXPECT_EQ(piece.attackable, expected_attackable);
-    EXPECT_EQ(piece.movable, piece.attackable); // should always be the same for knight
+    EXPECT_EQ(piece.attackable, expected_observed);
+    EXPECT_EQ(piece.movable, expected_observed & ~positions_friend); // should always be the same for knight
     // test::helper::display_bits_on_board(default_board, expected_observed);
 }

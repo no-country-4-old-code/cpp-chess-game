@@ -62,12 +62,12 @@ TEST(Piece_Rock, BlockedByFriend)
     auto expected_observed =
         combine_squares(default_board, "e1"_n, "e2"_n, "e3"_n, "e5"_n, "e6"_n, "e7"_n, "e8"_n,
                         "a4"_n, "b4"_n, "c4"_n, "d4"_n, "f4"_n, "g4"_n);
-    auto expected_attackable = expected_observed & ~position_friend;
     // act
     piece.update(default_board, position_friend, 0);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
-    EXPECT_EQ(piece.attackable, expected_attackable);
+    EXPECT_EQ(piece.attackable, expected_observed);
+    EXPECT_EQ(piece.movable, expected_observed & ~position_friend);
     // test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
@@ -118,13 +118,12 @@ TEST(Piece_Rock, BlockedMixed)
 
     auto expected_observed = combine_squares(default_board, "e2"_n, "e3"_n, "e5"_n, "e6"_n, "a4"_n,
                                              "b4"_n, "c4"_n, "d4"_n, "f4"_n, "g4"_n);
-    auto expected_attackable = expected_observed & ~positions_friend;
     // act
     piece.update(default_board, positions_enemy | positions_friend,
                  positions_enemy);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
-    EXPECT_EQ(piece.attackable, expected_attackable);
-    EXPECT_EQ(piece.movable, piece.attackable); // should always be the same for rock
+    EXPECT_EQ(piece.attackable, expected_observed);
+    EXPECT_EQ(piece.movable, expected_observed & ~positions_friend);
     // test::helper::display_bits_on_board(default_board, expected_observed);
 }

@@ -68,12 +68,12 @@ TEST(Piece_Queen, BlockedByFriend)
                         "b1"_n, "c2"_n, "d3"_n, "f5"_n, "g6"_n, "h7"_n, "a8"_n,
                         "b7"_n, "c6"_n, "d5"_n, "f3"_n, "g2"_n, "h1"_n,
                         "a4"_n, "b4"_n, "c4"_n, "d4"_n, "f4"_n, "g4"_n);
-    auto expected_attackable = expected_observed & ~position_friend;
     // act
     piece.update(default_board, position_friend, 0);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
-    EXPECT_EQ(piece.attackable, expected_attackable);
+    EXPECT_EQ(piece.attackable, expected_observed);
+    EXPECT_EQ(piece.movable, expected_observed & ~position_friend);
     // test::helper::display_bits_on_board(default_board, expected_observed);
 }
 
@@ -132,13 +132,12 @@ TEST(Piece_Queen, BlockedMixed)
                         "b7"_n, "c6"_n, "d5"_n, "f3"_n, "a4"_n,
                         "b4"_n, "c4"_n, "d4"_n, "f4"_n, "g4"_n);
 
-    auto expected_attackable = expected_observed & ~positions_friend;
     // act
     piece.update(default_board, positions_enemy | positions_friend,
                  positions_enemy);
     // expect
     EXPECT_EQ(piece.observed, expected_observed);
-    EXPECT_EQ(piece.attackable, expected_attackable);
-    EXPECT_EQ(piece.movable, piece.attackable); // should always be the same for queen
+    EXPECT_EQ(piece.attackable, expected_observed);
+    EXPECT_EQ(piece.movable, expected_observed & ~positions_friend); // should always be the same for queen
     // test::helper::display_bits_on_board(default_board, piece.observed);
 }

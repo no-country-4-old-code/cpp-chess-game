@@ -31,8 +31,8 @@ namespace
         piece.observed |= knight_move<move::down, move::right>(piece.position, board);
 
         auto positions_my_army = positions.all_armies & ~positions.hostile_armies;
-        piece.attackable = piece.observed & ~positions_my_army;
-        piece.movable = piece.attackable;
+        piece.attackable = piece.observed; 
+        piece.movable = piece.attackable & ~positions_my_army;
     }
 } // namespace
 
