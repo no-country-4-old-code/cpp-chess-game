@@ -78,6 +78,8 @@ TEST(ChessAIMakeMove, CheckmateEnemyInThreeMoves) {
     ai.make_move(army_list[0]);
     ai.make_move(army_list[1]);
     ai.make_move(army_list[0]);
+    ai.make_move(army_list[1]);
+    ai.make_move(army_list[0]);
     auto move = ai.make_move(army_list[1]);
 
     EXPECT_EQ(move.src, 0);  // checkmated
@@ -116,8 +118,10 @@ TEST(ChessAIMakeMove, CheckmateEnemyInTwoMoves_std_board) {
     );
     army_list[0].pieces[1].move("f2"_n.as_squares(b)); // quick hack  // TODO:: attackable == observable for Rock /etc. For other is observable == attackable & movable 
     // https://www.youtube.com/watch?v=D5hKsGix4dI
-    display::display_board(b, army_list);
     auto ai = ChessAI(army_list, b);
+    piece::api::init_army_list(army_list, b); // TODO : remove because quick hav
+    display::display_board(b, army_list);
+    std::cout << army_list[0].pieces[3].attackable << std::endl;
     ai.make_move(army_list[0]);
     ai.make_move(army_list[1]);
     ai.make_move(army_list[0]);

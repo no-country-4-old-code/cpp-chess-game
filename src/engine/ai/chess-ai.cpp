@@ -132,6 +132,9 @@ Score run_recursive_simulation(const board::Board &board,
                 if (result_value > max_score_value) {
                     max_score = result;
                     max_score_value = result_value;
+                    if (max_score[army_index] >= 300) { // TODO : magic number
+                        return max_score;
+                    }
                 }
 
                 ++dest;
@@ -140,7 +143,24 @@ Score run_recursive_simulation(const board::Board &board,
     } else {
         auto copy_al = army_list;
         copy_al[army_index].mark_as_defeated();
-        return run_recursive_simulation(board, copy_al, (army_index + 1) % army_list.size(), recursions_count + 1);       
+
+        int number_of_armies_alive = 0;
+        for (auto idx = 0; idx < copy_al.size(); ++idx) {
+            if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive()) {
+                max_score[idx] = 300; // TODO <-- correct to max_score etc
+                ++number_of_armies_alive;
+            } else {
+                max_score[idx] = 0; // TODO 
+            }
+        }
+        
+        if (number_of_armies_alive == 1) {
+            return max_score;
+        } else {
+            return run_recursive_simulation(board, copy_al, (army_index + 1) % army_list.size(), recursions_count + 1);   
+        }
+
+    
     }
 
     return max_score;
