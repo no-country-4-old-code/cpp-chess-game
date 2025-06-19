@@ -132,7 +132,7 @@ Score run_recursive_simulation(const board::Board &board,
                 if (result_value > max_score_value) {
                     max_score = result;
                     max_score_value = result_value;
-                    if (max_score[army_index] >= 300) { // TODO : magic number
+                    if (max_score[army_index] >= 280) { // TODO : magic number (Max_score - max_recursion_count)
                         return max_score;
                     }
                 }
@@ -147,7 +147,8 @@ Score run_recursive_simulation(const board::Board &board,
         int number_of_armies_alive = 0;
         for (auto idx = 0; idx < copy_al.size(); ++idx) {
             if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive()) {
-                max_score[idx] = 300; // TODO <-- correct to max_score etc
+                // prefer fastest checkmate solution
+                max_score[idx] = 300 - recursions_count; // TODO <-- correct to max_score etc
                 ++number_of_armies_alive;
             } else {
                 max_score[idx] = 0; // TODO 
@@ -184,6 +185,9 @@ SimulationResult run_simulation(const board::Board &board,
         IteratorBitmap dest{destinations};
         
         while (*dest) {
+            //
+            auto notation = board::notation::ChessNotation(*dest, board);
+            //
             auto copy_al = army_list;
             piece::api::move_piece(src, *dest, board, copy_al);
             if (extra.src != 0UL) {

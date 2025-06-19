@@ -86,7 +86,7 @@ TEST(ChessAIMakeMove, CheckmateEnemyInThreeMoves) {
     EXPECT_EQ(move.dest, 0);
 }
 
-TEST(ChessAIMakeMove, CheckmateEnemyInTwoMoves_std_board) {
+TEST(ChessAIChessRiddle, CheckmateInTwo) {
     /*
          a   b   c   d   e   f   g   h 
 
@@ -128,41 +128,40 @@ TEST(ChessAIMakeMove, CheckmateEnemyInTwoMoves_std_board) {
     EXPECT_EQ(move.dest, 0);
 }
 
-TEST(ChessAIMakeMove, CheckmateEnemyInThreeMoves_std_board) {
+TEST(ChessAIChessRiddle, CheckmateInTwo_2) {
     /*
          a   b   c   d   e   f   g   h 
 
-1                        Rw  Kw         
-2        Pw  Pw  Pw              Pw     
-3                Kw  Pw          Rw     
-4                                    Pw 
-5                    Pb                 
-6                Pb                  Qw 
-7        Pb  Pb              Pb      Pb 
-8        Rb  Kb      Qb          Rb  Kb 
+1                        Kw          Qw 
+2                                       
+3                                       
+4                Rw      Rw      Nb     
+5                    Kb                 
+6                                       
+7                                       
+8                                       
     
     */
+   /*
+   Moved from h1 to h3 (white Queen) - ok
+   Moved from d5 to d6 (black King) - ok
+   Moved from h3 to a3 (white Queen) .. (move to d3 would be checkmate)   
+   */
     const auto down = MoveDirection::DOWN;
     const auto up = MoveDirection::UP;
     board::Board b{8, 8};
     auto army_list = create_army_list(b, 
         {
-            Rock(b, "e1"_n), King(b, "f1"_n),
-            Pawn(b, "a2"_n, down), Pawn(b, "b2"_n, down), Pawn(b, "c2"_n, down), Pawn(b, "g2"_n, down),
-            Knight(b, "c3"_n), Pawn(b, "d3"_n, down), Rock(b, "g3"_n),
-            Pawn(b, "h4"_n, down),
-            Queen(b, "h6"_n)
+            King(b, "e1"_n), Queen(b, "h1"_n),
+            Rock(b, "e4"_n), Rock(b, "c4"_n)
         },
         {
-            Rock(b, "a8"_n), Knight(b, "b8"_n), Queen(b, "d8"_n), Rock(b, "g8"_n), 
-            Pawn(b, "a7"_n, up), Pawn(b, "b7"_n, up), Pawn(b, "f7"_n, up), Pawn(b, "h7"_n, up),
-            Pawn(b, "c6"_n, up), Pawn(b, "d5"_n, up), King(b, "h8"_n)
+            Knight(b, "g4"_n), 
+            King(b, "d5"_n)
         }
     );
     display::display_board(b, army_list);
     auto ai = ChessAI(army_list, b);
-    ai.make_move(army_list[0]);
-    ai.make_move(army_list[1]);
     ai.make_move(army_list[0]);
     ai.make_move(army_list[1]);
     ai.make_move(army_list[0]);
@@ -171,6 +170,8 @@ TEST(ChessAIMakeMove, CheckmateEnemyInThreeMoves_std_board) {
     EXPECT_EQ(move.src, 0);  // checkmated
     EXPECT_EQ(move.dest, 0);
 }
+
+
 // END make_move tests
 // START defeated tests
 
