@@ -25,7 +25,6 @@ namespace piece::api
                                          const piece::army::army_list &army_list)
     {
         board::bitmap::Squares enemy_attack_map = 0;
-        board::bitmap::Squares enemy_observation_map = 0;
         board::bitmap::Squares enemy_king_attacker_free_view_map = 0; 
         board::bitmap::Squares positions_all_armies = 0;
         unsigned int number_of_king_attackers = 0;
@@ -47,7 +46,6 @@ namespace piece::api
                 for (const auto &piece : army.pieces)
                 {
                     enemy_attack_map |= piece.attackable;
-                    enemy_observation_map |= piece.observed;
                     positions_all_armies |= piece.position;
 
                     if ((piece.attackable & king.position))
@@ -71,7 +69,7 @@ namespace piece::api
                             .under_attack_map = enemy_attack_map};
 
         // king movement
-        auto movable_king = king.movable & ~(enemy_observation_map | enemy_king_attacker_free_view_map);
+        auto movable_king = king.movable & ~(enemy_attack_map | enemy_king_attacker_free_view_map);
         if (movable_king)
         {
             // check 
