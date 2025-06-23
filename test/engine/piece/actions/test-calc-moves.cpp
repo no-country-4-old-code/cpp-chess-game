@@ -167,9 +167,11 @@ TEST(PieceApi_CalcMove, TwoPieceMovementWouldEndangerKing) {
     // act
     auto moves_all = piece::api::calc_possible_moves(army_list[0], board, army_list);
     // assert
-    EXPECT_EQ(moves_all.size(), 1);
+    EXPECT_EQ(moves_all.size(), 2);
     EXPECT_EQ(moves_all[0].src, "b1"_n.as_squares(board));
     EXPECT_EQ(moves_all[0].destinations, combine_squares(board, "a1"_n, "c1"_n, "a2"_n));
+    EXPECT_EQ(moves_all[1].src, "b2"_n.as_squares(board));
+    EXPECT_EQ(moves_all[1].destinations, combine_squares(board, "b3"_n));
     list_squares(moves_all[0].destinations, board);
 }
 
