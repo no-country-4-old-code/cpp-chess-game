@@ -29,7 +29,7 @@ struct SimulationResult {
     Score score;
 };
 
-const u_int8_t max_recursion = 9;
+const u_int8_t max_recursion = 9; // TODO: Depend on number of players 
 
 std::map<piece::PieceType, u_int8_t> lookup_piece_value {
     {piece::PieceType::KING, 1}, // just placeholder - if king is checkmate all pieces are marked dead 
@@ -142,6 +142,33 @@ Score run_recursive_simulation(const board::Board &board,
         }
     } else {
         auto copy_al = army_list;
+        const auto& king = army_list[army_index].king();
+        bool is_king_under_attack = false;
+
+        for (const auto& army: army_list) {
+            if (army.color() != army_list[army_index].color()) {
+                // enemy
+                for (const auto& enemy: army.pieces) {
+                    if (king.position & enemy.attackable) {
+                        is_king_under_attack = true;
+                        if (is_king_under_attack) {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!is_king_under_attack) {
+            for (auto idx = 0; idx < copy_al.size(); ++idx) {
+                if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive()) {
+                    // prefer fastest checkmate solution
+                    max_score[idx] = 200 - recursions_count; // DRAW
+                }
+            }
+            return max_score;
+        }
+
         copy_al[army_index].mark_as_defeated();
 
         int number_of_armies_alive = 0;

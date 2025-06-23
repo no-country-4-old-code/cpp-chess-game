@@ -81,7 +81,7 @@ namespace piece::api
         {
             for (const auto &piece : my_army.pieces)
             {
-                if (piece.position == king.position)
+                if (piece.position == king.position || piece.movable == 0)
                 {
                     continue;
                 }
@@ -89,10 +89,29 @@ namespace piece::api
                 {
                     bool const result = does_piece_movement_endanger_own_king(
                         piece, board, army_list, my_army, context);
-
+                        // TODO: sometimes not all movement endanger the king. Movement towards the attacker does not endanger the kning
+                    
                     if (!result)
                     {
                         memory.push({.src = piece.position, .destinations = piece.movable});
+                    } else {
+                        board::bitmap::Squares king_attack_dir_mask = 0;
+                        for (const auto &army : army_list)
+                        {
+                            if (army.color() != my_army.color())
+                            {
+                                for (const auto &enemy : army.pieces)
+                                {
+                                    if (enemy.attackable & piece.position) {
+                                        king_attack_dir_mask |= utils::create_embraced_squares_mask(enemy.position, king.position, board) | enemy.position;
+                                        // TODO: only do this for real king attackers
+                                    }
+                                }
+                            }
+                        }
+                        if (king_attack_dir_mask & (piece.movable)) {
+                            memory.push({.src = piece.position, .destinations = (king_attack_dir_mask & (piece.movable))});
+                        }
                     }
                 }
                 else
