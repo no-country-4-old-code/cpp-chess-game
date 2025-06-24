@@ -15,25 +15,36 @@
 #include <climits>
 #include <bit>
 
-namespace ai::score
-{
-    using Score = unsigned int;
-    using ScoreList = StackVector<Score, piece::army::max_num_of_armies>;
-
-    bool indicates_draw(Score);
-    bool indicates_win(Score);
-    ScoreList create_empty_score(size_t);
-    ScoreList calc_score(const board::Board &, const piece::army::army_list &);
-    int map_scores_to_value(ScoreList, size_t current_army_index);
-}
-
 namespace ai::score::ranges
 {
     // regular calculated scores are between "min" and "max".
     // scores with "max < score" but "score <= max_draw" indicate a "draw".
     // scores with "max_draw < score" indicate a "win".
-    const Score min = 0;
-    const Score max = 1000;
-    const Score max_draw = 2000;
-    const Score max_win = 3000;
+    const unsigned int min = 0;
+    const unsigned int max = 1000;
+    const unsigned int max_draw = 2000;
+    const unsigned int max_win = 3000;
+}
+
+namespace ai::score
+{
+    class Score
+    {
+    private:
+        unsigned int _val{ranges::min};
+
+    public:
+        Score() = default;
+        Score(unsigned int val): _val{val} {assert(_val <= ranges::max_win);};
+        Score(const board::Board &, const piece::army::Army &);
+        bool is_draw() const;
+        bool is_win() const;
+        unsigned int value() const;
+    };
+
+    using ScoreList = StackVector<Score, piece::army::max_num_of_armies>;
+
+    ScoreList create_empty_score(size_t);
+    ScoreList fill_up_score_list(const board::Board&, const piece::army::army_list&);
+    int calc_value_of_chess_position(const ScoreList&, size_t current_army_index);
 }

@@ -31,8 +31,8 @@ struct SimulationResult
 const u_int8_t max_recursion = 9; // TODO: Depend on number of players
 
 ai::score::ScoreList run_recursive_simulation(const board::Board &board,
-                                   const piece::army::army_list &army_list,
-                                   const size_t army_index, const u_int8_t recursions_count)
+                                              const piece::army::army_list &army_list,
+                                              const size_t army_index, const u_int8_t recursions_count)
 {
 
     if (army_list[army_index].pieces.size() == 0 || !army_list[army_index].king().is_alive())
@@ -43,7 +43,7 @@ ai::score::ScoreList run_recursive_simulation(const board::Board &board,
 
     if (recursions_count >= max_recursion)
     {
-        return ai::score::calc_score(board, army_list);
+        return ai::score::fill_up_score_list(board, army_list);
     }
 
     ai::score::ScoreList max_score = ai::score::create_empty_score(army_list.size());
@@ -66,13 +66,13 @@ ai::score::ScoreList run_recursive_simulation(const board::Board &board,
                     piece::api::move_piece(extra.src, extra.dest, board, copy_al);
                 }
                 ai::score::ScoreList result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
-                auto result_value = ai::score::map_scores_to_value(result, army_index);
+                auto result_value = ai::score::calc_value_of_chess_position(result, army_index);
 
                 if (result_value > max_score_value)
                 {
                     max_score = result;
                     max_score_value = result_value;
-                    if (max_score[army_index] > ai::score::ranges::max_draw)
+                    if (max_score[army_index].is_win())
                     {
                         return max_score;
                     }
@@ -114,7 +114,7 @@ ai::score::ScoreList run_recursive_simulation(const board::Board &board,
                 if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive())
                 {
                     // prefer fastest checkmate solution
-                    max_score[idx] = ai::score::ranges::max_draw - recursions_count; // DRAW
+                    max_score[idx] = ai::score::Score(ai::score::ranges::max_draw - recursions_count); // DRAW
                 }
             }
             return max_score;
@@ -128,12 +128,12 @@ ai::score::ScoreList run_recursive_simulation(const board::Board &board,
             if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive())
             {
                 // prefer fastest checkmate solution
-                max_score[idx] = ai::score::ranges::max_win - recursions_count;
+                max_score[idx] = ai::score::Score(ai::score::ranges::max_win - recursions_count);
                 ++number_of_armies_alive;
             }
             else
             {
-                max_score[idx] = ai::score::ranges::min;
+                max_score[idx] = ai::score::Score();
             }
         }
 
@@ -181,7 +181,7 @@ SimulationResult run_simulation(const board::Board &board,
             }
             ai::score::ScoreList result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
 
-            auto result_value = ai::score::map_scores_to_value(result, army_index);
+            auto result_value = ai::score::calc_value_of_chess_position(result, army_index);
 
             if (result_value > max_score_value)
             {
