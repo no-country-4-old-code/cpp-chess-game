@@ -8,21 +8,12 @@
 
 using namespace board::notation::literal;
 using namespace piece;
+using namespace test::helper;
 
 namespace {
     const auto down = MoveDirection::DOWN;
     const auto up = MoveDirection::UP;
     const board::Board b{8, 8};
-
-    piece::army::army_list create_army_list(board::Board board, 
-                                            const std::vector<piece::Piece>& white,
-                                            const std::vector<piece::Piece>& black) {
-        piece::army::army_list army_list = {piece::army::Army{Color::WHITE, white},
-                                            piece::army::Army{Color::BLACK, black}};
-        piece::api::init_army_list(army_list, board);
-        return army_list;
-    }
-
 }
 
 

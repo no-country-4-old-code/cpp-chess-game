@@ -1,5 +1,5 @@
 set(LIBRARY_NAME TestHelper)
-set(SOURCES display.cpp)
+set(SOURCES display.cpp create-army-list.cpp)
 
 # Add sources to lib
 add_library(${LIBRARY_NAME} STATIC ${SOURCES})

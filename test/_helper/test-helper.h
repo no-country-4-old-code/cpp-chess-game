@@ -8,5 +8,8 @@ board::bitmap::Squares combine_squares(board::Board board, Squares... squares) {
 }
 
 namespace test::helper {
-    void display_bits_on_board(const board::Board &board, board::bitmap::Squares sqrs);
+    void display_bits_on_board(const board::Board&, board::bitmap::Squares);
+    piece::army::army_list create_army_list(board::Board, 
+                                            const std::vector<piece::Piece>& white,
+                                            const std::vector<piece::Piece>& black);
 }

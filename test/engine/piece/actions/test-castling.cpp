@@ -10,17 +10,9 @@
 
 using namespace piece;
 using namespace board::notation::literal;
+using namespace test::helper;
 
 namespace {
-
-    piece::army::army_list create_army_list(board::Board board, 
-                                            const std::vector<piece::Piece>& white,
-                                            const std::vector<piece::Piece>& black) {
-        piece::army::army_list army_list = {piece::army::Army{Color::WHITE, white},
-                                            piece::army::Army{Color::BLACK, black}};
-        piece::api::init_army_list(army_list, board);
-        return army_list;
-    }
 
     api::Context map_army_to_context(const piece::army::Army &my_army, const piece::army::army_list& army_list) {
         board::bitmap::Squares positions_all_armies = 0;
