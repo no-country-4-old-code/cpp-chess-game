@@ -15,11 +15,15 @@
 #include <climits>
 #include <bit>
 
-using Score = StackVector<u_int16_t, piece::army::max_num_of_armies>;
+using Score = StackVector<unsigned int, piece::army::max_num_of_armies>;
 
 namespace ai::score {
-    u_int16_t calc_piece_value(const piece::army::Army army);
-    u_int16_t calc_attack_value(const piece::army::Army& army, const board::Board& board);
+    using uint = unsigned int; 
+    const uint min_score = 0;
+    const uint max_score_regular = 1000;
+    const uint score_draw = 2000;
+    const uint score_win = 3000;
+
     Score calc_score(const board::Board &board, const piece::army::army_list &army_list);
     Score create_empty_score(size_t size_army_list);
     int map_scores_to_value(Score scores, size_t current_army_index);

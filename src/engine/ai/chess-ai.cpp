@@ -68,7 +68,7 @@ Score run_recursive_simulation(const board::Board &board,
                 if (result_value > max_score_value) {
                     max_score = result;
                     max_score_value = result_value;
-                    if (max_score[army_index] >= 280) { // TODO : magic number (Max_score - max_recursion_count)
+                    if (max_score[army_index] > ai::score::score_draw) {
                         return max_score;
                     }
                 }
@@ -99,7 +99,7 @@ Score run_recursive_simulation(const board::Board &board,
             for (auto idx = 0; idx < copy_al.size(); ++idx) {
                 if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive()) {
                     // prefer fastest checkmate solution
-                    max_score[idx] = 200 - recursions_count; // DRAW
+                    max_score[idx] = ai::score::score_draw - recursions_count; // DRAW
                 }
             }
             return max_score;
@@ -111,10 +111,10 @@ Score run_recursive_simulation(const board::Board &board,
         for (auto idx = 0; idx < copy_al.size(); ++idx) {
             if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive()) {
                 // prefer fastest checkmate solution
-                max_score[idx] = 300 - recursions_count; // TODO <-- correct to max_score etc
+                max_score[idx] = ai::score::score_win - recursions_count; 
                 ++number_of_armies_alive;
             } else {
-                max_score[idx] = 0; // TODO 
+                max_score[idx] = ai::score::min_score; 
             }
         }
         
