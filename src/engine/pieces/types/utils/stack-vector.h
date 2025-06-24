@@ -4,6 +4,8 @@
 
 template <typename TYPE, size_t SIZE>
 class StackVector {
+        // A static array with variable virtual "size".
+        // That allows to iterate only over the used items.
         std::array<TYPE, SIZE> _array;
         unsigned int _size{0};
 
