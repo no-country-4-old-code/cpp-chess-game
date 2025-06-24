@@ -72,7 +72,7 @@ ai::score::ScoreList run_recursive_simulation(const board::Board &board,
                 {
                     max_score = result;
                     max_score_value = result_value;
-                    if (max_score[army_index] > ai::score::score_draw)
+                    if (max_score[army_index] > ai::score::ranges::max_draw)
                     {
                         return max_score;
                     }
@@ -114,7 +114,7 @@ ai::score::ScoreList run_recursive_simulation(const board::Board &board,
                 if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive())
                 {
                     // prefer fastest checkmate solution
-                    max_score[idx] = ai::score::score_draw - recursions_count; // DRAW
+                    max_score[idx] = ai::score::ranges::max_draw - recursions_count; // DRAW
                 }
             }
             return max_score;
@@ -128,12 +128,12 @@ ai::score::ScoreList run_recursive_simulation(const board::Board &board,
             if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive())
             {
                 // prefer fastest checkmate solution
-                max_score[idx] = ai::score::score_win - recursions_count;
+                max_score[idx] = ai::score::ranges::max_win - recursions_count;
                 ++number_of_armies_alive;
             }
             else
             {
-                max_score[idx] = ai::score::min_score;
+                max_score[idx] = ai::score::ranges::min;
             }
         }
 

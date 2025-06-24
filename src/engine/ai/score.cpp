@@ -2,8 +2,8 @@
 
 namespace
 {
-    uint calc_piece_value(const piece::army::Army &);
-    uint calc_attack_value(const piece::army::Army &, const board::Board &);
+    ai::score::Score calc_piece_value(const piece::army::Army &);
+    ai::score::Score calc_attack_value(const piece::army::Army &, const board::Board &);
 }
 
 namespace ai::score
@@ -14,7 +14,7 @@ namespace ai::score
         ScoreList score;
         for (auto i = 0; i < size_army_list; ++i)
         {
-            score.push(min_score);
+            score.push(ranges::min);
         }
         return score;
     }
@@ -31,7 +31,7 @@ namespace ai::score
             }
             else
             {
-                score.push(min_score);
+                score.push(ranges::min);
             }
         }
         return score;
@@ -57,10 +57,10 @@ namespace
         {piece::PieceType::PAWN, 1},
     };
 
-    uint calc_piece_value(const piece::army::Army &army)
+    ai::score::Score calc_piece_value(const piece::army::Army &army)
     {
-        uint current_value = 0;
-        uint max_value = 0;
+        ai::score::Score current_value = 0;
+        ai::score::Score max_value = 0;
 
         for (const auto &piece : army.pieces)
         {
@@ -72,22 +72,22 @@ namespace
         }
 
         // return score normed to max_score
-        return current_value * ai::score::max_score_regular / max_value;
+        return current_value * ai::score::ranges::max / max_value;
     }
 
-    uint calc_attack_value(const piece::army::Army &army, const board::Board &board)
+    ai::score::Score calc_attack_value(const piece::army::Army &army, const board::Board &board)
     {
         board::bitmap::Squares current_value = 0;
-        uint max_population_count = sizeof(board::bitmap::Squares) * CHAR_BIT;
+        ai::score::Score max_population_count = sizeof(board::bitmap::Squares) * CHAR_BIT;
 
         for (const auto &piece : army.pieces)
         {
             current_value |= piece.attackable;
         }
 
-        uint current_population = std::popcount(current_value);
+        ai::score::Score current_population = std::popcount(current_value);
         // return score normed to max_score
-        return current_population * ai::score::max_score_regular / max_population_count;
+        return current_population * ai::score::ranges::max / max_population_count;
     }
 
 }
