@@ -1,5 +1,5 @@
 set(LIBRARY_NAME ChessAI)
-set(SOURCES chess-ai.cpp)
+set(SOURCES chess-ai.cpp score.cpp)
 
 # Add sources to lib
 add_library(${LIBRARY_NAME} STATIC ${SOURCES})
