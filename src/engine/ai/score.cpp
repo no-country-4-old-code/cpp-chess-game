@@ -28,46 +28,6 @@ namespace ai::score
         return this->_val;
     }
 
-
-    ScoreList create_empty_score(size_t size_army_list)
-    {
-        ScoreList score;
-        for (auto i = 0; i < size_army_list; ++i)
-        {
-            score.push(Score());
-        }
-        return score;
-    }
-
-    ScoreList fill_up_score_list(const board::Board &board, const piece::army::army_list &army_list)
-    {
-        ScoreList score;
-
-        for (const auto &army : army_list)
-        {
-            if (army.size() > 0 && army.king().is_alive())
-            {
-                score.push(Score(board, army));
-            }
-            else
-            {
-                score.push(Score());
-            }
-        }
-        return score;
-    }
-
-    int calc_value_of_chess_position(const ScoreList& scores, size_t current_army_index)
-    {
-        // value of an army depends on its score relative to scores of other armies
-        unsigned sum = 0;
-        for (const auto &score : scores)
-        {
-            sum += score.value();
-        }
-
-        return 2 * scores[current_army_index].value() - sum;
-    }
 }
 
 namespace

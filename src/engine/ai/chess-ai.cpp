@@ -17,6 +17,13 @@
 #include "notation.h"
 #include "score.h"
 
+// TODO: score-list.h as template
+// TODO: make-move.cpp
+// TODO: is-defeated.cpp
+// TODO: run-simulation.cpp
+
+constexpr int SIZE = 4; // TODO: extract to template  & Should have same size as army_list
+
 namespace
 {
     int get_number_of_living_pieces(const piece::army::Army &);
@@ -25,12 +32,12 @@ namespace
 struct SimulationResult
 {
     ai::Move move;
-    ai::score::ScoreList score;
+    ai::score::ScoreList<SIZE> score;
 };
 
 const u_int8_t max_recursion = 9; // TODO: Depend on number of players
 
-ai::score::ScoreList run_recursive_simulation(const board::Board &board,
+ai::score::ScoreList<SIZE> run_recursive_simulation(const board::Board &board,
                                               const piece::army::army_list &army_list,
                                               const size_t army_index, const u_int8_t recursions_count)
 {
@@ -43,10 +50,10 @@ ai::score::ScoreList run_recursive_simulation(const board::Board &board,
 
     if (recursions_count >= max_recursion)
     {
-        return ai::score::fill_up_score_list(board, army_list);
+        return ai::score::fill_up_score_list<SIZE>(board, army_list);
     }
 
-    ai::score::ScoreList max_score = ai::score::create_empty_score(army_list.size());
+    auto max_score = ai::score::create_empty_score<SIZE>();
     int max_score_value = std::numeric_limits<int>::min();
     auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);
 
@@ -65,8 +72,8 @@ ai::score::ScoreList run_recursive_simulation(const board::Board &board,
                     // also execute extra action
                     piece::api::move_piece(extra.src, extra.dest, board, copy_al);
                 }
-                ai::score::ScoreList result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
-                auto result_value = ai::score::calc_value_of_chess_position(result, army_index);
+                ai::score::ScoreList<SIZE> result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
+                auto result_value = ai::score::calc_value_of_chess_position<SIZE>(result, army_index);
 
                 if (result_value > max_score_value)
                 {
@@ -158,7 +165,7 @@ SimulationResult run_simulation(const board::Board &board,
     u_int8_t recursions_count = 1;
     SimulationResult best_move = {
         .move = {0, 0, {0, 0}},
-        .score = ai::score::create_empty_score(army_list.size())};
+        .score = ai::score::create_empty_score<SIZE>()};
     int max_score_value = std::numeric_limits<int>::min();
 
     auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);
@@ -179,9 +186,9 @@ SimulationResult run_simulation(const board::Board &board,
                 // also execute extra action
                 piece::api::move_piece(extra.src, extra.dest, board, copy_al);
             }
-            ai::score::ScoreList result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
+            ai::score::ScoreList<SIZE> result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
 
-            auto result_value = ai::score::calc_value_of_chess_position(result, army_index);
+            auto result_value = ai::score::calc_value_of_chess_position<SIZE>(result, army_index);
 
             if (result_value > max_score_value)
             {
