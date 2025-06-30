@@ -16,8 +16,8 @@
 #include <bit>
 #include "notation.h"
 #include "score.h"
+#include "score-list.h"
 
-// TODO: score-list.h as template
 // TODO: make-move.cpp
 // TODO: is-defeated.cpp
 // TODO: run-simulation.cpp
@@ -38,8 +38,8 @@ struct SimulationResult
 const u_int8_t max_recursion = 9; // TODO: Depend on number of players
 
 ai::score::ScoreList<SIZE> run_recursive_simulation(const board::Board &board,
-                                              const piece::army::army_list &army_list,
-                                              const size_t army_index, const u_int8_t recursions_count)
+                                                    const piece::army::army_list &army_list,
+                                                    const size_t army_index, const u_int8_t recursions_count)
 {
 
     if (army_list[army_index].pieces.size() == 0 || !army_list[army_index].king().is_alive())
@@ -50,10 +50,10 @@ ai::score::ScoreList<SIZE> run_recursive_simulation(const board::Board &board,
 
     if (recursions_count >= max_recursion)
     {
-        return ai::score::fill_up_score_list<SIZE>(board, army_list);
+        return ai::score::score_list<SIZE>(board, army_list);
     }
 
-    auto max_score = ai::score::create_empty_score<SIZE>();
+    auto max_score = ai::score::score_list<SIZE>();
     int max_score_value = std::numeric_limits<int>::min();
     auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);
 
@@ -165,7 +165,7 @@ SimulationResult run_simulation(const board::Board &board,
     u_int8_t recursions_count = 1;
     SimulationResult best_move = {
         .move = {0, 0, {0, 0}},
-        .score = ai::score::create_empty_score<SIZE>()};
+        .score = ai::score::score_list<SIZE>()};
     int max_score_value = std::numeric_limits<int>::min();
 
     auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);

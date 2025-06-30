@@ -11,7 +11,11 @@ namespace ai::score
 
     Score::Score(const board::Board &board, const piece::army::Army &army)
     {
-        this->_val = (calc_piece_value(army) + calc_attack_value(army, board)) / 2;
+        if (army.size() > 0 && army.king().is_alive()) {
+            this->_val = (calc_piece_value(army) + calc_attack_value(army, board)) / 2;
+        } else {
+            this->_val = ranges::min;
+        }
     }
 
     bool Score::is_draw() const
