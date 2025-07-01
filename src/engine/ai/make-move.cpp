@@ -24,14 +24,15 @@ namespace {
     inline void execute_move(const ai::simulation::SimulationResult& result, piece::army::Army &my_army, piece::army::army_list &army_list, const board::Board& board);
 }
 
+namespace ai {
+    Move ChessAI::make_move(piece::army::Army &my_army)
+    {
+        auto army_index = get_idx(my_army, this->_army_list);
+        auto result = simulation::run_simulation(this->_board, this->_army_list, army_index);
+        execute_move(result, my_army, this->_army_list, this->_board);
 
-ai::Move ChessAI::make_move(piece::army::Army &my_army)
-{
-    auto army_index = get_idx(my_army, this->_army_list);
-    auto result = ai::simulation::run_simulation(this->_board, this->_army_list, army_index);
-    execute_move(result, my_army, this->_army_list, this->_board);
-
-    return result.move;
+        return result.move;
+    }
 }
 
 

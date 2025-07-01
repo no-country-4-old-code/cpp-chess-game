@@ -9,6 +9,7 @@
 using namespace board::notation::literal;
 using namespace piece;
 using namespace test::helper;
+using namespace ai;
 
 namespace {
     const auto down = MoveDirection::DOWN;

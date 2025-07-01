@@ -31,7 +31,7 @@ int main() {
                    }},
         army::Army{Color::ORANGE, {King(board, "d8"_n), Rock(board, "d7"_n)}}, army::Army{}};
 
-    ChessAI ai{army_list, board};
+    ai::ChessAI ai{army_list, board};
 
     demo::game::PlayerGroup group{
         Player{&ai, &army_list[0]},
