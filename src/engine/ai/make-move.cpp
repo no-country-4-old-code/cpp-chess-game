@@ -22,7 +22,7 @@
 namespace
 {
     inline size_t get_idx(const piece::army::Army &my_army, const piece::army::army_list &army_list);
-    inline void execute_move(const ai::simulation::Result &result, piece::army::Army &my_army, piece::army::army_list &army_list, const board::Board &board);
+    inline void execute_move(const ai::simulation::Move &result, piece::army::Army &my_army, piece::army::army_list &army_list, const board::Board &board);
 }
 
 namespace ai
@@ -54,7 +54,7 @@ namespace
         return army_index;
     }
 
-    inline void execute_move(const ai::simulation::Result &result, piece::army::Army &my_army, piece::army::army_list &army_list, const board::Board &board)
+    inline void execute_move(const ai::simulation::Move &result, piece::army::Army &my_army, piece::army::army_list &army_list, const board::Board &board)
     {
         if (result.move.src)
         {
