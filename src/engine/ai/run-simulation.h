@@ -42,6 +42,44 @@ namespace ai::simulation
 
     const u_int8_t max_recursion = 9; // TODO: Depend on number of players
 
+    ValueAndScore calc_value_for_move(const board::Board &board,const piece::army::army_list &army_list,
+                            const size_t army_index, const u_int8_t recursions_count, const piece::api::ArmyDestinations& possible_moves) {
+        ValueAndScore ret{};
+
+        for (auto [src, destinations, extra] : possible_moves)
+            {
+                IteratorBitmap dest{destinations};
+
+                while (*dest)
+                {
+                    auto copy_al = army_list;
+                    piece::api::move_piece(src, *dest, board, copy_al);
+                    if (extra.src != 0UL)
+                    {
+                        // also execute extra action
+                        piece::api::move_piece(extra.src, extra.dest, board, copy_al);
+                    }
+                    ai::score::ScoreList<SIZE> result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
+                    auto result_value = ai::score::calc_value_of_chess_position<SIZE>(result, army_index);
+
+                    if (result_value > ret.value)
+                    {
+                        ret.score_list = result;
+                        ret.value = result_value;
+                        ret.move = {.src = src, .dest = *dest, .extra = extra};
+                        if (ret.score_list[army_index].is_win())
+                        {
+                            return ret;
+                        }
+                    }
+
+                    ++dest;
+                }
+            }
+         return ret;
+    }
+
+
     ai::score::ScoreList<SIZE> run_recursive_simulation(const board::Board &board,
                                                         const piece::army::army_list &army_list,
                                                         const size_t army_index, const u_int8_t recursions_count)
