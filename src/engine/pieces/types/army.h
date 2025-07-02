@@ -23,6 +23,7 @@ namespace piece::army {
             void mark_as_defeated();
             Color color() const;
             u_int8_t size() const;
+            bool is_defeated() const;
             const piece::Piece &king() const;
     };
 

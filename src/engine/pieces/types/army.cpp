@@ -39,6 +39,10 @@ namespace piece::army {
         return this->pieces.size();
     }
 
+    bool Army::is_defeated() const {
+        return !this->king().is_alive();
+    }
+
     const piece::Piece& Army::king() const {
         assert(this->pieces[this->_idx_king].type == piece::PieceType::KING);
         return (this->pieces[this->_idx_king]);
