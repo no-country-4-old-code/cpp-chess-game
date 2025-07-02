@@ -19,12 +19,14 @@
 #include "score-list.h"
 #include "run-simulation.h"
 
-namespace {
+namespace
+{
     inline size_t get_idx(const piece::army::Army &my_army, const piece::army::army_list &army_list);
-    inline void execute_move(const ai::simulation::SimulationResult& result, piece::army::Army &my_army, piece::army::army_list &army_list, const board::Board& board);
+    inline void execute_move(const ai::simulation::Result &result, piece::army::Army &my_army, piece::army::army_list &army_list, const board::Board &board);
 }
 
-namespace ai {
+namespace ai
+{
     Move ChessAI::make_move(piece::army::Army &my_army)
     {
         auto army_index = get_idx(my_army, this->_army_list);
@@ -35,10 +37,11 @@ namespace ai {
     }
 }
 
+namespace
+{
 
-namespace {
-
-    inline size_t get_idx(const piece::army::Army &my_army, const piece::army::army_list &army_list) {
+    inline size_t get_idx(const piece::army::Army &my_army, const piece::army::army_list &army_list)
+    {
         size_t army_index = 0;
         for (auto army : army_list)
         {
@@ -51,7 +54,8 @@ namespace {
         return army_index;
     }
 
-    inline void execute_move(const ai::simulation::SimulationResult& result, piece::army::Army &my_army, piece::army::army_list &army_list, const board::Board& board) {
+    inline void execute_move(const ai::simulation::Result &result, piece::army::Army &my_army, piece::army::army_list &army_list, const board::Board &board)
+    {
         if (result.move.src)
         {
             piece::api::move_piece(result.move.src, result.move.dest, board, army_list);
@@ -67,7 +71,7 @@ namespace {
         {
             my_army.mark_as_defeated();
             std::cout << "# CHECKMATE - No further move possible !!!\n"
-                    << std::flush;
+                      << std::flush;
         }
     }
 }

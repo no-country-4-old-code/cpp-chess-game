@@ -28,23 +28,19 @@ namespace ai::simulation
                                                         const piece::army::army_list &army_list,
                                                         const size_t army_index, const u_int8_t recursions_count);
 
-    struct SimulationResult
+    struct Result
     {
-        ai::Move move;
-        ai::score::ScoreList<SIZE> score;
-    };
-
-    struct ValueAndScore {
         ai::Move move{0, 0, {0, 0}};
-        int value = std::numeric_limits<int>::min();
         ai::score::ScoreList<SIZE> score_list{};
+        int value = std::numeric_limits<int>::min();
     };
 
     const u_int8_t max_recursion = 9; // TODO: Depend on number of players
 
-    ValueAndScore calc_value_for_move(const board::Board &board,const piece::army::army_list &army_list,
-                            const size_t army_index, const u_int8_t recursions_count, const piece::api::ArmyDestinations& possible_moves) {
-        ValueAndScore ret{};
+    Result find_best_move(const board::Board &board, const piece::army::army_list &army_list,
+                          const size_t army_index, const u_int8_t recursions_count, const piece::api::ArmyDestinations &possible_moves)
+    {
+        Result ret{};
 
         for (auto [src, destinations, extra] : possible_moves)
         {
@@ -52,9 +48,6 @@ namespace ai::simulation
 
             while (*dest)
             {
-                //
-                auto notation = board::notation::ChessNotation(*dest, board);
-                //
                 auto copy_al = army_list;
                 piece::api::move_piece(src, *dest, board, copy_al);
                 if (extra.src != 0UL)
@@ -62,8 +55,7 @@ namespace ai::simulation
                     // also execute extra action
                     piece::api::move_piece(extra.src, extra.dest, board, copy_al);
                 }
-                ai::score::ScoreList<SIZE> result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
-
+                auto result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
                 auto result_value = ai::score::calc_value_of_chess_position<SIZE>(result, army_index);
 
                 if (result_value > ret.value)
@@ -76,36 +68,57 @@ namespace ai::simulation
                 ++dest;
             }
         }
-         return ret;
+        return ret;
     }
 
+    inline bool should_be_skipped(const piece::army::Army& army) {
+        // TODO: "army.pieces.size() == 0 " might be removed if template define army size !
+        return army.pieces.size() == 0 || army.is_defeated();
+    }
+
+    inline bool is_king_under_attack(const piece::army::army_list &army_list, const size_t army_index) {
+        const auto king_position = army_list[army_index].king().position;
+
+        for (const auto &army : army_list)
+            {
+                if (army.color() != army_list[army_index].color())
+                {
+                    for (const auto &enemy : army.pieces)
+                    {
+                        if (king_position & enemy.attackable)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+        return false;
+    }
 
     ai::score::ScoreList<SIZE> run_recursive_simulation(const board::Board &board,
                                                         const piece::army::army_list &army_list,
                                                         const size_t army_index, const u_int8_t recursions_count)
     {
-
-        if (army_list[army_index].pieces.size() == 0 || !army_list[army_index].king().is_alive())
-        {
-            // skip if army dead
-            return run_recursive_simulation(board, army_list, (army_index + 1) % army_list.size(), recursions_count + 1);
-        }
-
+        
         if (recursions_count >= max_recursion)
         {
             return ai::score::score_list<SIZE>(board, army_list);
         }
 
-        auto best_result = ai::score::score_list<SIZE>();
-        ValueAndScore ret{};
-        auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);
-
-        if (possible_moves.size() > 0)
+        if (should_be_skipped(army_list[army_index]))
         {
-            auto ret = calc_value_for_move(board, army_list, army_index, recursions_count, possible_moves);
+            return run_recursive_simulation(board, army_list, (army_index + 1) % army_list.size(), recursions_count + 1);
+        }
+
+        if (auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list); possible_moves.size() > 0)
+        {
+            auto ret = find_best_move(board, army_list, army_index, recursions_count, possible_moves);
             return ret.score_list;
         }
-        else
+
+
+        auto best_result = ai::score::score_list<SIZE>();
+        
         {
             auto copy_al = army_list;
             const auto &king = army_list[army_index].king();
@@ -132,6 +145,7 @@ namespace ai::simulation
 
             if (!is_king_under_attack)
             {
+                // return score_list_draw(army_, recurison)
                 for (auto idx = 0; idx < copy_al.size(); ++idx)
                 {
                     if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive())
@@ -145,6 +159,9 @@ namespace ai::simulation
 
             copy_al[army_index].mark_as_defeated();
 
+            // get number_of_armies_alive 
+            // return score_list_win()
+            // return run_recursive....
             int number_of_armies_alive = 0;
             for (auto idx = 0; idx < copy_al.size(); ++idx)
             {
@@ -173,13 +190,11 @@ namespace ai::simulation
         return best_result;
     }
 
-    
-    SimulationResult run_simulation(const board::Board &board,
-                                    const piece::army::army_list &army_list,
-                                    const size_t army_index)
+    Result run_simulation(const board::Board &board,
+                          const piece::army::army_list &army_list,
+                          const size_t army_index)
     {
         auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);
-        auto ret = calc_value_for_move(board,army_list,army_index, 0, possible_moves);
-        return {ret.move, ret.score_list};
+        return find_best_move(board, army_list, army_index, 0, possible_moves);
     }
 }
