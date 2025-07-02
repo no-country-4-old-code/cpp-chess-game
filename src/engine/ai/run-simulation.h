@@ -59,7 +59,7 @@ namespace ai::simulation
         }
 
         auto max_score = ai::score::score_list<SIZE>();
-        int max_score_value = std::numeric_limits<int>::min();
+        ValueAndScore ret{};
         auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);
 
         if (possible_moves.size() > 0)
@@ -80,19 +80,21 @@ namespace ai::simulation
                     ai::score::ScoreList<SIZE> result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
                     auto result_value = ai::score::calc_value_of_chess_position<SIZE>(result, army_index);
 
-                    if (result_value > max_score_value)
+                    if (result_value > ret.value)
                     {
-                        max_score = result;
-                        max_score_value = result_value;
-                        if (max_score[army_index].is_win())
+                        ret.score_list = result;
+                        ret.value = result_value;
+                        ret.move = {.src = src, .dest = *dest, .extra = extra};
+                        if (ret.score_list[army_index].is_win())
                         {
-                            return max_score;
+                            return ret.score_list;
                         }
                     }
 
                     ++dest;
                 }
             }
+            return ret.score_list;
         }
         else
         {
@@ -162,16 +164,14 @@ namespace ai::simulation
         return max_score;
     }
 
+    
     SimulationResult run_simulation(const board::Board &board,
                                     const piece::army::army_list &army_list,
                                     const size_t army_index)
     {
 
         u_int8_t recursions_count = 1;
-        SimulationResult best_move = {
-            .move = {0, 0, {0, 0}},
-            .score = ai::score::score_list<SIZE>()};
-        int max_score_value = std::numeric_limits<int>::min();
+        ValueAndScore ret{};
 
         auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);
 
@@ -195,17 +195,17 @@ namespace ai::simulation
 
                 auto result_value = ai::score::calc_value_of_chess_position<SIZE>(result, army_index);
 
-                if (result_value > max_score_value)
+                if (result_value > ret.value)
                 {
-                    max_score_value = result_value;
-                    best_move.score = result;
-                    best_move.move = {.src = src, .dest = *dest, .extra = extra};
+                    ret.score_list = result;
+                    ret.value = result_value;
+                    ret.move = {.src = src, .dest = *dest, .extra = extra};
                 }
 
                 ++dest;
             }
         }
 
-        return best_move;
+        return {ret.move, ret.score_list};
     }
 }
