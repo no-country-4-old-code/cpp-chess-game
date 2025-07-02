@@ -103,11 +103,13 @@ namespace ai::simulation
         
         if (recursions_count >= max_recursion)
         {
+            // Reaching a leaf - end recursive approach, calculate score and return it
             return ai::score::score_list<SIZE>(board, army_list);
         }
 
         if (should_be_skipped(army_list[army_index]))
         {
+            // Skip, because a dead army does not move
             return run_recursive_simulation(board, army_list, (army_index + 1) % army_list.size(), recursions_count + 1);
         }
 
@@ -115,28 +117,20 @@ namespace ai::simulation
         
         if (possible_moves.size() > 0)
         {
+            // Going further along the tree and evaluate next moves
             auto ret = find_best_move(board, army_list, army_index, recursions_count, possible_moves);
             return ret.score_list;
         }
 
-        auto best_result = ai::score::score_list<SIZE>();
-        
-        auto copy_al = army_list;
-
         if (!is_king_under_attack_fn(army_list, army_index))
         {
-            // return score_list_draw(army_, recurison)
-            for (auto idx = 0; idx < copy_al.size(); ++idx)
-            {
-                if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive())
-                {
-                    // prefer fastest checkmate solution
-                    best_result[idx] = ai::score::Score(ai::score::ranges::max_draw - recursions_count); // DRAW
-                }
-            }
-            return best_result;
+            // No moves left but king not under attack ? That´s a DRAW !
+            return score::score_list_draw<SIZE>(army_list, recursions_count);
         }
 
+
+        auto best_result = ai::score::score_list<SIZE>();
+        auto copy_al = army_list;
         copy_al[army_index].mark_as_defeated();
 
         // get number_of_armies_alive 
