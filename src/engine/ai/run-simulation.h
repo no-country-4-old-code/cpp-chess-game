@@ -102,36 +102,7 @@ namespace ai::simulation
 
         if (possible_moves.size() > 0)
         {
-            for (auto [src, destinations, extra] : possible_moves)
-            {
-                IteratorBitmap dest{destinations};
-
-                while (*dest)
-                {
-                    auto copy_al = army_list;
-                    piece::api::move_piece(src, *dest, board, copy_al);
-                    if (extra.src != 0UL)
-                    {
-                        // also execute extra action
-                        piece::api::move_piece(extra.src, extra.dest, board, copy_al);
-                    }
-                    ai::score::ScoreList<SIZE> result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
-                    auto result_value = ai::score::calc_value_of_chess_position<SIZE>(result, army_index);
-
-                    if (result_value > ret.value)
-                    {
-                        ret.score_list = result;
-                        ret.value = result_value;
-                        ret.move = {.src = src, .dest = *dest, .extra = extra};
-                        if (ret.score_list[army_index].is_win())
-                        {
-                            return ret.score_list;
-                        }
-                    }
-
-                    ++dest;
-                }
-            }
+            auto ret = calc_value_for_move(board, army_list, army_index, recursions_count, possible_moves);
             return ret.score_list;
         }
         else
