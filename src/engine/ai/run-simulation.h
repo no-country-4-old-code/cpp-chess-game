@@ -47,35 +47,35 @@ namespace ai::simulation
         ValueAndScore ret{};
 
         for (auto [src, destinations, extra] : possible_moves)
+        {
+            IteratorBitmap dest{destinations};
+
+            while (*dest)
             {
-                IteratorBitmap dest{destinations};
-
-                while (*dest)
+                //
+                auto notation = board::notation::ChessNotation(*dest, board);
+                //
+                auto copy_al = army_list;
+                piece::api::move_piece(src, *dest, board, copy_al);
+                if (extra.src != 0UL)
                 {
-                    auto copy_al = army_list;
-                    piece::api::move_piece(src, *dest, board, copy_al);
-                    if (extra.src != 0UL)
-                    {
-                        // also execute extra action
-                        piece::api::move_piece(extra.src, extra.dest, board, copy_al);
-                    }
-                    ai::score::ScoreList<SIZE> result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
-                    auto result_value = ai::score::calc_value_of_chess_position<SIZE>(result, army_index);
-
-                    if (result_value > ret.value)
-                    {
-                        ret.score_list = result;
-                        ret.value = result_value;
-                        ret.move = {.src = src, .dest = *dest, .extra = extra};
-                        if (ret.score_list[army_index].is_win())
-                        {
-                            return ret;
-                        }
-                    }
-
-                    ++dest;
+                    // also execute extra action
+                    piece::api::move_piece(extra.src, extra.dest, board, copy_al);
                 }
+                ai::score::ScoreList<SIZE> result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
+
+                auto result_value = ai::score::calc_value_of_chess_position<SIZE>(result, army_index);
+
+                if (result_value > ret.value)
+                {
+                    ret.score_list = result;
+                    ret.value = result_value;
+                    ret.move = {.src = src, .dest = *dest, .extra = extra};
+                }
+
+                ++dest;
             }
+        }
          return ret;
     }
 
@@ -207,43 +207,8 @@ namespace ai::simulation
                                     const piece::army::army_list &army_list,
                                     const size_t army_index)
     {
-
-        u_int8_t recursions_count = 1;
-        ValueAndScore ret{};
-
         auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);
-
-        for (auto [src, destinations, extra] : possible_moves)
-        {
-            IteratorBitmap dest{destinations};
-
-            while (*dest)
-            {
-                //
-                auto notation = board::notation::ChessNotation(*dest, board);
-                //
-                auto copy_al = army_list;
-                piece::api::move_piece(src, *dest, board, copy_al);
-                if (extra.src != 0UL)
-                {
-                    // also execute extra action
-                    piece::api::move_piece(extra.src, extra.dest, board, copy_al);
-                }
-                ai::score::ScoreList<SIZE> result = run_recursive_simulation(board, copy_al, (army_index + 1) % copy_al.size(), recursions_count + 1);
-
-                auto result_value = ai::score::calc_value_of_chess_position<SIZE>(result, army_index);
-
-                if (result_value > ret.value)
-                {
-                    ret.score_list = result;
-                    ret.value = result_value;
-                    ret.move = {.src = src, .dest = *dest, .extra = extra};
-                }
-
-                ++dest;
-            }
-        }
-
+        auto ret = calc_value_for_move(board,army_list,army_index, 0, possible_moves);
         return {ret.move, ret.score_list};
     }
 }
