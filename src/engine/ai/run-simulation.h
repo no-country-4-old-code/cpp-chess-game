@@ -58,7 +58,7 @@ namespace ai::simulation
             return ai::score::score_list<SIZE>(board, army_list);
         }
 
-        auto max_score = ai::score::score_list<SIZE>();
+        auto best_result = ai::score::score_list<SIZE>();
         ValueAndScore ret{};
         auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);
 
@@ -128,10 +128,10 @@ namespace ai::simulation
                     if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive())
                     {
                         // prefer fastest checkmate solution
-                        max_score[idx] = ai::score::Score(ai::score::ranges::max_draw - recursions_count); // DRAW
+                        best_result[idx] = ai::score::Score(ai::score::ranges::max_draw - recursions_count); // DRAW
                     }
                 }
-                return max_score;
+                return best_result;
             }
 
             copy_al[army_index].mark_as_defeated();
@@ -142,18 +142,18 @@ namespace ai::simulation
                 if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive())
                 {
                     // prefer fastest checkmate solution
-                    max_score[idx] = ai::score::Score(ai::score::ranges::max_win - recursions_count);
+                    best_result[idx] = ai::score::Score(ai::score::ranges::max_win - recursions_count);
                     ++number_of_armies_alive;
                 }
                 else
                 {
-                    max_score[idx] = ai::score::Score();
+                    best_result[idx] = ai::score::Score();
                 }
             }
 
             if (number_of_armies_alive == 1)
             {
-                return max_score;
+                return best_result;
             }
             else
             {
@@ -161,7 +161,7 @@ namespace ai::simulation
             }
         }
 
-        return max_score;
+        return best_result;
     }
 
     
