@@ -40,7 +40,8 @@ namespace piece::army {
     }
 
     bool Army::is_defeated() const {
-        return !this->king().is_alive();
+        // TODO: "army.pieces.size() == 0 " might be removed if template define army size !
+        return this->size() == 0 || !this->king().is_alive();
     }
 
     const piece::Piece& Army::king() const {

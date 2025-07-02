@@ -72,7 +72,7 @@ namespace ai::simulation
     }
 
     inline bool should_be_skipped(const piece::army::Army& army) {
-        // TODO: "army.pieces.size() == 0 " might be removed if template define army size !
+
         return army.pieces.size() == 0 || army.is_defeated();
     }
 
@@ -95,12 +95,19 @@ namespace ai::simulation
         return false;
     }
     
+    inline bool is_more_then_one_army_alive(const piece::army::army_list& army_list) {
+        u_int8_t count = 0;
+        for (auto army: army_list) {
+            count += static_cast<u_int8_t>(army.size() > 0 & army.is_defeated());
+        }
+        return count > 1;
+    }
+
 
     ai::score::ScoreList<SIZE> run_recursive_simulation(const board::Board &board,
                                                         const piece::army::army_list &army_list,
                                                         const size_t army_index, const u_int8_t recursions_count)
     {
-        
         if (recursions_count >= max_recursion)
         {
             // Reaching a leaf - end recursive approach, calculate score and return it
@@ -128,41 +135,18 @@ namespace ai::simulation
             return score::score_list_draw<SIZE>(army_list, recursions_count);
         }
 
-
-        auto best_result = ai::score::score_list<SIZE>();
         auto copy_al = army_list;
         copy_al[army_index].mark_as_defeated();
 
-        // get number_of_armies_alive 
-        // return score_list_win()
-        // return run_recursive....
-        int number_of_armies_alive = 0;
-        for (auto idx = 0; idx < copy_al.size(); ++idx)
-        {
-            if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive())
-            {
-                // prefer fastest checkmate solution
-                best_result[idx] = ai::score::Score(ai::score::ranges::max_win - recursions_count);
-                ++number_of_armies_alive;
-            }
-            else
-            {
-                best_result[idx] = ai::score::Score();
-            }
-        }
-
-        if (number_of_armies_alive == 1)
-        {
-            return best_result;
-        }
-        else
-        {
+        if (is_more_then_one_army_alive(army_list)) {
+            // One down - lets get the rest !
             return run_recursive_simulation(board, copy_al, (army_index + 1) % army_list.size(), recursions_count + 1);
+        } else {
+            // Path to victory was found. Return winning score-list
+            return score::score_list_win<SIZE>(copy_al, recursions_count);
         }
-    
-
-        return best_result;
     }
+
 
     Result run_simulation(const board::Board &board,
                           const piece::army::army_list &army_list,

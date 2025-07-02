@@ -32,9 +32,27 @@ namespace ai::score
         for (auto idx = 0; army_list.size() > idx; ++idx)
         {   
             const auto& army = army_list[idx]; 
-            if (army.size() > 0 && army.is_defeated()) {
+            if (!army.is_defeated()) {
                 // should prefer DRAWs in less turns over DRAWs in more turns
                 score[idx] = Score(ranges::max_draw - recursions_counter);
+            } else {
+                score[idx] = Score{};
+            }
+        }
+        return score;
+    }
+
+    template <unsigned int SIZE>
+    ScoreList<SIZE> score_list_win(const piece::army::army_list &army_list, int recursions_counter)
+    {
+        ScoreList<SIZE> score;
+        assert(SIZE == army_list.size());
+        for (auto idx = 0; army_list.size() > idx; ++idx)
+        {   
+            const auto& army = army_list[idx]; 
+            if (!army.is_defeated()) {
+                // should prefer WINs in less turns over WINs in more turns
+                score[idx] = Score(ranges::max_win - recursions_counter);
             } else {
                 score[idx] = Score{};
             }
