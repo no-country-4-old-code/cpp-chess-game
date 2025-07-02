@@ -1,4 +1,3 @@
-#include <array>
 #include "board-movements.h"
 #include "board.h"
 #include "notation.h"
@@ -19,4 +18,4 @@ namespace piece
                                                      move::left, move::right, move::up, move::down>
         };
     }
-}
+}  // namespace piece

@@ -4,9 +4,9 @@
 #include "piece-type.h"
 #include "piece.h"
 #include "pieces.h"
-#include <utility>
 #include <map>
 #include "board-edges.h"
+#include "squares.h"
 #include "update-linear-movement.h"
 
 namespace {    
@@ -34,7 +34,7 @@ namespace {
         {piece::MoveDirection::UP, update<move::up, move::left_up, move::right_up, top_edge_mask>},
         {piece::MoveDirection::DOWN, update<move::down, move::left_down, move::right_down, bottom_edge_mask>}
     };
-}
+}  // namespace
 
 
 namespace piece

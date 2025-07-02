@@ -1,22 +1,11 @@
 #include "chess-ai.h"
 #include <cstdlib>
 #include <ctime>
-#include <iostream>
-#include <ostream>
-#include <vector>
 #include "army.h"
-#include "iterator-bitfield.h"
 #include "piece-actions.h"
 #include "piece.h"
-#include "squares.h"
 #include <cstdlib>
-#include <numeric>
-#include <map>
 #include <climits>
-#include <bit>
-#include "notation.h"
-#include "score.h"
-#include "score-list.h"
 
 namespace
 {
@@ -31,7 +20,7 @@ namespace
         }
         return count < 2;
     }
-}
+}  // namespace
 
 namespace ai {
 
@@ -43,4 +32,4 @@ namespace ai {
         return no_valid_moves | my_army.is_defeated() | only_king_is_alive;
     }
 
-}
+}  // namespace ai

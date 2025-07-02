@@ -1,9 +1,17 @@
 #include "score.h"
+#include "army.h"
+#include "board.h"
+#include <map>
+#include "piece-type.h"
+#include <sys/types.h>
+#include "squares.h"
+#include <climits>
+#include <bit>
 
 namespace
 {
     unsigned int calc_piece_value(const piece::army::Army &);
-    unsigned int calc_attack_value(const piece::army::Army &, const board::Board &);
+    unsigned int calc_attack_value(const piece::army::Army &);
 }
 
 namespace ai::score
@@ -12,7 +20,7 @@ namespace ai::score
     Score::Score(const board::Board &board, const piece::army::Army &army)
     {
         if (army.size() > 0 && army.king().is_alive()) {
-            this->_val = (calc_piece_value(army) + calc_attack_value(army, board)) / 2;
+            this->_val = (calc_piece_value(army) + calc_attack_value(army)) / 2;
         } else {
             this->_val = ranges::min;
         }
@@ -32,7 +40,7 @@ namespace ai::score
         return this->_val;
     }
 
-}
+}  // namespace ai::score
 
 namespace
 {
@@ -64,19 +72,19 @@ namespace
         return current_value * ai::score::ranges::max / max_value;
     }
 
-    unsigned int calc_attack_value(const piece::army::Army &army, const board::Board &board)
+    unsigned int calc_attack_value(const piece::army::Army &army)
     {
         board::bitmap::Squares current_value = 0;
-        unsigned int max_population_count = sizeof(board::bitmap::Squares) * CHAR_BIT;
+        unsigned int const max_population_count = sizeof(board::bitmap::Squares) * CHAR_BIT;
 
         for (const auto &piece : army.pieces)
         {
             current_value |= piece.attackable;
         }
 
-        unsigned int current_population = std::popcount(current_value);
+        unsigned int const current_population = std::popcount(current_value);
         // return score normed to max_score
         return current_population * ai::score::ranges::max / max_population_count;
     }
 
-}
+}  // namespace

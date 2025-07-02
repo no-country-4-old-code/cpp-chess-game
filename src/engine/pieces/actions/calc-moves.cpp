@@ -9,8 +9,6 @@
 namespace
 {
 
-
-
     bool does_piece_movement_endanger_own_king(const piece::Piece &, const board::Board &,
                                                const piece::army::army_list &,
                                                const piece::army::Army &,
@@ -25,7 +23,7 @@ namespace piece::api
                                          const piece::army::army_list &army_list)
     {
         board::bitmap::Squares enemy_attack_map = 0;
-        board::bitmap::Squares enemy_king_attacker_free_view_map = 0; 
+        board::bitmap::Squares enemy_king_attacker_free_view_map = 0;
         board::bitmap::Squares positions_all_armies = 0;
         unsigned int number_of_king_attackers = 0;
         const piece::Piece *king_attacker = nullptr;
@@ -65,14 +63,14 @@ namespace piece::api
         }
 
         auto context = Context{
-                            .positions_all_armies = positions_all_armies,
-                            .under_attack_map = enemy_attack_map};
+            .positions_all_armies = positions_all_armies,
+            .under_attack_map = enemy_attack_map};
 
         // king movement
         auto movable_king = king.movable & ~(enemy_attack_map | enemy_king_attacker_free_view_map);
         if (movable_king)
         {
-            // check 
+            // check
             memory.push({.src = king.position, .destinations = movable_king});
         }
 
@@ -89,12 +87,14 @@ namespace piece::api
                 {
                     bool const result = does_piece_movement_endanger_own_king(
                         piece, board, army_list, my_army, context);
-                        // TODO: sometimes not all movement endanger the king. Movement towards the attacker does not endanger the kning
-                    
+                    // TODO: sometimes not all movement endanger the king. Movement towards the attacker does not endanger the kning
+
                     if (!result)
                     {
                         memory.push({.src = piece.position, .destinations = piece.movable});
-                    } else {
+                    }
+                    else
+                    {
                         board::bitmap::Squares king_attack_dir_mask = 0;
                         for (const auto &army : army_list)
                         {
@@ -102,14 +102,16 @@ namespace piece::api
                             {
                                 for (const auto &enemy : army.pieces)
                                 {
-                                    if (enemy.attackable & piece.position) {
+                                    if (enemy.attackable & piece.position)
+                                    {
                                         king_attack_dir_mask |= utils::create_embraced_squares_mask(enemy.position, king.position, board) | enemy.position;
                                         // TODO: only do this for real king attackers
                                     }
                                 }
                             }
                         }
-                        if (king_attack_dir_mask & (piece.movable)) {
+                        if (king_attack_dir_mask & (piece.movable))
+                        {
                             memory.push({.src = piece.position, .destinations = (king_attack_dir_mask & (piece.movable))});
                         }
                     }

@@ -1,22 +1,14 @@
+#include "board.h"
 #include "chess-ai.h"
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
 #include <ostream>
-#include <vector>
 #include "army.h"
-#include "iterator-bitfield.h"
 #include "piece-actions.h"
-#include "piece.h"
-#include "squares.h"
 #include <cstdlib>
-#include <numeric>
-#include <map>
 #include <climits>
-#include <bit>
 #include "notation.h"
-#include "score.h"
-#include "score-list.h"
 #include "run-simulation.h"
 
 namespace
@@ -35,7 +27,7 @@ namespace ai
 
         return result.move;
     }
-}
+}  // namespace ai
 
 namespace
 {
@@ -65,7 +57,7 @@ namespace
                 piece::api::move_piece(result.move.extra.src, result.move.extra.dest, board, army_list);
             }
 
-            std::cout << "Moved from " << board::notation::ChessNotation(result.move.src, board) << " to " << board::notation::ChessNotation(result.move.dest, board) << std::endl;
+            std::cout << "Moved from " << board::notation::ChessNotation(result.move.src, board) << " to " << board::notation::ChessNotation(result.move.dest, board) << '\n';
         }
         else
         {
@@ -74,4 +66,4 @@ namespace
                       << std::flush;
         }
     }
-}
+}  // namespace

@@ -1,8 +1,8 @@
-#include <utility>
 #include "army.h"
 #include "iterator-bitfield.h"
 #include "board.h"
 #include "piece-actions.h"
+#include "piece-type.h"
 #include "piece.h"
 #include "squares.h"
 
@@ -23,7 +23,7 @@ namespace piece::utils
         handle_castle_move(my_army, board, context, memory);
     }
 
-} // namespace piece::api
+}  // namespace piece::utils
 
 namespace
 {
@@ -83,7 +83,7 @@ namespace
                                 memory.push({
                                     .src = my_army.king().position, 
                                     .destinations = dest_king,
-                                    .extra = {piece.position, dest_rock}
+                                    .extra = {.src=piece.position, .dest=dest_rock}
                                 });
                             }
                         }

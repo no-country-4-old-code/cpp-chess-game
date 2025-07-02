@@ -3,6 +3,7 @@
 #include <cassert>
 #include "board.h"
 #include "piece-type.h"
+#include "squares.h"
 
 namespace piece
 {
