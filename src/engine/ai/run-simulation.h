@@ -23,10 +23,21 @@ constexpr int SIZE = 4; // TODO: extract to template  & Should have same size as
 
 namespace ai::simulation
 {
+
+    ai::score::ScoreList<SIZE> run_recursive_simulation(const board::Board &board,
+                                                        const piece::army::army_list &army_list,
+                                                        const size_t army_index, const u_int8_t recursions_count);
+
     struct SimulationResult
     {
         ai::Move move;
         ai::score::ScoreList<SIZE> score;
+    };
+
+    struct ValueAndScore {
+        ai::Move move{0, 0, {0, 0}};
+        int value = std::numeric_limits<int>::min();
+        ai::score::ScoreList<SIZE> score_list{};
     };
 
     const u_int8_t max_recursion = 9; // TODO: Depend on number of players
