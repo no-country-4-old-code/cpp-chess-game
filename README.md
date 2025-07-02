@@ -1,19 +1,45 @@
 # Chess Game with support of custom boards and pieces (C++)
-
 A little chess game engine as hobby project.
-I try to find a good balance between performance and abstraction.
+Aiming for a good balance between performance and abstraction.
 
 ## Current Status
-Not runnable !
-Still in progress 
+Runnable, but 
+- The "En passant"-move is currently not supported.
+- It is currently not possible to end up with DRAW
 
-## Goals regarding performance
-- Chess time control of 40/15 (40 moves in 15 minutes) #CCRL 
-- ELO > 2000 on medium hardware (while holding 40/15)
+## TODO
+- Add benchmark tests
+- Increase overall performance (e.g. by using templates for underlying move functions)
+- Improve algorithm - maybe add some earlier pruning.
+- Support Multithreading
+- Support "En passant"
+- Support "DRAW"
+- Support of UCI (Universal Chess Interface)
 
-## Goals regarding abstraction
-- SW-Architecture should support adding custom boards or/and pieces without **modifiying** more then 10 lines of code in a maximum of 3 different files.
-- SW-Architecture should support adding custom boards or/and pieces without **adding** much boiler-plate code.
+## Folder
+- /src/demo      : Runnable demo - feel free to adapt main.cpp
+- /src/engine    : The Chess engine itself separted in "ai", "board" and "pieces"
+- /test/_helper  : Just helper function for tests
+- /test/engine   : Tests for the engine. Look at under subfolder ai/chess-riddle-tests.cpp to check if the engine can solve your checkmate-in-3-moves-riddle.
+- /tools         : Cmake-Scripts, Dockerfile for toolchain, etc.
+
+## Architectural decisions so far
+I choose a piece-centric approach.
+Pros:
+- The board can be represented by bitmaps. This makes checks e.g "if piece A can attack piece B" very cheap.
+- Iterating over pieces faster then over the (empty) board squares.
+- Decoupling is easier (my oppinion). This is needed to support custom board sizes and pieces efficiently.
+
+Cons:
+- A list of pieces must be maintained. Given that heap allocation is ~ 200x slower then stack, I still use a static array with "dead" pieces inside.
+- Knowledge about the game status is now distributed among multiple pieces. More complex to debug. I tackle this with unittests.
+
+This results in a domain-separated, quasi-layered architecture, where 
+- the dependency direction is strict (the "board" knows nothing, "pieces" know the "board", and the "AI" knows both "board" and "pieces") and
+- the "pieces" act as an "open layer". That means "AI" can access the "board" directly
+
+(Planned): Consider using templates to leverage compile-time optimization for low-level board movement logic.
+
 
 Have fun!
 **nc4oc**  
