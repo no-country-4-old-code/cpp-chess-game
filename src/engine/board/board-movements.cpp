@@ -1,7 +1,7 @@
 #include "board-movements.h"
+#include "board-edges.h"
 #include "board.h"
 #include "squares.h"
-#include "board-edges.h"
 
 namespace board::movements {
 
@@ -80,4 +80,3 @@ namespace board::movements {
     }
 
 }  // namespace board::movements
-

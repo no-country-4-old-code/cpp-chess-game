@@ -1,38 +1,32 @@
 #include "army.h"
-#include "iterator-bitfield.h"
 #include "board.h"
+#include "iterator-bitfield.h"
 #include "piece-actions.h"
 #include "piece-type.h"
 #include "piece.h"
 #include "squares.h"
 
-namespace
-{
-    void handle_castle_move (const piece::army::Army &my_army,
-                             const board::Board &board,
-                             const piece::api::Context &army_context, piece::api::ArmyDestinations& memory);
-} // namespace
+namespace {
+    void handle_castle_move(const piece::army::Army &my_army, const board::Board &board,
+                            const piece::api::Context &army_context,
+                            piece::api::ArmyDestinations &memory);
+}  // namespace
 
-namespace piece::utils
-{
+namespace piece::utils {
 
-    void calc_special_moves (const piece::army::Army &my_army,
-                                         const board::Board &board,
-                                         const piece::api::Context &context, api::ArmyDestinations& memory)
-    {
+    void calc_special_moves(const piece::army::Army &my_army, const board::Board &board,
+                            const piece::api::Context &context, api::ArmyDestinations &memory) {
         handle_castle_move(my_army, board, context, memory);
     }
 
 }  // namespace piece::utils
 
-namespace
-{
-    void handle_castle_move (const piece::army::Army &my_army,
-                             const board::Board &board,
-                             const piece::api::Context &context, piece::api::ArmyDestinations& memory) {
-
-        const auto& king_position = my_army.king().position;
-        auto tmp = king_position & context.under_attack_map;
+namespace {
+    void handle_castle_move(const piece::army::Army &my_army, const board::Board &board,
+                            const piece::api::Context &context,
+                            piece::api::ArmyDestinations &memory) {
+        const auto &king_position = my_army.king().position;
+        auto tmp                  = king_position & context.under_attack_map;
 
         if ((!(my_army.king().has_moved())) && (!(king_position & context.under_attack_map))) {
 
@@ -64,14 +58,13 @@ namespace
                             }
 
                         } else {
-
                             // king is left from rock
                             while (*iter != 0UL) {
                                 if (dest_rock == 0UL) {
                                     dest_rock = *iter;
                                 } else if (dest_king == 0UL) {
                                     dest_king = *iter;
-                                    break; 
+                                    break;
                                 }
                                 ++iter;
                             }
@@ -88,11 +81,8 @@ namespace
                             }
                         }
                     }
-
                 }
-
             }
         }
-
     }
-} // namespace
+}  // namespace

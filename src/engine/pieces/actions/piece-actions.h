@@ -8,22 +8,20 @@
 
 namespace piece::api {
 
-    struct Context
-    {
-        board::bitmap::Squares positions_all_armies;
-        board::bitmap::Squares under_attack_map;
+    struct Context {
+            board::bitmap::Squares positions_all_armies;
+            board::bitmap::Squares under_attack_map;
     };
 
-    
     struct ExtraMove {
-            board::bitmap::Squares src{0};  // singular
-            board::bitmap::Squares dest{0}; // singular
+            board::bitmap::Squares src{0};   // singular
+            board::bitmap::Squares dest{0};  // singular
     };
 
     struct PieceDestinations {
             board::bitmap::Squares src{0};           // singular
             board::bitmap::Squares destinations{0};  // plural
-            ExtraMove extra{0}; // special moves like castling require an extra move (king & rock)
+            ExtraMove extra{0};  // special moves like castling require an extra move (king & rock)
     };
 
     using ArmyDestinations = StackVector<PieceDestinations, piece::army::max_pieces_per_army>;
@@ -36,7 +34,6 @@ namespace piece::api {
 namespace piece::utils {
     using sqrs = board::bitmap::Squares;
     sqrs create_embraced_squares_mask(sqrs, sqrs, const board::Board &);
-    void calc_special_moves (const piece::army::Army &my_army,
-                                         const board::Board &board,
-                                         const api::Context &context, api::ArmyDestinations& memory);
+    void calc_special_moves(const piece::army::Army &my_army, const board::Board &board,
+                            const api::Context &context, api::ArmyDestinations &memory);
 }

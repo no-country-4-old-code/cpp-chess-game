@@ -14,27 +14,22 @@
 #include "piece-type.h"
 #include "piece.h"
 
-using namespace board::notation::literal;  //NOLINT - using namespace for literals is pretty ok
+using namespace board::notation::literal;  // NOLINT - using namespace for literals is pretty ok
 
 namespace {
     // bin. search is slower then simply index, BUT std::cout not used in time
     // time critical context anyway
 
-    const std::map<piece::PieceType, char> lookup_piece_to_notation{{piece::PieceType::KING, 'K'},
-                                                                    {piece::PieceType::QUEEN, 'Q'},
-                                                                    {piece::PieceType::ROCK, 'R'},
-                                                                    {piece::PieceType::BISHOP, 'B'},
-                                                                    {piece::PieceType::KNIGHT, 'N'}, // to distinguise from King
-                                                                    {piece::PieceType::PAWN, 'P'}                                                                
-                                                                };
+    const std::map<piece::PieceType, char> lookup_piece_to_notation{
+        {piece::PieceType::KING, 'K'},   {piece::PieceType::QUEEN, 'Q'},
+        {piece::PieceType::ROCK, 'R'},   {piece::PieceType::BISHOP, 'B'},
+        {piece::PieceType::KNIGHT, 'N'},  // to distinguise from King
+        {piece::PieceType::PAWN, 'P'}};
 
     const std::map<piece::PieceType, std::string_view> lookup_piece_to_name{
-        {piece::PieceType::KING, "King"},
-        {piece::PieceType::QUEEN, "Queen"},
-        {piece::PieceType::ROCK, "Rock"},
-        {piece::PieceType::BISHOP, "Bishop"},
-        {piece::PieceType::KNIGHT, "Knight"},
-        {piece::PieceType::PAWN, "Pawn"},
+        {piece::PieceType::KING, "King"},     {piece::PieceType::QUEEN, "Queen"},
+        {piece::PieceType::ROCK, "Rock"},     {piece::PieceType::BISHOP, "Bishop"},
+        {piece::PieceType::KNIGHT, "Knight"}, {piece::PieceType::PAWN, "Pawn"},
     };
 
     const std::map<Color, char> lookup_color_to_notation{

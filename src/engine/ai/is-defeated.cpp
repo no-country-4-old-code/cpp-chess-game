@@ -1,20 +1,16 @@
-#include "chess-ai.h"
+#include <climits>
 #include <cstdlib>
 #include <ctime>
 #include "army.h"
+#include "chess-ai.h"
 #include "piece-actions.h"
 #include "piece.h"
-#include <cstdlib>
-#include <climits>
 
-namespace
-{
+namespace {
 
-    bool is_only_king_alive(const piece::army::Army &army)
-    {
+    bool is_only_king_alive(const piece::army::Army &army) {
         unsigned int count = 0;
-        for (auto piece : army.pieces)
-        {
+        for (auto piece : army.pieces) {
             // predictable loop without if / else
             count += static_cast<unsigned int>(piece.is_alive());
         }
@@ -24,8 +20,7 @@ namespace
 
 namespace ai {
 
-    bool ChessAI::is_defeated(piece::army::Army &my_army) const
-    {
+    bool ChessAI::is_defeated(piece::army::Army &my_army) const {
         auto valid_moves = piece::api::calc_possible_moves(my_army, this->_board, this->_army_list);
         bool const no_valid_moves = valid_moves.size() == 0;
         bool const only_king_is_alive = is_only_king_alive(my_army);

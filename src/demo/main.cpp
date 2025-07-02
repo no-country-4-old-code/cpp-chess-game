@@ -16,8 +16,8 @@
  *
  */
 int main() {
-    using namespace piece; // NOLINT - accepted in top-level function
-    using namespace board::notation::literal; //NOLINT - using namespace for literals is pretty ok
+    using namespace piece;                     // NOLINT - accepted in top-level function
+    using namespace board::notation::literal;  // NOLINT - using namespace for literals is pretty ok
 
     board::Board const board{8, 8};
 

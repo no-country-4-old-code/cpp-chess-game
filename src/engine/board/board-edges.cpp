@@ -1,7 +1,7 @@
+#include "board-edges.h"
 #include <utility>
 #include "board.h"
 #include "squares.h"
-#include "board-edges.h"
 
 namespace board::edges {
     board::bitmap::Squares build_left_squares_mask(const board::Board &board) {

@@ -3,9 +3,9 @@
 
 namespace ai {
     struct Move {
-        board::bitmap::Squares src{0};
-        board::bitmap::Squares dest{0};
-        piece::api::ExtraMove extra;
+            board::bitmap::Squares src{0};
+            board::bitmap::Squares dest{0};
+            piece::api::ExtraMove extra;
     };
 
     class ChessAI {
@@ -20,5 +20,3 @@ namespace ai {
             const board::Board &_board;
     };
 }
-
-
