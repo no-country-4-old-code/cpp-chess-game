@@ -76,7 +76,7 @@ namespace ai::simulation
         return army.pieces.size() == 0 || army.is_defeated();
     }
 
-    inline bool is_king_under_attack(const piece::army::army_list &army_list, const size_t army_index) {
+    inline bool is_king_under_attack_fn(const piece::army::army_list &army_list, const size_t army_index) {
         const auto king_position = army_list[army_index].king().position;
 
         for (const auto &army : army_list)
@@ -94,6 +94,7 @@ namespace ai::simulation
             }
         return false;
     }
+    
 
     ai::score::ScoreList<SIZE> run_recursive_simulation(const board::Board &board,
                                                         const piece::army::army_list &army_list,
@@ -110,82 +111,61 @@ namespace ai::simulation
             return run_recursive_simulation(board, army_list, (army_index + 1) % army_list.size(), recursions_count + 1);
         }
 
-        if (auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list); possible_moves.size() > 0)
+        const auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);
+        
+        if (possible_moves.size() > 0)
         {
             auto ret = find_best_move(board, army_list, army_index, recursions_count, possible_moves);
             return ret.score_list;
         }
 
-
         auto best_result = ai::score::score_list<SIZE>();
         
+        auto copy_al = army_list;
+
+        if (!is_king_under_attack_fn(army_list, army_index))
         {
-            auto copy_al = army_list;
-            const auto &king = army_list[army_index].king();
-            bool is_king_under_attack = false;
-
-            for (const auto &army : army_list)
-            {
-                if (army.color() != army_list[army_index].color())
-                {
-                    // enemy
-                    for (const auto &enemy : army.pieces)
-                    {
-                        if (king.position & enemy.attackable)
-                        {
-                            is_king_under_attack = true;
-                            if (is_king_under_attack)
-                            {
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if (!is_king_under_attack)
-            {
-                // return score_list_draw(army_, recurison)
-                for (auto idx = 0; idx < copy_al.size(); ++idx)
-                {
-                    if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive())
-                    {
-                        // prefer fastest checkmate solution
-                        best_result[idx] = ai::score::Score(ai::score::ranges::max_draw - recursions_count); // DRAW
-                    }
-                }
-                return best_result;
-            }
-
-            copy_al[army_index].mark_as_defeated();
-
-            // get number_of_armies_alive 
-            // return score_list_win()
-            // return run_recursive....
-            int number_of_armies_alive = 0;
+            // return score_list_draw(army_, recurison)
             for (auto idx = 0; idx < copy_al.size(); ++idx)
             {
                 if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive())
                 {
                     // prefer fastest checkmate solution
-                    best_result[idx] = ai::score::Score(ai::score::ranges::max_win - recursions_count);
-                    ++number_of_armies_alive;
-                }
-                else
-                {
-                    best_result[idx] = ai::score::Score();
+                    best_result[idx] = ai::score::Score(ai::score::ranges::max_draw - recursions_count); // DRAW
                 }
             }
+            return best_result;
+        }
 
-            if (number_of_armies_alive == 1)
+        copy_al[army_index].mark_as_defeated();
+
+        // get number_of_armies_alive 
+        // return score_list_win()
+        // return run_recursive....
+        int number_of_armies_alive = 0;
+        for (auto idx = 0; idx < copy_al.size(); ++idx)
+        {
+            if (copy_al[idx].size() > 0 && copy_al[idx].king().is_alive())
             {
-                return best_result;
+                // prefer fastest checkmate solution
+                best_result[idx] = ai::score::Score(ai::score::ranges::max_win - recursions_count);
+                ++number_of_armies_alive;
             }
             else
             {
-                return run_recursive_simulation(board, copy_al, (army_index + 1) % army_list.size(), recursions_count + 1);
+                best_result[idx] = ai::score::Score();
             }
         }
+
+        if (number_of_armies_alive == 1)
+        {
+            return best_result;
+        }
+        else
+        {
+            return run_recursive_simulation(board, copy_al, (army_index + 1) % army_list.size(), recursions_count + 1);
+        }
+    
 
         return best_result;
     }
