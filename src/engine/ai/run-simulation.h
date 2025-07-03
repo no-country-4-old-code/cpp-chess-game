@@ -22,7 +22,7 @@
 constexpr int SIZE = 4;  // TODO: extract to template  & Should have same size as army_list
 
 namespace ai::simulation {
-    const u_int8_t max_recursion = 9;  // TODO: Depend on number of players
+    const u_int8_t max_recursion = 5;
     struct Move {
             ai::Move move{0, 0, {0, 0}};
             ai::score::ScoreList<SIZE> score_list{};
@@ -89,11 +89,10 @@ namespace ai::simulation {
         if (utils::should_be_skipped(army_list[army_index])) {
             // Skip, because a dead army does not move
             return run_recursive_simulation(board, army_list, (army_index + 1) % army_list.size(),
-                                            recursions_count + 1);
+                                            recursions_count);
         }
 
-        const auto possible_moves =
-            piece::api::calc_possible_moves(army_list[army_index], board, army_list);
+        const auto possible_moves = piece::api::calc_possible_moves(army_list[army_index], board, army_list);
 
         if (possible_moves.size() > 0) {
             // Going further along the tree and evaluate next moves

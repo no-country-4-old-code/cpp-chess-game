@@ -19,7 +19,7 @@ int main() {
     using namespace piece;                     // NOLINT - accepted in top-level function
     using namespace board::notation::literal;  // NOLINT - using namespace for literals is pretty ok
 
-    board::Board const board{4, 8};  // TODO: Why are those convert ?!?!?
+    board::Board const board{4, 9};
     const auto up = MoveDirection::UP;
     const auto down = MoveDirection::DOWN;
 
@@ -27,11 +27,11 @@ int main() {
     army::army_list army_list = {
         army::Army{Color::WHITE, {
             Rock(board, "a1"_n), Bishop(board, "b1"_n), King(board, "c1"_n), Knight(board, "d1"_n),
-            Pawn(board, "a2"_n, up), Pawn(board, "b2"_n, up), Pawn(board, "c2"_n, up), Pawn(board, "d2"_n, up) 
+            Pawn(board, "a2"_n, down), Pawn(board, "b2"_n, down), Pawn(board, "c2"_n, down), Pawn(board, "d2"_n, down) 
         }},
         army::Army{Color::BLACK, {
-            Pawn(board, "a7"_n, down), Pawn(board, "b7"_n, down), Pawn(board, "c7"_n, down), Pawn(board, "d7"_n, down), 
-            Rock(board, "a8"_n), Bishop(board, "b8"_n), King(board, "c8"_n), Knight(board, "d8"_n)
+            Pawn(board, "a7"_n, up), Pawn(board, "b7"_n, up), Pawn(board, "c7"_n, up), Pawn(board, "d7"_n, up), 
+            Pawn(board, "a8"_n, up), Pawn(board, "b8"_n, up), King(board, "c8"_n), Pawn(board, "d8"_n, up)
         }},army::Army{}, army::Army{}};
 
     ai::ChessAI ai{army_list, board};
