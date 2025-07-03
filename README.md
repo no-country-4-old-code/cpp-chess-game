@@ -4,10 +4,12 @@ Aiming for a good balance between performance and abstraction.
 
 ## Current Status
 Runnable, but 
+- No "threefold repetition"-detection. This leads to infinite game. I will fix it next time I come back. 
 - The "En passant"-move is currently not supported.
 - It is currently not possible to end up with DRAW
 
 ## TODO
+- Add "threefold repetition"-detection
 - Add benchmark tests
 - Increase overall performance (e.g. by using templates for underlying move functions)
 - Improve algorithm - maybe add some earlier pruning.

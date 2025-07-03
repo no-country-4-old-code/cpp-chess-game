@@ -9,10 +9,7 @@
 
 /**
  * @file main.cpp
- * @brief Main entry point for the program, prints the project information.
- *
- * This function outputs the project name, version, and commit hash to the
- * console. It serves as the starting point for executing the program.
+ * @brief Demo to run a custom chess board game.
  *
  */
 int main() {
@@ -23,6 +20,7 @@ int main() {
     const auto up = MoveDirection::UP;
     const auto down = MoveDirection::DOWN;
 
+    // TODO: Need to add "repetion detection to prevent endless game" - maybe with hashmap with overall attack-map as seed ?
 
     army::army_list army_list = {
         army::Army{Color::WHITE, {
