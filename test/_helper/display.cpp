@@ -41,19 +41,22 @@ namespace test::helper {
         std::cout << " \t a  b  c  d  e  f  g  h  \n";
 
         u_int bit_count = 1;
+        u_int max_number_of_bits = board.num_of_squares_horizontal * board.num_of_squares_vertical;
         std::cout << bit_count << "\t";
 
-        for_each_bit(sqrs, [&bit_count, &board](bool is_bit_set) {
-            if (is_bit_set) {
-                std::cout << " X ";
-            } else {
-                std::cout << " - ";
-            }
+        for_each_bit(sqrs, [&bit_count, &board, &max_number_of_bits](bool is_bit_set) {
+            if (bit_count <= max_number_of_bits) {
+                if (is_bit_set) {
+                    std::cout << " X ";
+                } else {
+                    std::cout << " - ";
+                }
 
-            if (bit_count % board.num_of_squares_horizontal == 0) {
-                std::cout << "\n" << (bit_count / bits_per_byte) + 1 << "\t";
+                if (bit_count % board.num_of_squares_horizontal == 0) {
+                    std::cout << "\n" << (bit_count / board.num_of_squares_horizontal) + 1 << "\t";
+                }
+                std::cout << std::flush;
             }
-            std::cout << std::flush;
             ++bit_count;
         });
         std::cout << "\n";

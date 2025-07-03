@@ -28,14 +28,14 @@ namespace board::edges {
     board::bitmap::Squares build_top_squares_mask(const board::Board &board) {
         // Create a bitmap representing all square on the upper edge (a1, b1,
         // c1, ...)
-        return (1ULL << board.num_of_squares_vertical) - 1;
+        return (1ULL << board.num_of_squares_horizontal) - 1;
     }
 
     board::bitmap::Squares build_bottom_squares_mask(const board::Board &board) {
         // Create a bitmap representing all square on the bottom edge (e.g. a8,
         // b8, c8, ...)
-        auto top_mask = build_top_squares_mask(board);
-        return top_mask << ((board.num_of_squares_horizontal - 1) * board.num_of_squares_vertical);
+        auto top = build_top_squares_mask(board);
+        return top << (board.num_of_squares_horizontal * (board.num_of_squares_vertical - 1));
     }
 
 }  // namespace board::edges
