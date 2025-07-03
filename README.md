@@ -4,7 +4,7 @@ Aiming for a good balance between performance and abstraction.
 
 ## Current Status
 Runnable, but 
-- No "threefold repetition"-detection. This leads to infinite game. I will fix it next time I come back. 
+- No "threefold repetition"-detection. This leads to a infinite game. I will fix this next time I come back. 
 - The "En passant"-move is currently not supported.
 - It is currently not possible to end up with DRAW
 
@@ -27,6 +27,7 @@ Runnable, but
 
 ## Architectural decisions so far
 I choose a piece-centric approach.
+
 Pros:
 - The board can be represented by bitmaps. This makes checks e.g "if piece A can attack piece B" very cheap.
 - Iterating over pieces faster then over the (empty) board squares.
