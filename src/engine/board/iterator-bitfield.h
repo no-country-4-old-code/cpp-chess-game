@@ -11,7 +11,7 @@ class IteratorBitmap {
     public:
         explicit IteratorBitmap(board::bitmap::Squares all) : _all(all) {}
 
-        const board::bitmap::Squares operator*() const { return _all & -_all; }
+        const board::bitmap::Squares operator*() const { return (_all & -_all); }
 
         IteratorBitmap& operator++() {
             _all = _all & ~(_all & -_all);

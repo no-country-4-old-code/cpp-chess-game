@@ -15,7 +15,7 @@ namespace ai::score {
         ScoreList<SIZE> score;
         assert(SIZE == army_list.size());
         for (auto idx = 0; army_list.size() > idx; ++idx) {
-            score[idx] = Score(board, army_list[idx]);
+            score[idx] = Score(army_list[idx]);
         }
         return score;
     }

@@ -21,10 +21,10 @@ namespace {
     template <move::move_func, move::move_func, move::move_func, mask_build_fn>
     void update(piece::Piece&, const board::Board&, const piece::Positions&);
 
-    const auto& right_edge_mask = board::edges::build_right_squares_mask;
-    const auto& left_edge_mask = board::edges::build_left_squares_mask;
-    const auto& top_edge_mask = board::edges::build_top_squares_mask;
-    const auto& bottom_edge_mask = board::edges::build_bottom_squares_mask;
+    constexpr auto* right_edge_mask = board::edges::build_right_squares_mask;
+    constexpr auto* left_edge_mask = board::edges::build_left_squares_mask;
+    constexpr auto* top_edge_mask = board::edges::build_top_squares_mask;
+    constexpr auto* bottom_edge_mask = board::edges::build_bottom_squares_mask;
 
     const std::map<piece::MoveDirection, piece::Piece::update_fn_ptr> lookup_builder{
         // movement options of pawn depend on direction.

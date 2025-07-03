@@ -32,7 +32,7 @@ namespace ai::score {
         public:
             Score() = default;
             Score(unsigned int val) : _val{val} { assert(_val <= ranges::max_win); };
-            Score(const board::Board &, const piece::army::Army &);
+            Score(const piece::army::Army &);
             bool is_draw() const;
             bool is_win() const;
             unsigned int value() const;

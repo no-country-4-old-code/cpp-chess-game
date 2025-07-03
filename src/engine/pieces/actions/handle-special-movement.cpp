@@ -26,7 +26,6 @@ namespace {
                             const piece::api::Context &context,
                             piece::api::ArmyDestinations &memory) {
         const auto &king_position = my_army.king().position;
-        auto tmp                  = king_position & context.under_attack_map;
 
         if ((!(my_army.king().has_moved())) && (!(king_position & context.under_attack_map))) {
 

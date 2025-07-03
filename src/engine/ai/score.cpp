@@ -15,7 +15,7 @@ namespace {
 
 namespace ai::score {
 
-    Score::Score(const board::Board &board, const piece::army::Army &army) {
+    Score::Score(const piece::army::Army &army) {
         if (army.size() > 0 && army.king().is_alive()) {
             this->_val = (calc_piece_value(army) + calc_attack_value(army)) / 2;
         } else {
@@ -47,7 +47,7 @@ namespace {
 
     unsigned int calc_piece_value(const piece::army::Army &army) {
         unsigned int current_value = 0;
-        unsigned int max_value     = 0;
+        unsigned int max_value     = 1;
 
         for (const auto &piece : army.pieces) {
             max_value += lookup_piece_value[piece.type];
