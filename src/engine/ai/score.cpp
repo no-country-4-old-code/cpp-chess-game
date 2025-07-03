@@ -41,7 +41,7 @@ namespace {
 
     std::map<piece::PieceType, u_int8_t> lookup_piece_value{
         {piece::PieceType::KING, 1},  // if king is checkmate all pieces are marked dead
-        {piece::PieceType::QUEEN, 9},  {piece::PieceType::ROCK, 4}, {piece::PieceType::BISHOP, 4},
+        {piece::PieceType::QUEEN, 9}, {piece::PieceType::ROCK, 4}, {piece::PieceType::BISHOP, 4},
         {piece::PieceType::KNIGHT, 4}, {piece::PieceType::PAWN, 1},
     };
 

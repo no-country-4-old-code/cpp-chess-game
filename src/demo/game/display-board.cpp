@@ -99,20 +99,33 @@ namespace {
         return squares;
     }
 
+    void print_board_header(const board::Board &board) {
+        const char last_chr = 'a' + static_cast<char>(board.num_of_squares_horizontal);
+        const char max_chr = 'z';
+        char chr = 'a';
+        
+        std::cout << " \t";
+        while (chr <= last_chr && chr <= max_chr) {
+            std::cout << " " << chr << " ";
+            ++chr;
+        }
+        std::cout << "\n";
+    }
+
     void print_text_for_each_square(const board::Board &board, const TextPerSquare &squares) {
-        const int bits_per_byte = 8;
         u_int row_count         = 0;
 
         std::cout << "\nPrint Board\n\n";
-        std::cout << " \t a   b   c   d   e   f   g   h \n";
+        print_board_header(board);
 
         for (auto sqr : squares) {
             if (row_count % board.num_of_squares_horizontal == 0) {
-                std::cout << "\n" << (row_count / bits_per_byte) + 1 << "\t";
+                std::cout << "\n" << (row_count / board.num_of_squares_horizontal) + 1 << "\t";
             }
             std::cout << " " << sqr[0] << sqr[1] << " ";
             ++row_count;
         }
         std::cout << "\n\n" << std::flush;
     }
+
 }  // namespace
